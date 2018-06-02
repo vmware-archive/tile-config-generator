@@ -1,0 +1,7 @@
+- type: replace
+  path: /.properties.opsman
+  value:
+    value: disable
+
+- type: remove
+  path: /.properties.opsman.enable.url?

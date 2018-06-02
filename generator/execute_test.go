@@ -39,7 +39,7 @@ var _ = Describe("Executor", func() {
 			Expect(template).ShouldNot(BeNil())
 			Expect(template.NetworkProperties).ShouldNot(BeNil())
 		})
-		XIt("Should create output template with product properties", func() {
+		It("Should create output template with product properties", func() {
 			template, err := gen.Generate(fileData)
 			Expect(err).ShouldNot(HaveOccurred())
 			Expect(template).ShouldNot(BeNil())

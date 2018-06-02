@@ -27,4 +27,27 @@ var _ = Describe("Metadata", func() {
 		})
 
 	})
+
+	Context("GetPropertyMetadata", func() {
+		It("returns a non-job configurable property", func() {
+			fileData, err := ioutil.ReadFile("fixtures/p_healthwatch.yml")
+			Expect(err).ShouldNot(HaveOccurred())
+			metadata, err := generator.NewMetadata(fileData)
+			Expect(err).ShouldNot(HaveOccurred())
+			property, err := metadata.GetPropertyMetadata(".properties.opsman")
+			Expect(err).ShouldNot(HaveOccurred())
+			Expect(property.Name).Should(Equal("opsman"))
+		})
+
+		It("returns a job configurable property", func() {
+			fileData, err := ioutil.ReadFile("fixtures/p_healthwatch.yml")
+			Expect(err).ShouldNot(HaveOccurred())
+			metadata, err := generator.NewMetadata(fileData)
+			Expect(err).ShouldNot(HaveOccurred())
+			property, err := metadata.GetPropertyMetadata(".healthwatch-forwarder.foundation_name")
+			Expect(err).ShouldNot(HaveOccurred())
+			//Expect(property).ShouldNot(BeNil())
+			Expect(property.Name).Should(Equal("foundation_name"))
+		})
+	})
 })

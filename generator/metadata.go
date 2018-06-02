@@ -2,6 +2,7 @@ package generator
 
 import (
 	"fmt"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 )
@@ -41,4 +42,31 @@ func (m *Metadata) GetJob(jobName string) (*JobType, error) {
 		}
 	}
 	return nil, fmt.Errorf("Job %s not found", jobName)
+}
+
+func (m *Metadata) GetPropertyMetadata(propertyName string) (*PropertyMetadata, error) {
+	propertyParts := strings.Split(propertyName, ".")
+	jobName := propertyParts[1]
+	simplePropertyName := propertyParts[len(propertyParts)-1]
+
+	job, err := m.GetJob(jobName)
+	if err == nil {
+		return job.GetPropertyMetadata(propertyName)
+	}
+
+	for _, property := range m.PropertyMetadata {
+		if property.Name == simplePropertyName {
+			return &property, nil
+		}
+	}
+
+	return nil, fmt.Errorf("Property %s not found", propertyName)
+}
+
+func (m *Metadata) Properties() []Property {
+	var properties []Property
+	for _, form := range m.FormTypes {
+		properties = append(properties, form.Properties...)
+	}
+	return properties
 }
