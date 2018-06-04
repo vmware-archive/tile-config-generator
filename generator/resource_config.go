@@ -20,7 +20,7 @@ type jobtype interface {
 	HasPersistentDisk() bool
 }
 
-func NewResourceConfig(metadata *Metadata) map[string]Resource {
+func CreateResourceConfig(metadata *Metadata) map[string]Resource {
 	resourceConfig := make(map[string]Resource)
 	for _, job := range metadata.JobTypes {
 		resourceConfig[job.Name] = CreateResource(job.Name, &job)

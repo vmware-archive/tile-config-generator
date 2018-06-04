@@ -1,6 +1,8 @@
 package generator_test
 
 import (
+	"archive/zip"
+	"bytes"
 	"io/ioutil"
 	"os"
 	"path"
@@ -11,45 +13,92 @@ import (
 )
 
 var _ = Describe("Executor", func() {
-	Context("Generate", func() {
+	Context("CreateTemplate", func() {
 		var (
-			gen              *generator.Executor
-			pwd, _           = os.Getwd()
-			tmpDirName       = "_testGen"
-			tmpPath          = path.Join(pwd, tmpDirName)
-			controlOutputDir string
-			fileData         []byte
+			gen      *generator.Executor
+			metadata *generator.Metadata
 		)
 		BeforeEach(func() {
 			gen = &generator.Executor{}
-			os.MkdirAll(tmpPath, 0700)
-			controlOutputDir, _ = ioutil.TempDir(tmpPath, "templates")
-			var err error
-			fileData, err = ioutil.ReadFile("fixtures/p_healthwatch.yml")
+			fileData, err := ioutil.ReadFile("fixtures/p_healthwatch.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-		})
-		AfterEach(func() {
-			err := os.RemoveAll(tmpPath)
+			metadata, err = generator.NewMetadata(fileData)
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 
 		It("Should create output template with network properties", func() {
-			template, err := gen.Generate(fileData)
+			template, err := gen.CreateTemplate(metadata)
 			Expect(err).ShouldNot(HaveOccurred())
 			Expect(template).ShouldNot(BeNil())
 			Expect(template.NetworkProperties).ShouldNot(BeNil())
 		})
 		It("Should create output template with product properties", func() {
-			template, err := gen.Generate(fileData)
+			template, err := gen.CreateTemplate(metadata)
 			Expect(err).ShouldNot(HaveOccurred())
 			Expect(template).ShouldNot(BeNil())
 			Expect(template.ProductProperties).ShouldNot(BeNil())
 		})
 		It("Should create output template with resource config properties", func() {
-			template, err := gen.Generate(fileData)
+			template, err := gen.CreateTemplate(metadata)
 			Expect(err).ShouldNot(HaveOccurred())
 			Expect(template).ShouldNot(BeNil())
 			Expect(template.ResourceConfig).ShouldNot(BeNil())
 		})
 	})
+
+	Context("Generate", func() {
+		var (
+			gen      *generator.Executor
+			pwd, _   = os.Getwd()
+			tmpPath  = path.Join(pwd, "_testGen", "templates")
+			filePath string
+		)
+		BeforeEach(func() {
+			tempDir := os.TempDir()
+			filePath = path.Join(tempDir, "p-healthwatch.pivotal")
+			err := createZipFile("fixtures/p_healthwatch.yml", filePath)
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(filePath, tmpPath, "healthwatch", "1.2")
+		})
+		AfterEach(func() {
+			// err := os.RemoveAll(tmpPath)
+			// Expect(err).ShouldNot(HaveOccurred())
+			//
+			// err = os.Remove(filePath)
+			// Expect(err).ShouldNot(HaveOccurred())
+		})
+
+		It("Should generate files", func() {
+			err := gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+		})
+	})
 })
+
+func createZipFile(metadataFile string, targetFile string) error {
+	// Create a buffer to write our archive to.
+	buf := new(bytes.Buffer)
+
+	// Create a new zip archive.
+	w := zip.NewWriter(buf)
+
+	fileData, err := ioutil.ReadFile(metadataFile)
+	if err != nil {
+		return err
+	}
+	f, err := w.Create("metadata/metadata.yml")
+	if err != nil {
+		return err
+	}
+	_, err = f.Write(fileData)
+	if err != nil {
+		return err
+	}
+
+	// Make sure to check the error on Close.
+	err = w.Close()
+	if err != nil {
+		return err
+	}
+	return ioutil.WriteFile(targetFile, buf.Bytes(), 0755)
+}

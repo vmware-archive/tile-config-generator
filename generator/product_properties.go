@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func NewProductProperties(metadata *Metadata) (map[string]interface{}, error) {
+func CreateProductProperties(metadata *Metadata) (map[string]interface{}, error) {
 	productProperties := make(map[string]interface{})
 	for _, property := range metadata.Properties() {
 		propertyMetadata, err := metadata.GetPropertyMetadata(property.Reference)

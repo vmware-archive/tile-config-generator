@@ -16,7 +16,7 @@ type metadata interface {
 	UsesServiceNetwork() bool
 }
 
-func NewNetworkProperties(metadata metadata) *NetworkProperties {
+func CreateNetworkProperties(metadata metadata) *NetworkProperties {
 	props := &NetworkProperties{}
 	props.Network = &Name{
 		Name: "((network_name))",

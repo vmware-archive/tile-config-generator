@@ -19,7 +19,7 @@ var withoutPersistentDisk = `instance_type:
 instances: ((myjob_instances))`
 
 var _ = Describe("Resource Config", func() {
-	Context("NewResourceConfig", func() {
+	Context("CreateResourceConfig", func() {
 		It("Should return new resource config", func() {
 			metadata := &generator.Metadata{
 				JobTypes: []generator.JobType{
@@ -27,7 +27,7 @@ var _ = Describe("Resource Config", func() {
 					generator.JobType{Name: "job2"},
 				},
 			}
-			resourceConfig := generator.NewResourceConfig(metadata)
+			resourceConfig := generator.CreateResourceConfig(metadata)
 			Expect(resourceConfig).ShouldNot(BeNil())
 			Expect(len(resourceConfig)).Should(Equal(2))
 			Expect(resourceConfig).Should(HaveKey("job1"))

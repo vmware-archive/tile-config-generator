@@ -10,7 +10,7 @@ import (
 )
 
 var _ = Describe("Product Properties", func() {
-	Context("NewProductProperties", func() {
+	Context("CreateProductProperties", func() {
 		It("Should return new required product properties", func() {
 			fileData, err := ioutil.ReadFile("fixtures/p_healthwatch.yml")
 			Expect(err).ShouldNot(HaveOccurred())
@@ -18,7 +18,7 @@ var _ = Describe("Product Properties", func() {
 			Expect(err).ShouldNot(HaveOccurred())
 			metadata, err := generator.NewMetadata(fileData)
 			Expect(err).ShouldNot(HaveOccurred())
-			productProperties, err := generator.NewProductProperties(metadata)
+			productProperties, err := generator.CreateProductProperties(metadata)
 			Expect(err).ShouldNot(HaveOccurred())
 			Expect(productProperties).ShouldNot(BeNil())
 			yml, err := yaml.Marshal(productProperties)
@@ -33,7 +33,7 @@ var _ = Describe("Product Properties", func() {
 			Expect(err).ShouldNot(HaveOccurred())
 			metadata, err := generator.NewMetadata(fileData)
 			Expect(err).ShouldNot(HaveOccurred())
-			productProperties, err := generator.NewProductProperties(metadata)
+			productProperties, err := generator.CreateProductProperties(metadata)
 			Expect(err).ShouldNot(HaveOccurred())
 			Expect(productProperties).ShouldNot(BeNil())
 			yml, err := yaml.Marshal(productProperties)

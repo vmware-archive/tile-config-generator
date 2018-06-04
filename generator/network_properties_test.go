@@ -26,7 +26,7 @@ singleton_availability_zone:
   name: ((singleton_availability_zone))`
 
 var _ = Describe("NetworkProperties", func() {
-	Context("NewNetworkProperties", func() {
+	Context("CreateNetworkProperties", func() {
 		var (
 			metadata *fakes.FakeMetadata
 		)
@@ -34,14 +34,14 @@ var _ = Describe("NetworkProperties", func() {
 			metadata = new(fakes.FakeMetadata)
 		})
 		It("Should return network properties with network", func() {
-			networkProps := generator.NewNetworkProperties(metadata)
+			networkProps := generator.CreateNetworkProperties(metadata)
 			Expect(networkProps).ShouldNot(BeNil())
 			Expect(networkProps.Network).ShouldNot(BeNil())
 			Expect(networkProps.Network.Name).Should(BeEquivalentTo("((network_name))"))
 		})
 		It("Should return network properties with service network", func() {
 			metadata.UsesServiceNetworkReturns(true)
-			networkProps := generator.NewNetworkProperties(metadata)
+			networkProps := generator.CreateNetworkProperties(metadata)
 			Expect(networkProps).ShouldNot(BeNil())
 			Expect(networkProps.ServiceNetwork).ShouldNot(BeNil())
 			Expect(networkProps.ServiceNetwork.Name).Should(BeEquivalentTo("((service_network_name))"))
@@ -49,20 +49,20 @@ var _ = Describe("NetworkProperties", func() {
 
 		It("Should return network properties without service network", func() {
 			metadata.UsesServiceNetworkReturns(false)
-			networkProps := generator.NewNetworkProperties(metadata)
+			networkProps := generator.CreateNetworkProperties(metadata)
 			Expect(networkProps).ShouldNot(BeNil())
 			Expect(networkProps.ServiceNetwork).Should(BeNil())
 		})
 
 		It("Should return singleton availability zone", func() {
-			networkProps := generator.NewNetworkProperties(metadata)
+			networkProps := generator.CreateNetworkProperties(metadata)
 			Expect(networkProps).ShouldNot(BeNil())
 			Expect(networkProps.SingletonAvailabilityZone).ShouldNot(BeNil())
 			Expect(networkProps.SingletonAvailabilityZone.Name).Should(BeEquivalentTo("((singleton_availability_zone))"))
 		})
 
 		It("Should return single az in other azs", func() {
-			networkProps := generator.NewNetworkProperties(metadata)
+			networkProps := generator.CreateNetworkProperties(metadata)
 			Expect(networkProps).ShouldNot(BeNil())
 			Expect(len(networkProps.OtherAvailabilityZones)).Should(Equal(1))
 			Expect(networkProps.OtherAvailabilityZones[0].Name).Should(BeEquivalentTo("((singleton_availability_zone))"))
@@ -70,7 +70,7 @@ var _ = Describe("NetworkProperties", func() {
 
 		It("Should marshall to yaml with service network", func() {
 			metadata.UsesServiceNetworkReturns(true)
-			networkProps := generator.NewNetworkProperties(metadata)
+			networkProps := generator.CreateNetworkProperties(metadata)
 			Expect(networkProps).ShouldNot(BeNil())
 			yml, err := yaml.Marshal(networkProps)
 			Expect(err).ShouldNot(HaveOccurred())
@@ -79,7 +79,7 @@ var _ = Describe("NetworkProperties", func() {
 
 		It("Should marshall to yaml without service network", func() {
 			metadata.UsesServiceNetworkReturns(false)
-			networkProps := generator.NewNetworkProperties(metadata)
+			networkProps := generator.CreateNetworkProperties(metadata)
 			Expect(networkProps).ShouldNot(BeNil())
 			yml, err := yaml.Marshal(networkProps)
 			Expect(err).ShouldNot(HaveOccurred())
