@@ -1,6 +1,9 @@
 package generator
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Resource struct {
 	InstanceType   InstanceType    `yaml:"instance_type"`
@@ -23,7 +26,7 @@ type jobtype interface {
 func CreateResourceConfig(metadata *Metadata) map[string]Resource {
 	resourceConfig := make(map[string]Resource)
 	for _, job := range metadata.JobTypes {
-		resourceConfig[job.Name] = CreateResource(job.Name, &job)
+		resourceConfig[job.Name] = CreateResource(determineJobName(job.Name), &job)
 	}
 	return resourceConfig
 }
@@ -41,4 +44,24 @@ func CreateResource(jobName string, job jobtype) Resource {
 		}
 	}
 	return resource
+}
+
+func CreateResourceVars(metadata *Metadata) map[string]interface{} {
+	vars := make(map[string]interface{})
+	for _, job := range metadata.JobTypes {
+		AddResourceVars(determineJobName(job.Name), &job, vars)
+	}
+	return vars
+}
+
+func AddResourceVars(jobName string, job jobtype, vars map[string]interface{}) {
+	vars[fmt.Sprintf("%s_instances", jobName)] = "automatic"
+	vars[fmt.Sprintf("%s_instance_type", jobName)] = "automatic"
+	if job.HasPersistentDisk() {
+		vars[fmt.Sprintf("%s_persistent_disk_size", jobName)] = "automatic"
+	}
+}
+
+func determineJobName(jobName string) string {
+	return strings.Replace(jobName, ".", "_", -1)
 }
