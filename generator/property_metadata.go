@@ -1,6 +1,9 @@
 package generator
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type PropertyMetadata struct {
 	Configurable     bool               `yaml:"configurable"`
@@ -44,6 +47,7 @@ func (p *PropertyMetadata) SelectorMetadata(selector string) ([]PropertyMetadata
 }
 
 func (p *PropertyMetadata) CollectionPropertyType(propertyName string) interface{} {
+	propertyName = strings.Replace(propertyName, ".", "__", -1)
 	var collectionProperties []map[string]interface{}
 	properties := make(map[string]interface{})
 	for _, subProperty := range p.PropertyMetadata {
@@ -73,6 +77,8 @@ func (p *PropertyMetadata) CollectionPropertyType(propertyName string) interface
 }
 
 func (p *PropertyMetadata) PropertyType(propertyName string) interface{} {
+
+	propertyName = strings.Replace(propertyName, ".", "__", -1)
 	if p.IsSelector() {
 		return &SimpleValue{
 			Value: fmt.Sprintf("%s", p.Default),

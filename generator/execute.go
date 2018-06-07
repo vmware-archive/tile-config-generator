@@ -70,6 +70,17 @@ func (e *Executor) Generate() error {
 		}
 	}
 
+	productPropertyVars, err := CreateProductPropertiesVars(metadata)
+	if err != nil {
+		return err
+	}
+
+	if len(productPropertyVars) > 0 {
+		if err = e.writeYamlFile(path.Join(targetDirectory, "product-vars.yml"), productPropertyVars); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
