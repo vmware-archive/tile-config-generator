@@ -31,3 +31,9 @@ type Option struct {
 	Label string      `json:"label"`
 	Name  interface{} `json:"name"`
 }
+
+type Ops struct {
+	Type  string      `yaml:"type"`
+	Path  string      `yaml:"path"`
+	Value interface{} `yaml:"value,omitempty"`
+}

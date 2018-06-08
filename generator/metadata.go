@@ -21,6 +21,12 @@ type Metadata struct {
 	FormTypes        []FormType         `yaml:"form_types"`
 	PropertyMetadata []PropertyMetadata `yaml:"property_blueprints"`
 	JobTypes         []JobType          `yaml:"job_types"`
+	ProvidesVersions []ProvidesVersion  `yaml:"provides_product_versions"`
+}
+
+type ProvidesVersion struct {
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
 }
 
 func (m *Metadata) UsesServiceNetwork() bool {

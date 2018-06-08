@@ -38,12 +38,14 @@ type CertificateValue struct {
 }
 
 func (p *PropertyMetadata) SelectorMetadata(selector string) ([]PropertyMetadata, error) {
+	var options []string
 	for _, optionTemplate := range p.OptionTemplates {
+		options = append(options, optionTemplate.Name)
 		if selector == optionTemplate.Name {
 			return optionTemplate.PropertyMetadata, nil
 		}
 	}
-	return nil, fmt.Errorf("Option template not found for selector %s", selector)
+	return nil, fmt.Errorf("Option template not found for selector %s options include %v", selector, options)
 }
 
 func (p *PropertyMetadata) CollectionPropertyType(propertyName string) interface{} {
@@ -85,6 +87,33 @@ func (p *PropertyMetadata) CollectionPropertyVars(propertyName string, vars map[
 				}
 			}
 		}
+	}
+}
+
+func (p *PropertyMetadata) CollectionOpsFile(numOfElements int, propertyName string) interface{} {
+	var collectionProperties []map[string]interface{}
+	for i := 1; i <= numOfElements; i++ {
+		newPropertyName := strings.Replace(propertyName, "properties.", "", 1)
+		newPropertyName = fmt.Sprintf("%s_%d", strings.Replace(newPropertyName, ".", "__", -1), i-1)
+		properties := make(map[string]interface{})
+		for _, subProperty := range p.PropertyMetadata {
+			if subProperty.IsSecret() {
+				properties[subProperty.Name] = &SecretValue{
+					Value: fmt.Sprintf("((%s__%s))", newPropertyName, subProperty.Name),
+				}
+			} else if subProperty.IsCertificate() {
+				properties[subProperty.Name] = &CertificateValue{
+					CertPem:        fmt.Sprintf("((%s__%s))", newPropertyName, "certificate"),
+					CertPrivateKey: fmt.Sprintf("((%s__%s))", newPropertyName, "privatekey"),
+				}
+			} else {
+				properties[subProperty.Name] = fmt.Sprintf("((%s__%s))", newPropertyName, subProperty.Name)
+			}
+		}
+		collectionProperties = append(collectionProperties, properties)
+	}
+	return &SimpleValue{
+		Value: collectionProperties,
 	}
 }
 

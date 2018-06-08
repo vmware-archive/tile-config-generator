@@ -15,16 +15,12 @@ import (
 type Executor struct {
 	PathToPivotalFile string
 	BaseDirectory     string
-	ProductName       string
-	Version           string
 }
 
-func NewExecutor(filePath, baseDirectory, productName, version string) *Executor {
+func NewExecutor(filePath, baseDirectory string) *Executor {
 	return &Executor{
 		PathToPivotalFile: filePath,
 		BaseDirectory:     baseDirectory,
-		ProductName:       productName,
-		Version:           version,
 	}
 }
 
@@ -37,8 +33,19 @@ func (e *Executor) Generate() error {
 	if err != nil {
 		return err
 	}
-	targetDirectory := path.Join(e.BaseDirectory, e.ProductName, e.Version)
+	providesVersion := metadata.ProvidesVersions[0]
+	targetDirectory := path.Join(e.BaseDirectory, providesVersion.Name, providesVersion.Version)
 	if err = e.createDirectory(targetDirectory); err != nil {
+		return err
+	}
+
+	featuresDirectory := path.Join(targetDirectory, "features")
+	if err = e.createDirectory(featuresDirectory); err != nil {
+		return err
+	}
+
+	optionalDirectory := path.Join(targetDirectory, "optional")
+	if err = e.createDirectory(optionalDirectory); err != nil {
 		return err
 	}
 
@@ -47,7 +54,7 @@ func (e *Executor) Generate() error {
 		return err
 	}
 
-	if err = e.writeYamlFile(path.Join(targetDirectory, fmt.Sprintf("%s.yml", e.ProductName)), template); err != nil {
+	if err = e.writeYamlFile(path.Join(targetDirectory, "product.yml"), template); err != nil {
 		return err
 	}
 
@@ -78,6 +85,32 @@ func (e *Executor) Generate() error {
 	if len(productPropertyVars) > 0 {
 		if err = e.writeYamlFile(path.Join(targetDirectory, "product-default-vars.yml"), productPropertyVars); err != nil {
 			return err
+		}
+	}
+
+	productPropertyOpsFiles, err := CreateProductPropertiesFeaturesOpsFiles(metadata)
+	if err != nil {
+		return err
+	}
+
+	if len(productPropertyOpsFiles) > 0 {
+		for name, contents := range productPropertyOpsFiles {
+			if err = e.writeYamlFile(path.Join(featuresDirectory, fmt.Sprintf("%s.yml", name)), contents); err != nil {
+				return err
+			}
+		}
+	}
+
+	productPropertyOptionalOpsFiles, err := CreateProductPropertiesOptionalOpsFiles(metadata)
+	if err != nil {
+		return err
+	}
+
+	if len(productPropertyOptionalOpsFiles) > 0 {
+		for name, contents := range productPropertyOptionalOpsFiles {
+			if err = e.writeYamlFile(path.Join(optionalDirectory, fmt.Sprintf("%s.yml", name)), contents); err != nil {
+				return err
+			}
 		}
 	}
 
