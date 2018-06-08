@@ -31,8 +31,10 @@ func CreateProductProperties(metadata *Metadata) (map[string]interface{}, error)
 						return nil, err
 					}
 					for _, metadata := range selectorMetadata {
-						selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
-						productProperties[selectorProperty] = metadata.PropertyType(strings.Replace(selectorProperty, ".", "", 1))
+						if metadata.Configurable {
+							selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
+							productProperties[selectorProperty] = metadata.PropertyType(strings.Replace(selectorProperty, ".", "", 1))
+						}
 					}
 				}
 			}
@@ -69,8 +71,10 @@ func CreateProductPropertiesVars(metadata *Metadata) (map[string]interface{}, er
 						return nil, err
 					}
 					for _, metadata := range selectorMetadata {
-						selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
-						addPropertyToVars(selectorProperty, &metadata, vars)
+						if metadata.Configurable {
+							selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
+							addPropertyToVars(selectorProperty, &metadata, vars)
+						}
 					}
 				}
 			}
