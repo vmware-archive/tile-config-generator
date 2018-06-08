@@ -49,129 +49,129 @@
 .nfs_server.blobstore_internal_access_rules:
   value: ((nfs_server__blobstore_internal_access_rules))
 .properties.autoscale_api_instance_count:
-  value: ((properties__autoscale_api_instance_count))
+  value: ((autoscale_api_instance_count))
 .properties.autoscale_instance_count:
-  value: ((properties__autoscale_instance_count))
+  value: ((autoscale_instance_count))
 .properties.autoscale_metric_bucket_count:
-  value: ((properties__autoscale_metric_bucket_count))
+  value: ((autoscale_metric_bucket_count))
 .properties.autoscale_scaling_interval_in_seconds:
-  value: ((properties__autoscale_scaling_interval_in_seconds))
+  value: ((autoscale_scaling_interval_in_seconds))
 .properties.cc_api_rate_limit:
   value: disable
 .properties.cf_networking_enable_space_developer_self_service:
-  value: ((properties__cf_networking_enable_space_developer_self_service))
+  value: ((cf_networking_enable_space_developer_self_service))
 .properties.container_networking_interface_plugin:
   value: silk
 .properties.container_networking_interface_plugin.silk.dns_servers:
-  value: ((properties__container_networking_interface_plugin__silk__dns_servers))
+  value: ((container_networking_interface_plugin__silk__dns_servers))
 .properties.container_networking_interface_plugin.silk.enable_log_traffic:
-  value: ((properties__container_networking_interface_plugin__silk__enable_log_traffic))
+  value: ((container_networking_interface_plugin__silk__enable_log_traffic))
 .properties.container_networking_interface_plugin.silk.iptables_accepted_udp_logs_per_sec:
-  value: ((properties__container_networking_interface_plugin__silk__iptables_accepted_udp_logs_per_sec))
+  value: ((container_networking_interface_plugin__silk__iptables_accepted_udp_logs_per_sec))
 .properties.container_networking_interface_plugin.silk.iptables_denied_logs_per_sec:
-  value: ((properties__container_networking_interface_plugin__silk__iptables_denied_logs_per_sec))
+  value: ((container_networking_interface_plugin__silk__iptables_denied_logs_per_sec))
 .properties.container_networking_interface_plugin.silk.network_cidr:
-  value: ((properties__container_networking_interface_plugin__silk__network_cidr))
+  value: ((container_networking_interface_plugin__silk__network_cidr))
 .properties.container_networking_interface_plugin.silk.network_mtu:
-  value: ((properties__container_networking_interface_plugin__silk__network_mtu))
+  value: ((container_networking_interface_plugin__silk__network_mtu))
 .properties.container_networking_interface_plugin.silk.vtep_port:
-  value: ((properties__container_networking_interface_plugin__silk__vtep_port))
+  value: ((container_networking_interface_plugin__silk__vtep_port))
 .properties.credhub_database:
   value: internal_mysql
 .properties.credhub_key_encryption_passwords:
   value:
   - key:
-      secret: ((properties__credhub_key_encryption_passwords.key))
-    name: ((properties__credhub_key_encryption_passwords.name))
-    primary: ((properties__credhub_key_encryption_passwords.primary))
-    provider: internal
+      secret: ((credhub_key_encryption_passwords_0__key))
+    name: ((credhub_key_encryption_passwords_0__name))
+    primary: ((credhub_key_encryption_passwords_0__primary))
+    provider: ((credhub_key_encryption_passwords_0__provider))
 .properties.enable_grootfs:
-  value: ((properties__enable_grootfs))
+  value: ((enable_grootfs))
 .properties.enable_service_discovery_for_apps:
-  value: ((properties__enable_service_discovery_for_apps))
+  value: ((enable_service_discovery_for_apps))
 .properties.garden_disk_cleanup:
   value: threshold
 .properties.garden_disk_cleanup.threshold.cleanup_threshold_in_mb:
-  value: ((properties__garden_disk_cleanup__threshold__cleanup_threshold_in_mb))
+  value: ((garden_disk_cleanup__threshold__cleanup_threshold_in_mb))
 .properties.gorouter_ssl_ciphers:
-  value: ((properties__gorouter_ssl_ciphers))
+  value: ((gorouter_ssl_ciphers))
 .properties.haproxy_forward_tls:
   value: enable
 .properties.haproxy_forward_tls.enable.backend_ca:
-  value: ((properties__haproxy_forward_tls__enable__backend_ca))
+  value: ((haproxy_forward_tls__enable__backend_ca))
 .properties.haproxy_hsts_support:
   value: disable
 .properties.haproxy_max_buffer_size:
-  value: ((properties__haproxy_max_buffer_size))
+  value: ((haproxy_max_buffer_size))
 .properties.haproxy_ssl_ciphers:
-  value: ((properties__haproxy_ssl_ciphers))
+  value: ((haproxy_ssl_ciphers))
 .properties.mysql_activity_logging:
   value: enable
 .properties.mysql_activity_logging.enable.audit_logging_events:
-  value: ((properties__mysql_activity_logging__enable__audit_logging_events))
+  value: ((mysql_activity_logging__enable__audit_logging_events))
 .properties.networking_poe_ssl_certs:
   value:
   - certificate:
-      cert_pem: ((properties__networking_poe_ssl_certs.certificate))
-      private_key_pem: ((properties__networking_poe_ssl_certs.privatekey))
-    name: ((properties__networking_poe_ssl_certs.name))
+      cert_pem: ((networking_poe_ssl_certs_0__certificate))
+      private_key_pem: ((networking_poe_ssl_certs_0__privatekey))
+    name: ((networking_poe_ssl_certs_0__name))
 .properties.nfs_volume_driver:
   value: enable
 .properties.nfs_volume_driver.enable.ldap_server_host:
-  value: ((properties__nfs_volume_driver__enable__ldap_server_host))
+  value: ((nfs_volume_driver__enable__ldap_server_host))
 .properties.nfs_volume_driver.enable.ldap_server_port:
-  value: ((properties__nfs_volume_driver__enable__ldap_server_port))
+  value: ((nfs_volume_driver__enable__ldap_server_port))
 .properties.nfs_volume_driver.enable.ldap_service_account_password:
   value:
-    secret: ((properties__nfs_volume_driver__enable__ldap_service_account_password))
+    secret: ((nfs_volume_driver__enable__ldap_service_account_password))
 .properties.nfs_volume_driver.enable.ldap_service_account_user:
-  value: ((properties__nfs_volume_driver__enable__ldap_service_account_user))
+  value: ((nfs_volume_driver__enable__ldap_service_account_user))
 .properties.nfs_volume_driver.enable.ldap_user_fqdn:
-  value: ((properties__nfs_volume_driver__enable__ldap_user_fqdn))
+  value: ((nfs_volume_driver__enable__ldap_user_fqdn))
 .properties.push_apps_manager_currency_lookup:
-  value: ((properties__push_apps_manager_currency_lookup))
+  value: ((push_apps_manager_currency_lookup))
 .properties.push_apps_manager_display_plan_prices:
-  value: ((properties__push_apps_manager_display_plan_prices))
+  value: ((push_apps_manager_display_plan_prices))
 .properties.push_apps_manager_enable_invitations:
-  value: ((properties__push_apps_manager_enable_invitations))
+  value: ((push_apps_manager_enable_invitations))
 .properties.rep_proxy_enabled:
-  value: ((properties__rep_proxy_enabled))
+  value: ((rep_proxy_enabled))
 .properties.route_services:
   value: enable
 .properties.route_services.enable.ignore_ssl_cert_verification:
-  value: ((properties__route_services__enable__ignore_ssl_cert_verification))
+  value: ((route_services__enable__ignore_ssl_cert_verification))
 .properties.router_backend_max_conn:
-  value: ((properties__router_backend_max_conn))
+  value: ((router_backend_max_conn))
 .properties.router_client_cert_validation:
   value: request
 .properties.router_enable_proxy:
-  value: ((properties__router_enable_proxy))
+  value: ((router_enable_proxy))
 .properties.router_keepalive_connections:
   value: enable
 .properties.routing_disable_http:
-  value: ((properties__routing_disable_http))
+  value: ((routing_disable_http))
 .properties.routing_minimum_tls_version:
   value: tls_v1_2
 .properties.routing_tls_termination:
   value: load_balancer
 .properties.saml_signature_algorithm:
-  value: ((properties__saml_signature_algorithm))
+  value: ((saml_signature_algorithm))
 .properties.secure_service_instance_credentials:
-  value: ((properties__secure_service_instance_credentials))
+  value: ((secure_service_instance_credentials))
 .properties.security_acknowledgement:
-  value: ((properties__security_acknowledgement))
+  value: ((security_acknowledgement))
 .properties.smoke_tests:
   value: on_demand
 .properties.smtp_auth_mechanism:
-  value: ((properties__smtp_auth_mechanism))
+  value: ((smtp_auth_mechanism))
 .properties.smtp_enable_starttls_auto:
-  value: ((properties__smtp_enable_starttls_auto))
+  value: ((smtp_enable_starttls_auto))
 .properties.syslog_metrics_to_syslog_enabled:
-  value: ((properties__syslog_metrics_to_syslog_enabled))
+  value: ((syslog_metrics_to_syslog_enabled))
 .properties.syslog_tls:
   value: disabled
 .properties.syslog_use_tcp_for_file_forwarding_local_transport:
-  value: ((properties__syslog_use_tcp_for_file_forwarding_local_transport))
+  value: ((syslog_use_tcp_for_file_forwarding_local_transport))
 .properties.system_blobstore:
   value: internal
 .properties.system_database:
@@ -181,25 +181,25 @@
 .properties.uaa:
   value: internal
 .properties.uaa.internal.password_expires_after_months:
-  value: ((properties__uaa__internal__password_expires_after_months))
+  value: ((uaa__internal__password_expires_after_months))
 .properties.uaa.internal.password_max_retry:
-  value: ((properties__uaa__internal__password_max_retry))
+  value: ((uaa__internal__password_max_retry))
 .properties.uaa.internal.password_min_length:
-  value: ((properties__uaa__internal__password_min_length))
+  value: ((uaa__internal__password_min_length))
 .properties.uaa.internal.password_min_lowercase:
-  value: ((properties__uaa__internal__password_min_lowercase))
+  value: ((uaa__internal__password_min_lowercase))
 .properties.uaa.internal.password_min_numeric:
-  value: ((properties__uaa__internal__password_min_numeric))
+  value: ((uaa__internal__password_min_numeric))
 .properties.uaa.internal.password_min_special:
-  value: ((properties__uaa__internal__password_min_special))
+  value: ((uaa__internal__password_min_special))
 .properties.uaa.internal.password_min_uppercase:
-  value: ((properties__uaa__internal__password_min_uppercase))
+  value: ((uaa__internal__password_min_uppercase))
 .properties.uaa_database:
   value: internal_mysql
 .properties.uaa_session_cookie_max_age:
-  value: ((properties__uaa_session_cookie_max_age))
+  value: ((uaa_session_cookie_max_age))
 .properties.uaa_session_idle_timeout:
-  value: ((properties__uaa_session_idle_timeout))
+  value: ((uaa_session_idle_timeout))
 .router.disable_insecure_cookies:
   value: ((router__disable_insecure_cookies))
 .router.drain_wait:
@@ -232,5 +232,5 @@
   value: ((uaa__proxy_ips_regex))
 .uaa.service_provider_key_credentials:
   value:
-    cert_pem: ((uaa__service_provider_key_credentials.certificate))
-    private_key_pem: ((uaa__service_provider_key_credentials.privatekey))
+    cert_pem: ((uaa__service_provider_key_credentials__certificate))
+    private_key_pem: ((uaa__service_provider_key_credentials__privatekey))

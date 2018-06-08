@@ -21,4 +21,4 @@
 .properties.opsman:
   value: enable
 .properties.opsman.enable.url:
-  value: ((properties__opsman__enable__url))
+  value: ((opsman__enable__url))

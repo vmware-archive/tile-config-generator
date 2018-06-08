@@ -51,7 +51,7 @@ func CreateProductPropertiesVars(metadata *Metadata) (map[string]interface{}, er
 		if propertyMetadata.Configurable && !propertyMetadata.Optional {
 			if propertyMetadata.IsCollection() {
 				if propertyMetadata.IsRequiredCollection() {
-					//addPropertyToVars(property.Reference, propertyMetadata, vars)
+					propertyMetadata.CollectionPropertyVars(strings.Replace(property.Reference, ".", "", 1), vars)
 				}
 			} else {
 				if !propertyMetadata.IsSelector() {
@@ -82,13 +82,12 @@ func CreateProductPropertiesVars(metadata *Metadata) (map[string]interface{}, er
 func addPropertyToVars(propertyName string, propertyMetadata *PropertyMetadata, vars map[string]interface{}) {
 	if !propertyMetadata.IsSecret() {
 		newPropertyName := strings.Replace(propertyName, ".", "", 1)
+		newPropertyName = strings.Replace(newPropertyName, "properties.", "", 1)
 		newPropertyName = strings.Replace(newPropertyName, ".", "__", -1)
-		var propertyDefault interface{}
-		propertyDefault = ``
 		if propertyMetadata.Default != nil {
-			propertyDefault = propertyMetadata.Default
+			vars[newPropertyName] = propertyMetadata.Default
+		} else if propertyMetadata.IsBool() {
+			vars[newPropertyName] = false
 		}
-
-		vars[newPropertyName] = propertyDefault
 	}
 }
