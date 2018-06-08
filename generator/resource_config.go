@@ -26,7 +26,9 @@ type jobtype interface {
 func CreateResourceConfig(metadata *Metadata) map[string]Resource {
 	resourceConfig := make(map[string]Resource)
 	for _, job := range metadata.JobTypes {
-		resourceConfig[job.Name] = CreateResource(determineJobName(job.Name), &job)
+		if !strings.Contains(job.Name, ".") {
+			resourceConfig[job.Name] = CreateResource(determineJobName(job.Name), &job)
+		}
 	}
 	return resourceConfig
 }
@@ -49,7 +51,9 @@ func CreateResource(jobName string, job jobtype) Resource {
 func CreateResourceVars(metadata *Metadata) map[string]interface{} {
 	vars := make(map[string]interface{})
 	for _, job := range metadata.JobTypes {
-		AddResourceVars(determineJobName(job.Name), &job, vars)
+		if !strings.Contains(job.Name, ".") {
+			AddResourceVars(determineJobName(job.Name), &job, vars)
+		}
 	}
 	return vars
 }
