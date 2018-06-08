@@ -34,13 +34,3 @@ func CreateNetworkProperties(metadata metadata) *NetworkProperties {
 	})
 	return props
 }
-
-func CreateNewtworkVars(metadata metadata) (map[string]interface{}, error) {
-	vars := make(map[string]interface{})
-	vars["network_name"] = ""
-	if metadata.UsesServiceNetwork() {
-		vars["service_network_name"] = ""
-	}
-	vars["singleton_availability_zone"] = ""
-	return vars, nil
-}

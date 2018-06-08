@@ -58,17 +58,6 @@ func (e *Executor) Generate() error {
 		return err
 	}
 
-	networkVars, err := CreateNewtworkVars(metadata)
-	if err != nil {
-		return err
-	}
-
-	if len(networkVars) > 0 {
-		if err = e.writeYamlFile(path.Join(targetDirectory, "network-vars.yml"), networkVars); err != nil {
-			return err
-		}
-	}
-
 	resourceVars := CreateResourceVars(metadata)
 
 	if len(resourceVars) > 0 {
