@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/calebwashburn/tile-config-template-generator/generator"
+	"github.com/pivotalservices/tile-config-template-generator/generator"
 )
 
 type Generate struct {

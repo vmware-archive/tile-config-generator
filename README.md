@@ -5,7 +5,7 @@ Tooling to help externalize the configuration of Pivotal Operations Manager and 
 
 ## Maintainer
 
-* [Caleb Washburn](https://github.com/calebwashburn)
+* [Caleb Washburn](https://github.com/pivotalservices)
 
 ## Support
 

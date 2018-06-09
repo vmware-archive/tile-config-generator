@@ -1,10 +1,10 @@
 package generator_test
 
 import (
-	"github.com/calebwashburn/tile-config-template-generator/generator"
-	"github.com/calebwashburn/tile-config-template-generator/generator/fakes"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/pivotalservices/tile-config-template-generator/generator"
+	"github.com/pivotalservices/tile-config-template-generator/generator/fakes"
 	"gopkg.in/yaml.v2"
 )
 

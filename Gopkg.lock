@@ -3,7 +3,7 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/calebwashburn/tile-config-template-generator"
+  name = "github.com/pivotalservices/tile-config-template-generator"
   packages = ["commands","generator","generator/fakes"]
   revision = "13a9248a92063cb7e9d29828b3521ec53a04395c"
 

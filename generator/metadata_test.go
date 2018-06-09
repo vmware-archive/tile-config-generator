@@ -3,7 +3,7 @@ package generator_test
 import (
 	"io/ioutil"
 
-	"github.com/calebwashburn/tile-config-template-generator/generator"
+	"github.com/pivotalservices/tile-config-template-generator/generator"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
