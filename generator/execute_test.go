@@ -7,7 +7,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/pivotalservices/tile-config-template-generator/generator"
+	"github.com/pivotalservices/tile-config-generator/generator"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )

@@ -3,9 +3,9 @@ package generator_test
 import (
 	"io/ioutil"
 
-	"github.com/pivotalservices/tile-config-template-generator/generator"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/pivotalservices/tile-config-generator/generator"
 )
 
 var _ = Describe("Metadata", func() {

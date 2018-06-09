@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/pivotalservices/tile-config-template-generator/commands"
+	"github.com/pivotalservices/tile-config-generator/commands"
 	flags "github.com/jessevdk/go-flags"
 )
 
