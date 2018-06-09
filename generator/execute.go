@@ -54,6 +54,8 @@ func (e *Executor) Generate() error {
 		return err
 	}
 
+	template.ProductName = providesVersion.Name
+
 	if err = e.writeYamlFile(path.Join(targetDirectory, "product.yml"), template); err != nil {
 		return err
 	}
