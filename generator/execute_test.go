@@ -7,9 +7,9 @@ import (
 	"os"
 	"path"
 
-	"github.com/pivotalservices/tile-config-generator/generator"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/pivotalservices/tile-config-generator/generator"
 )
 
 var _ = Describe("Executor", func() {
@@ -50,7 +50,8 @@ var _ = Describe("Executor", func() {
 		var (
 			gen     *generator.Executor
 			pwd, _         = os.Getwd()
-			tmpPath        = path.Join(pwd, "_testGen", "templates")
+			testGen        = path.Join(pwd, "_testGen")
+			tmpPath        = path.Join(testGen, "templates")
 			tempDir string = os.TempDir()
 			zipPath string
 		)
@@ -58,7 +59,7 @@ var _ = Describe("Executor", func() {
 
 		})
 		AfterEach(func() {
-			err := os.RemoveAll(tmpPath)
+			err := os.RemoveAll(testGen)
 			Expect(err).ShouldNot(HaveOccurred())
 
 			os.Remove(zipPath)
