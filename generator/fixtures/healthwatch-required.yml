@@ -1,24 +1,24 @@
 .healthwatch-forwarder.boshhealth_instance_count:
-  value: ((healthwatch-forwarder__boshhealth_instance_count))
+  value: ((healthwatch-forwarder/boshhealth_instance_count))
 .healthwatch-forwarder.boshtasks_instance_count:
-  value: ((healthwatch-forwarder__boshtasks_instance_count))
+  value: ((healthwatch-forwarder/boshtasks_instance_count))
 .healthwatch-forwarder.canary_instance_count:
-  value: ((healthwatch-forwarder__canary_instance_count))
+  value: ((healthwatch-forwarder/canary_instance_count))
 .healthwatch-forwarder.cli_instance_count:
-  value: ((healthwatch-forwarder__cli_instance_count))
+  value: ((healthwatch-forwarder/cli_instance_count))
 .healthwatch-forwarder.health_check_az:
-  value: ((healthwatch-forwarder__health_check_az))
+  value: ((healthwatch-forwarder/health_check_az))
 .healthwatch-forwarder.health_check_vm_type:
-  value: ((healthwatch-forwarder__health_check_vm_type))
+  value: ((healthwatch-forwarder/health_check_vm_type))
 .healthwatch-forwarder.ingestor_instance_count:
-  value: ((healthwatch-forwarder__ingestor_instance_count))
+  value: ((healthwatch-forwarder/ingestor_instance_count))
 .healthwatch-forwarder.opsman_instance_count:
-  value: ((healthwatch-forwarder__opsman_instance_count))
+  value: ((healthwatch-forwarder/opsman_instance_count))
 .healthwatch-forwarder.publish_to_eva:
-  value: ((healthwatch-forwarder__publish_to_eva))
+  value: ((healthwatch-forwarder/publish_to_eva))
 .healthwatch-forwarder.worker_instance_count:
-  value: ((healthwatch-forwarder__worker_instance_count))
+  value: ((healthwatch-forwarder/worker_instance_count))
 .properties.opsman:
   value: enable
 .properties.opsman.enable.url:
-  value: ((opsman__enable__url))
+  value: ((opsman/enable/url))

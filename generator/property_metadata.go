@@ -50,22 +50,22 @@ func (p *PropertyMetadata) SelectorMetadata(selector string) ([]PropertyMetadata
 
 func (p *PropertyMetadata) CollectionPropertyType(propertyName string) interface{} {
 	propertyName = strings.Replace(propertyName, "properties.", "", 1)
-	propertyName = fmt.Sprintf("%s_0", strings.Replace(propertyName, ".", "__", -1))
+	propertyName = fmt.Sprintf("%s_0", strings.Replace(propertyName, ".", "/", -1))
 	var collectionProperties []map[string]interface{}
 	properties := make(map[string]interface{})
 	for _, subProperty := range p.PropertyMetadata {
 		if subProperty.Configurable {
 			if subProperty.IsSecret() {
 				properties[subProperty.Name] = &SecretValue{
-					Value: fmt.Sprintf("((%s__%s))", propertyName, subProperty.Name),
+					Value: fmt.Sprintf("((%s/%s))", propertyName, subProperty.Name),
 				}
 			} else if subProperty.IsCertificate() {
 				properties[subProperty.Name] = &CertificateValue{
-					CertPem:        fmt.Sprintf("((%s__%s))", propertyName, "certificate"),
-					CertPrivateKey: fmt.Sprintf("((%s__%s))", propertyName, "privatekey"),
+					CertPem:        fmt.Sprintf("((%s/%s))", propertyName, "certificate"),
+					CertPrivateKey: fmt.Sprintf("((%s/%s))", propertyName, "privatekey"),
 				}
 			} else {
-				properties[subProperty.Name] = fmt.Sprintf("((%s__%s))", propertyName, subProperty.Name)
+				properties[subProperty.Name] = fmt.Sprintf("((%s/%s))", propertyName, subProperty.Name)
 			}
 		}
 	}
@@ -77,11 +77,11 @@ func (p *PropertyMetadata) CollectionPropertyType(propertyName string) interface
 
 func (p *PropertyMetadata) CollectionPropertyVars(propertyName string, vars map[string]interface{}) {
 	propertyName = strings.Replace(propertyName, "properties.", "", 1)
-	propertyName = fmt.Sprintf("%s_0", strings.Replace(propertyName, ".", "__", -1))
+	propertyName = fmt.Sprintf("%s_0", strings.Replace(propertyName, ".", "/", -1))
 	for _, subProperty := range p.PropertyMetadata {
 		if subProperty.Configurable {
 			if !subProperty.IsSecret() && !subProperty.IsSimpleCredentials() && !subProperty.IsCertificate() {
-				subPropertyName := fmt.Sprintf("%s__%s", propertyName, subProperty.Name)
+				subPropertyName := fmt.Sprintf("%s/%s", propertyName, subProperty.Name)
 				if subProperty.Default != nil {
 					vars[subPropertyName] = subProperty.Default
 				}
@@ -94,20 +94,20 @@ func (p *PropertyMetadata) CollectionOpsFile(numOfElements int, propertyName str
 	var collectionProperties []map[string]interface{}
 	for i := 1; i <= numOfElements; i++ {
 		newPropertyName := strings.Replace(propertyName, "properties.", "", 1)
-		newPropertyName = fmt.Sprintf("%s_%d", strings.Replace(newPropertyName, ".", "__", -1), i-1)
+		newPropertyName = fmt.Sprintf("%s_%d", strings.Replace(newPropertyName, ".", "/", -1), i-1)
 		properties := make(map[string]interface{})
 		for _, subProperty := range p.PropertyMetadata {
 			if subProperty.IsSecret() {
 				properties[subProperty.Name] = &SecretValue{
-					Value: fmt.Sprintf("((%s__%s))", newPropertyName, subProperty.Name),
+					Value: fmt.Sprintf("((%s/%s))", newPropertyName, subProperty.Name),
 				}
 			} else if subProperty.IsCertificate() {
 				properties[subProperty.Name] = &CertificateValue{
-					CertPem:        fmt.Sprintf("((%s__%s))", newPropertyName, "certificate"),
-					CertPrivateKey: fmt.Sprintf("((%s__%s))", newPropertyName, "privatekey"),
+					CertPem:        fmt.Sprintf("((%s/%s))", newPropertyName, "certificate"),
+					CertPrivateKey: fmt.Sprintf("((%s/%s))", newPropertyName, "privatekey"),
 				}
 			} else {
-				properties[subProperty.Name] = fmt.Sprintf("((%s__%s))", newPropertyName, subProperty.Name)
+				properties[subProperty.Name] = fmt.Sprintf("((%s/%s))", newPropertyName, subProperty.Name)
 			}
 		}
 		collectionProperties = append(collectionProperties, properties)
@@ -119,7 +119,7 @@ func (p *PropertyMetadata) CollectionOpsFile(numOfElements int, propertyName str
 
 func (p *PropertyMetadata) PropertyType(propertyName string) interface{} {
 	propertyName = strings.Replace(propertyName, "properties.", "", 1)
-	propertyName = strings.Replace(propertyName, ".", "__", -1)
+	propertyName = strings.Replace(propertyName, ".", "/", -1)
 	if p.IsSelector() {
 		return &SimpleValue{
 			Value: fmt.Sprintf("%s", p.Default),
@@ -128,8 +128,8 @@ func (p *PropertyMetadata) PropertyType(propertyName string) interface{} {
 	if p.IsCertificate() {
 		return &SimpleValue{
 			Value: &CertificateValue{
-				CertPem:        fmt.Sprintf("((%s__%s))", propertyName, "certificate"),
-				CertPrivateKey: fmt.Sprintf("((%s__%s))", propertyName, "privatekey"),
+				CertPem:        fmt.Sprintf("((%s/%s))", propertyName, "certificate"),
+				CertPrivateKey: fmt.Sprintf("((%s/%s))", propertyName, "privatekey"),
 			},
 		}
 	}

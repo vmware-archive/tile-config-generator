@@ -87,7 +87,7 @@ func addPropertyToVars(propertyName string, propertyMetadata *PropertyMetadata, 
 	if !propertyMetadata.IsSecret() {
 		newPropertyName := strings.Replace(propertyName, ".", "", 1)
 		newPropertyName = strings.Replace(newPropertyName, "properties.", "", 1)
-		newPropertyName = strings.Replace(newPropertyName, ".", "__", -1)
+		newPropertyName = strings.Replace(newPropertyName, ".", "/", -1)
 		if propertyMetadata.Default != nil {
 			vars[newPropertyName] = propertyMetadata.Default
 		} else if propertyMetadata.IsBool() {
