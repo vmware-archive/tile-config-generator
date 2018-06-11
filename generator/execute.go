@@ -13,14 +13,16 @@ import (
 )
 
 type Executor struct {
-	PathToPivotalFile string
-	BaseDirectory     string
+	PathToPivotalFile          string
+	BaseDirectory              string
+	DoNotIncludeProductVersion bool
 }
 
-func NewExecutor(filePath, baseDirectory string) *Executor {
+func NewExecutor(filePath, baseDirectory string, doNotIncludeProductVersion bool) *Executor {
 	return &Executor{
-		PathToPivotalFile: filePath,
-		BaseDirectory:     baseDirectory,
+		PathToPivotalFile:          filePath,
+		BaseDirectory:              baseDirectory,
+		DoNotIncludeProductVersion: doNotIncludeProductVersion,
 	}
 }
 
@@ -34,7 +36,10 @@ func (e *Executor) Generate() error {
 		return err
 	}
 	providesVersion := metadata.ProvidesVersions[0]
-	targetDirectory := path.Join(e.BaseDirectory, providesVersion.Name, providesVersion.Version)
+	targetDirectory := e.BaseDirectory
+	if !e.DoNotIncludeProductVersion {
+		targetDirectory = path.Join(e.BaseDirectory, providesVersion.Name, providesVersion.Version)
+	}
 	if err = e.createDirectory(targetDirectory); err != nil {
 		return err
 	}
