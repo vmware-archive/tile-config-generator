@@ -2,6 +2,7 @@ package generator
 
 type Template struct {
 	ProductName       string                 `yaml:"product_name"`
+	ProductVersion    string                 `yaml:"product_version"`
 	NetworkProperties *NetworkProperties     `yaml:"network-properties"`
 	ProductProperties map[string]interface{} `yaml:"product-properties"`
 	ResourceConfig    map[string]Resource    `yaml:"resource-config"`
