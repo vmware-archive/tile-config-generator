@@ -59,8 +59,8 @@ var _ = Describe("Executor", func() {
 
 		})
 		AfterEach(func() {
-			err := os.RemoveAll(testGen)
-			Expect(err).ShouldNot(HaveOccurred())
+			// err := os.RemoveAll(testGen)
+			// Expect(err).ShouldNot(HaveOccurred())
 
 			os.Remove(zipPath)
 		})
@@ -69,7 +69,7 @@ var _ = Describe("Executor", func() {
 			zipPath = path.Join(tempDir, "p-healthwatch.pivotal")
 			err := createZipFile("fixtures/p_healthwatch.yml", zipPath)
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, true)
+			gen = generator.NewExecutor(zipPath, tmpPath, false)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
@@ -79,6 +79,14 @@ var _ = Describe("Executor", func() {
 			err := createZipFile("fixtures/pas.yml", zipPath)
 			Expect(err).ShouldNot(HaveOccurred())
 			gen = generator.NewExecutor(zipPath, tmpPath, false)
+			err = gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+		})
+		It("Should generate files for srt", func() {
+			zipPath = path.Join(tempDir, "srt.pivotal")
+			err := createZipFile("fixtures/srt.yml", zipPath)
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(zipPath, tmpPath, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})

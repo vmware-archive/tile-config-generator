@@ -9,8 +9,12 @@ type JobType struct {
 	Name                string               `yaml:"name"`
 	PropertyMetadata    []PropertyMetadata   `yaml:"property_blueprints"`
 	ResourceDefinitions []ResourceDefinition `yaml:"resource_definitions"`
+	InstanceDefinition  InstanceDefinition   `yaml:"instance_definition"`
 }
 
+type InstanceDefinition struct {
+	Configurable bool `yaml:"configurable"`
+}
 type ResourceDefinition struct {
 	Configurable bool        `yaml:"configurable"`
 	Default      interface{} `yaml:"default"`
