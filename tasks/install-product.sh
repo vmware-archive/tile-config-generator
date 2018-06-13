@@ -3,6 +3,9 @@ pivotal_file=$(find product -name '*.pivotal')
 mkdir -p config
 tile-config-generator generate --pivotal-file-path ${pivotal_file} --base-directory config --do-not-include-product-version
 
+echo '****************  Product Configuration ******************'
+tree config
+
 product_name=$(bosh int config/product.yml --path /product_name)
 product_version=$(bosh int config/product.yml --path /product_version)
 

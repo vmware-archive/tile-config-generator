@@ -35,6 +35,8 @@ jobs:
         globs:
         - "*.pivotal"
 
+# may need to install stemcell as pre-req
+
   - task: install-product
     file: tile-config-generator/tasks/install-product.yml
     params:
