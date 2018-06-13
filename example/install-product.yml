@@ -29,15 +29,11 @@ jobs:
   - aggregate:
     - get: tile-config-generator
     - get: product-vars
-    - get: pivnet-product
+    - get: product
       resource: pivnet-product
       params:
         globs:
         - "*.pivotal"
-
-  - task: create-product-secrets
-    file: tile-config-generator/tasks/create-product-secrets.yml
-    params: {{product_secret_params}}
 
   - task: install-product
     file: tile-config-generator/tasks/install-product.yml

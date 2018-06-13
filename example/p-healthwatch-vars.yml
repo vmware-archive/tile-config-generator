@@ -1,0 +1,5 @@
+healthwatch-forwarder/health_check_az: az1
+healthwatch-forwarder/health_check_vm_type: medium.disk
+network_name: deployment
+service_network_name: services
+singleton_availability_zone: az1
