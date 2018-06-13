@@ -1,0 +1,51 @@
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
+resources:
+- name: tile-config-generator
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/tile-config-generator.git
+
+- name: product-vars
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/tile-config-generator.git
+
+- name: pivnet-product
+  type: pivnet
+  source:
+    api_token: {{pivnet_token}}
+    product_slug: {{product_slug}}
+    product_version: {{product_version}}
+
+jobs:
+- name: install-product
+  plan:
+  - aggregate:
+    - get: tile-config-generator
+    - get: product-vars
+    - get: pivnet-product
+      resource: pivnet-product
+      params:
+        globs:
+        - "*.pivotal"
+
+  - task: create-product-secrets
+    file: tile-config-generator/tasks/create-product-secrets.yml
+    params: {{product_secret_params}}
+
+  - task: install-product
+    file: tile-config-generator/tasks/install-product.yml
+    params:
+      OM_HOST: {{opsmanager_host}}
+      OM_USERNAME: {{opsmanager_username}}
+      OM_PASSWORD: {{opsmanager_password}}
+      OPS_FILES: {{ops_files}}
+      VARS_FILES: {{vars_files}}
+
+# ideally would then apply-changes, etc..

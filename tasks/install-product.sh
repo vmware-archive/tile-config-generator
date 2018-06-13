@@ -5,6 +5,7 @@ tile-config-generator generate --pivotal-file-path ${pivotal_file} --base-direct
 
 product_name=$(bosh int config/product.yml --path /product_name)
 product_version=$(bosh int config/product.yml --path /product_version)
+
 opsfiles=""
 for op in ${OPS_FILES}
 do
@@ -12,6 +13,11 @@ do
 done
 
 varsfiles="-l config/product-default-vars.yml -l config/resource-vars.yml"
+
+if [ -f "product-secrets/product.yml" ]; then
+  varsfiles="${varsfiles} -l product-secrets/product.yml"
+fi
+
 for var in ${VARS_FILES}
 do
   varsfiles="${varsfiles} -l ${var}"
