@@ -53,7 +53,7 @@ PRs are always welcome or open issues if you are experiencing an issue and will 
 ### Command Usage
 
 ```
-main [OPTIONS] generate [generate-OPTIONS]
+tile-config-generator [OPTIONS] generate [generate-OPTIONS]
 
 Help Options:
 -h, --help                   Show this help message
