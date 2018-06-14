@@ -39,3 +39,7 @@ type Ops struct {
 	Path  string      `yaml:"path"`
 	Value interface{} `yaml:"value,omitempty"`
 }
+
+type NameValue struct {
+	Value string `yaml:"name"`
+}

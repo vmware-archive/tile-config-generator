@@ -54,6 +54,11 @@ func (e *Executor) Generate() error {
 		return err
 	}
 
+	networkDirectory := path.Join(targetDirectory, "network")
+	if err = e.createDirectory(networkDirectory); err != nil {
+		return err
+	}
+
 	template, err := e.CreateTemplate(metadata)
 	if err != nil {
 		return err
@@ -64,6 +69,19 @@ func (e *Executor) Generate() error {
 
 	if err = e.writeYamlFile(path.Join(targetDirectory, "product.yml"), template); err != nil {
 		return err
+	}
+
+	networkOpsFiles, err := CreateNetworkOpsFiles(metadata)
+	if err != nil {
+		return err
+	}
+
+	if len(networkOpsFiles) > 0 {
+		for name, contents := range networkOpsFiles {
+			if err = e.writeYamlFile(path.Join(networkDirectory, fmt.Sprintf("%s.yml", name)), contents); err != nil {
+				return err
+			}
+		}
 	}
 
 	resourceVars := CreateResourceVars(metadata)

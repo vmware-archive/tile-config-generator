@@ -59,9 +59,8 @@ var _ = Describe("Executor", func() {
 
 		})
 		AfterEach(func() {
-			// err := os.RemoveAll(testGen)
-			// Expect(err).ShouldNot(HaveOccurred())
-
+			err := os.RemoveAll(testGen)
+			Expect(err).ShouldNot(HaveOccurred())
 			os.Remove(zipPath)
 		})
 
