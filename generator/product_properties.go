@@ -25,8 +25,8 @@ func CreateProductProperties(metadata *Metadata) (map[string]interface{}, error)
 		if propertyMetadata.IsSelector() {
 			defaultSelector := fmt.Sprintf("%s.%s", property.Reference, propertyMetadata.Default)
 			for _, selector := range property.Selectors {
-				if defaultSelector == selector.Reference {
-					selectorMetadata, err := propertyMetadata.SelectorMetadata(fmt.Sprintf("%s", propertyMetadata.Default))
+				if strings.EqualFold(defaultSelector, selector.Reference) {
+					selectorMetadata, err := propertyMetadata.SelectorMetadataBySelectValue(fmt.Sprintf("%s", propertyMetadata.Default))
 					if err != nil {
 						return nil, err
 					}
@@ -152,22 +152,27 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 		if propertyMetadata.IsSelector() {
 			defaultSelector := fmt.Sprintf("%s.%s", property.Reference, propertyMetadata.Default)
 			for _, selector := range property.Selectors {
-				if defaultSelector != selector.Reference {
+				if !strings.EqualFold(defaultSelector, selector.Reference) {
+					optionTemplate, err := propertyMetadata.OptionTemplate(strings.Replace(selector.Reference, property.Reference+".", "", 1))
+					if err != nil {
+						return nil, err
+					}
 					var ops []Ops
 					opsFileName := strings.Replace(selector.Reference, ".", "", 1)
 					opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
 					opsFileName = strings.Replace(opsFileName, ".", "-", -1)
+
 					ops = append(ops,
 						Ops{
 							Type: "replace",
 							Path: fmt.Sprintf("/product-properties/%s", property.Reference),
 							Value: map[string]string{
-								"value": strings.Replace(selector.Reference, property.Reference+".", "", 1),
+								"value": optionTemplate.SelectValue,
 							},
 						},
 					)
 
-					defaultSelectorMetadata, err := propertyMetadata.SelectorMetadata(fmt.Sprintf("%s", propertyMetadata.Default))
+					defaultSelectorMetadata, err := propertyMetadata.SelectorMetadataBySelectValue(fmt.Sprintf("%s", propertyMetadata.Default))
 					if err != nil {
 						return nil, err
 					}

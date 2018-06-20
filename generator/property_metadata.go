@@ -17,6 +17,7 @@ type PropertyMetadata struct {
 }
 type OptionTemplate struct {
 	Name             string             `yaml:"name"`
+	SelectValue      string             `yaml:"select_value"`
 	PropertyMetadata []PropertyMetadata `yaml:"property_blueprints"`
 }
 
@@ -38,14 +39,43 @@ type CertificateValue struct {
 }
 
 func (p *PropertyMetadata) SelectorMetadata(selector string) ([]PropertyMetadata, error) {
+	return p.selectorMetadataByFunc(
+		selector,
+		func(optionTemplate OptionTemplate) string {
+			return optionTemplate.Name
+		})
+}
+
+// SelectorMetadataBySelectValue - uses the option template SelectValue properties of each OptionTemplate to perform the property medata selection
+func (p *PropertyMetadata) SelectorMetadataBySelectValue(selector string) ([]PropertyMetadata, error) {
+	return p.selectorMetadataByFunc(
+		selector,
+		func(optionTemplate OptionTemplate) string {
+			return optionTemplate.SelectValue
+		})
+}
+
+func (p *PropertyMetadata) selectorMetadataByFunc(selector string, matchFunc func(optionTemplate OptionTemplate) string) ([]PropertyMetadata, error) {
 	var options []string
 	for _, optionTemplate := range p.OptionTemplates {
-		options = append(options, optionTemplate.Name)
-		if strings.EqualFold(selector, optionTemplate.Name) {
+		match := matchFunc(optionTemplate)
+		options = append(options, match)
+
+		if selector == match {
 			return optionTemplate.PropertyMetadata, nil
 		}
 	}
 	return nil, fmt.Errorf("Option template not found for selector %s options include %v", selector, options)
+}
+
+func (p *PropertyMetadata) OptionTemplate(selectorReference string) (*OptionTemplate, error) {
+	for _, option := range p.OptionTemplates {
+		if strings.EqualFold(option.Name, selectorReference) {
+			return &option, nil
+		}
+	}
+
+	return nil, fmt.Errorf("Unable to find option template for %s", selectorReference)
 }
 
 func (p *PropertyMetadata) CollectionPropertyType(propertyName string) interface{} {
