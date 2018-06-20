@@ -41,7 +41,7 @@ func (p *PropertyMetadata) SelectorMetadata(selector string) ([]PropertyMetadata
 	var options []string
 	for _, optionTemplate := range p.OptionTemplates {
 		options = append(options, optionTemplate.Name)
-		if selector == optionTemplate.Name {
+		if strings.EqualFold(selector, optionTemplate.Name) {
 			return optionTemplate.PropertyMetadata, nil
 		}
 	}
