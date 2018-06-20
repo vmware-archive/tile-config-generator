@@ -68,6 +68,16 @@ func (p *PropertyMetadata) selectorMetadataByFunc(selector string, matchFunc fun
 	return nil, fmt.Errorf("Option template not found for selector %s options include %v", selector, options)
 }
 
+func (p *PropertyMetadata) OptionTemplate(selectorReference string) (*OptionTemplate, error) {
+	for _, option := range p.OptionTemplates {
+		if strings.EqualFold(option.Name, selectorReference) {
+			return &option, nil
+		}
+	}
+
+	return nil, fmt.Errorf("Unable to find option template for %s", selectorReference)
+}
+
 func (p *PropertyMetadata) CollectionPropertyType(propertyName string) interface{} {
 	propertyName = strings.Replace(propertyName, "properties.", "", 1)
 	propertyName = fmt.Sprintf("%s_0", strings.Replace(propertyName, ".", "/", -1))
