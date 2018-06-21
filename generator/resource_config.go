@@ -68,7 +68,7 @@ func AddResourceVars(jobName string, job jobtype, vars map[string]interface{}) {
 	if job.HasPersistentDisk() {
 		vars[fmt.Sprintf("%s_persistent_disk_size", jobName)] = "automatic"
 	}
-	vars[fmt.Sprintf("%s_load_balancers", jobName)] = "[]"
+	vars[fmt.Sprintf("%s_load_balancers", jobName)] = []string{}
 	vars[fmt.Sprintf("%s_internet_connected", jobName)] = false
 }
 
