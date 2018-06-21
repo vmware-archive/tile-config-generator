@@ -12,15 +12,11 @@ var withPersistentDisk = `instance_type:
   id: ((myjob_instance_type))
 instances: ((myjob_instances))
 persistent_disk:
-  size_mb: ((myjob_persistent_disk_size))
-elb_names: ((myjob_load_balancers))
-internet_connected: ((myjob_internet_connected))`
+  size_mb: ((myjob_persistent_disk_size))`
 
 var withoutPersistentDisk = `instance_type:
   id: ((myjob_instance_type))
-instances: ((myjob_instances))
-elb_names: ((myjob_load_balancers))
-internet_connected: ((myjob_internet_connected))`
+instances: ((myjob_instances))`
 
 var _ = Describe("Resource Config", func() {
 	Context("CreateResourceConfig", func() {

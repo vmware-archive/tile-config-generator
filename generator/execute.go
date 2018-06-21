@@ -59,6 +59,11 @@ func (e *Executor) Generate() error {
 		return err
 	}
 
+	resourceDirectory := path.Join(targetDirectory, "resource")
+	if err = e.createDirectory(resourceDirectory); err != nil {
+		return err
+	}
+
 	template, err := e.CreateTemplate(metadata)
 	if err != nil {
 		return err
@@ -89,6 +94,19 @@ func (e *Executor) Generate() error {
 	if len(resourceVars) > 0 {
 		if err = e.writeYamlFile(path.Join(targetDirectory, "resource-vars.yml"), resourceVars); err != nil {
 			return err
+		}
+	}
+
+	resourceOpsFiles, err := CreateResourceOpsFiles(metadata)
+	if err != nil {
+		return err
+	}
+
+	if len(resourceOpsFiles) > 0 {
+		for name, contents := range resourceOpsFiles {
+			if err = e.writeYamlFile(path.Join(resourceDirectory, fmt.Sprintf("%s.yml", name)), contents); err != nil {
+				return err
+			}
 		}
 	}
 

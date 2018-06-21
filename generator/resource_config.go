@@ -41,8 +41,8 @@ func CreateResource(jobName string, job jobtype) Resource {
 		InstanceType: InstanceType{
 			ID: fmt.Sprintf("((%s_instance_type))", jobName),
 		},
-		LoadBalancer:      fmt.Sprintf("((%s_load_balancers))", jobName),
-		InternetConnected: fmt.Sprintf("((%s_internet_connected))", jobName),
+		// LoadBalancer:      fmt.Sprintf("((%s_load_balancers))", jobName),
+		// InternetConnected: fmt.Sprintf("((%s_internet_connected))", jobName),
 	}
 	if job.HasPersistentDisk() {
 		resource.PersistentDisk = &PersistentDisk{
@@ -68,10 +68,35 @@ func AddResourceVars(jobName string, job jobtype, vars map[string]interface{}) {
 	if job.HasPersistentDisk() {
 		vars[fmt.Sprintf("%s_persistent_disk_size", jobName)] = "automatic"
 	}
-	vars[fmt.Sprintf("%s_load_balancers", jobName)] = []string{}
-	vars[fmt.Sprintf("%s_internet_connected", jobName)] = false
 }
 
 func determineJobName(jobName string) string {
 	return strings.Replace(jobName, ".", "_", -1)
+}
+
+func CreateResourceOpsFiles(metadata *Metadata) (map[string][]Ops, error) {
+	opsFiles := make(map[string][]Ops)
+	for _, job := range metadata.JobTypes {
+		if !strings.Contains(job.Name, ".") && job.InstanceDefinition.Configurable {
+			AddResourceOpsFiles(determineJobName(job.Name), &job, opsFiles)
+		}
+	}
+	return opsFiles, nil
+}
+
+func AddResourceOpsFiles(jobName string, job jobtype, opsFiles map[string][]Ops) {
+	opsFiles[fmt.Sprintf("%s_elb_names", jobName)] = []Ops{
+		Ops{
+			Type:  "replace",
+			Path:  fmt.Sprintf("/resource-config/%s/elb_names?", jobName),
+			Value: fmt.Sprintf("((%s_elb_names))", jobName),
+		},
+	}
+	opsFiles[fmt.Sprintf("%s_internet_connected", jobName)] = []Ops{
+		Ops{
+			Type:  "replace",
+			Path:  fmt.Sprintf("/resource-config/%s/internet_connected?", jobName),
+			Value: fmt.Sprintf("((%s_internet_connected))", jobName),
+		},
+	}
 }
