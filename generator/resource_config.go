@@ -6,9 +6,11 @@ import (
 )
 
 type Resource struct {
-	InstanceType   InstanceType    `yaml:"instance_type"`
-	Instances      interface{}     `yaml:"instances"`
-	PersistentDisk *PersistentDisk `yaml:"persistent_disk,omitempty"`
+	InstanceType      InstanceType    `yaml:"instance_type"`
+	Instances         interface{}     `yaml:"instances"`
+	PersistentDisk    *PersistentDisk `yaml:"persistent_disk,omitempty"`
+	LoadBalancer      interface{}     `yaml:"elb_names,omitempty"`
+	InternetConnected interface{}     `yaml:"internet_connected,omitempty"`
 }
 
 type InstanceType struct {
@@ -39,6 +41,8 @@ func CreateResource(jobName string, job jobtype) Resource {
 		InstanceType: InstanceType{
 			ID: fmt.Sprintf("((%s_instance_type))", jobName),
 		},
+		LoadBalancer:      fmt.Sprintf("((%s_load_balancers))", jobName),
+		InternetConnected: fmt.Sprintf("((%s_internet_connected))", jobName),
 	}
 	if job.HasPersistentDisk() {
 		resource.PersistentDisk = &PersistentDisk{
@@ -64,6 +68,8 @@ func AddResourceVars(jobName string, job jobtype, vars map[string]interface{}) {
 	if job.HasPersistentDisk() {
 		vars[fmt.Sprintf("%s_persistent_disk_size", jobName)] = "automatic"
 	}
+	vars[fmt.Sprintf("%s_load_balancers", jobName)] = "[]"
+	vars[fmt.Sprintf("%s_internet_connected", jobName)] = false
 }
 
 func determineJobName(jobName string) string {
