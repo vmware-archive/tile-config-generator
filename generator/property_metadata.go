@@ -74,7 +74,6 @@ func (p *PropertyMetadata) OptionTemplate(selectorReference string) (*OptionTemp
 			return &option, nil
 		}
 	}
-
 	return nil, fmt.Errorf("Unable to find option template for %s", selectorReference)
 }
 
@@ -151,8 +150,10 @@ func (p *PropertyMetadata) PropertyType(propertyName string) interface{} {
 	propertyName = strings.Replace(propertyName, "properties.", "", 1)
 	propertyName = strings.Replace(propertyName, ".", "/", -1)
 	if p.IsSelector() {
-		return &SimpleValue{
-			Value: fmt.Sprintf("%s", p.Default),
+		if p.Default != nil {
+			return &SimpleValue{
+				Value: fmt.Sprintf("%s", p.Default),
+			}
 		}
 	}
 	if p.IsCertificate() {
@@ -191,7 +192,8 @@ func (p *PropertyMetadata) IsString() bool {
 		return p.Type == "string" || p.Type == "text" ||
 			p.Type == "ip_ranges" || p.Type == "string_list" ||
 			p.Type == "network_address" || p.Type == "wildcard_domain" ||
-			p.Type == "email" || p.Type == "ca_certificate" || p.Type == "http_url" || p.Type == "ldap_url" || p.Type == "service_network_az_single_select" || p.Type == "vm_type_dropdown"
+			p.Type == "email" || p.Type == "ca_certificate" || p.Type == "http_url" ||
+			p.Type == "ldap_url" || p.Type == "service_network_az_single_select" || p.Type == "vm_type_dropdown"
 	}
 }
 func (p *PropertyMetadata) IsInt() bool {

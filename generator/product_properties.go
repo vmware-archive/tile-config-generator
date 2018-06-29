@@ -171,19 +171,20 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 							},
 						},
 					)
-
-					defaultSelectorMetadata, err := propertyMetadata.SelectorMetadataBySelectValue(fmt.Sprintf("%s", propertyMetadata.Default))
-					if err != nil {
-						return nil, err
-					}
-					for _, metadata := range defaultSelectorMetadata {
-						selectorProperty := fmt.Sprintf("%s.%s", defaultSelector, metadata.Name)
-						ops = append(ops,
-							Ops{
-								Type: "remove",
-								Path: fmt.Sprintf("/product-properties/%s?", selectorProperty),
-							},
-						)
+					if propertyMetadata.Default != nil {
+						defaultSelectorMetadata, err := propertyMetadata.SelectorMetadataBySelectValue(fmt.Sprintf("%s", propertyMetadata.Default))
+						if err != nil {
+							return nil, err
+						}
+						for _, metadata := range defaultSelectorMetadata {
+							selectorProperty := fmt.Sprintf("%s.%s", defaultSelector, metadata.Name)
+							ops = append(ops,
+								Ops{
+									Type: "remove",
+									Path: fmt.Sprintf("/product-properties/%s?", selectorProperty),
+								},
+							)
+						}
 					}
 
 					selectorParts := strings.Split(selector.Reference, ".")

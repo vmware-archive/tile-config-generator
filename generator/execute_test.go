@@ -98,6 +98,15 @@ var _ = Describe("Executor", func() {
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
+
+		It("Should generate files for pivotal cloud cache", func() {
+			zipPath = path.Join(tempDir, "pcc.pivotal")
+			err := createZipFile("fixtures/cloudcache.yml", zipPath)
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(zipPath, tmpPath, false)
+			err = gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+		})
 	})
 })
 
