@@ -1,0 +1,21 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: pivotalservices/tile-config-generator
+inputs:
+- name: product
+outputs:
+- name: config
+run:
+  path: bash
+  args:
+    - -c
+    - |
+      set -e
+      pivotal_file=$(find product -name '*.pivotal')
+      tile-config-generator generate --pivotal-file-path ${pivotal_file} --base-directory config --do-not-include-product-version
+
+      echo '****************  Product Configuration ******************'
+      tree config

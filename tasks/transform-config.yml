@@ -1,0 +1,26 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: pivotalservices/tile-config-generator
+inputs:
+- name: config
+outputs:
+- name: transformed-config
+params:
+  OPS_FILES:
+run:
+  path: bash
+  args:
+    - -c
+    - |
+      set -e
+      opsfiles=""
+      for op in ${OPS_FILES}
+      do
+        opsfiles="${opsfiles} -o config/${op}"
+      done
+
+      cp config/*-vars.yml transformed-config/.
+      bosh int config/product.yml ${opsfiles} ${varsfiles} > transformed-config/product.yml
