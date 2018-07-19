@@ -6,11 +6,9 @@ import (
 )
 
 type Resource struct {
-	InstanceType      InstanceType    `yaml:"instance_type"`
-	Instances         interface{}     `yaml:"instances"`
-	PersistentDisk    *PersistentDisk `yaml:"persistent_disk,omitempty"`
-	LoadBalancer      interface{}     `yaml:"elb_names,omitempty"`
-	InternetConnected interface{}     `yaml:"internet_connected,omitempty"`
+	InstanceType   InstanceType    `yaml:"instance_type"`
+	Instances      interface{}     `yaml:"instances"`
+	PersistentDisk *PersistentDisk `yaml:"persistent_disk,omitempty"`
 }
 
 type InstanceType struct {
@@ -41,8 +39,6 @@ func CreateResource(jobName string, job jobtype) Resource {
 		InstanceType: InstanceType{
 			ID: fmt.Sprintf("((%s_instance_type))", jobName),
 		},
-		// LoadBalancer:      fmt.Sprintf("((%s_load_balancers))", jobName),
-		// InternetConnected: fmt.Sprintf("((%s_internet_connected))", jobName),
 	}
 	if job.HasPersistentDisk() {
 		resource.PersistentDisk = &PersistentDisk{
@@ -97,6 +93,13 @@ func AddResourceOpsFiles(jobName string, job jobtype, opsFiles map[string][]Ops)
 			Type:  "replace",
 			Path:  fmt.Sprintf("/resource-config/%s/internet_connected?", jobName),
 			Value: fmt.Sprintf("((%s_internet_connected))", jobName),
+		},
+	}
+	opsFiles[fmt.Sprintf("%s_additional_vm_extensions", jobName)] = []Ops{
+		Ops{
+			Type:  "replace",
+			Path:  fmt.Sprintf("/resource-config/%s/additional_vm_extensions?", jobName),
+			Value: fmt.Sprintf("((%s_additional_vm_extensions))", jobName),
 		},
 	}
 }
