@@ -74,7 +74,8 @@ func (p *PropertyMetadata) OptionTemplate(selectorReference string) (*OptionTemp
 			return &option, nil
 		}
 	}
-	return nil, fmt.Errorf("Unable to find option template for %s", selectorReference)
+	fmt.Println(fmt.Sprintf("Unable to find option template for %s", selectorReference))
+	return nil, nil
 }
 
 func (p *PropertyMetadata) CollectionPropertyType(propertyName string) interface{} {

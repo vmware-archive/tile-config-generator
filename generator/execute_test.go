@@ -81,6 +81,14 @@ var _ = Describe("Executor", func() {
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
+		It("Should generate files for pas 2.2", func() {
+			zipPath = path.Join(tempDir, "pas.pivotal")
+			err := createZipFile("fixtures/pas_2_2.yml", zipPath)
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(zipPath, tmpPath, false)
+			err = gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+		})
 		It("Should generate files for srt", func() {
 			zipPath = path.Join(tempDir, "srt.pivotal")
 			err := createZipFile("fixtures/srt.yml", zipPath)

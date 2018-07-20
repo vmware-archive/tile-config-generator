@@ -153,24 +153,27 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 			defaultSelector := fmt.Sprintf("%s.%s", property.Reference, propertyMetadata.Default)
 			for _, selector := range property.Selectors {
 				if !strings.EqualFold(defaultSelector, selector.Reference) {
-					optionTemplate, err := propertyMetadata.OptionTemplate(strings.Replace(selector.Reference, property.Reference+".", "", 1))
-					if err != nil {
-						return nil, err
-					}
 					var ops []Ops
 					opsFileName := strings.Replace(selector.Reference, ".", "", 1)
 					opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
 					opsFileName = strings.Replace(opsFileName, ".", "-", -1)
 
-					ops = append(ops,
-						Ops{
-							Type: "replace",
-							Path: fmt.Sprintf("/product-properties/%s", property.Reference),
-							Value: map[string]string{
-								"value": optionTemplate.SelectValue,
+					optionTemplate, err := propertyMetadata.OptionTemplate(strings.Replace(selector.Reference, property.Reference+".", "", 1))
+					if err != nil {
+						return nil, err
+					}
+					if optionTemplate != nil {
+						ops = append(ops,
+							Ops{
+								Type: "replace",
+								Path: fmt.Sprintf("/product-properties/%s", property.Reference),
+								Value: map[string]string{
+									"value": optionTemplate.SelectValue,
+								},
 							},
-						},
-					)
+						)
+					}
+
 					if propertyMetadata.Default != nil {
 						defaultSelectorMetadata, err := propertyMetadata.SelectorMetadataBySelectValue(fmt.Sprintf("%s", propertyMetadata.Default))
 						if err != nil {
