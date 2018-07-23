@@ -180,7 +180,7 @@ func (d *Displayer) resourceDefaultsTable(metadata *Metadata) error {
 		data = append(data, []string{propertyName, fmt.Sprintf("%v", value)})
 	}
 
-	d.Writer.Write([]byte("*****  Resource Property Values ******* (resource-vars.yml.yml) \n"))
+	d.Writer.Write([]byte("*****  Resource Property Values ******* (resource-vars.yml) \n"))
 
 	table := tablewriter.NewWriter(d.Writer)
 	table.SetAutoWrapText(false)
