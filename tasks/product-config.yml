@@ -18,6 +18,3 @@ run:
       tile-config-generator generate --pivotal-file-path ${pivotal_file} --base-directory config --do-not-include-product-version
 
       tile-config-generator display --pivotal-file-path ${pivotal_file}
-
-      echo '****************  Product Configuration ******************'
-      tree config
