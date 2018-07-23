@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/pivotalservices/tile-config-generator/commands"
 	flags "github.com/jessevdk/go-flags"
+	"github.com/pivotalservices/tile-config-generator/commands"
 )
 
 func main() {
@@ -21,6 +21,7 @@ func main() {
 
 type manager struct {
 	Generate commands.Generate `command:"generate" description:"generates configuration template that can be used with om configure-product command"`
+	Display  commands.Display  `command:"display" description:"displays information about tile"`
 }
 
 var Manager manager

@@ -21,23 +21,6 @@ type OptionTemplate struct {
 	PropertyMetadata []PropertyMetadata `yaml:"property_blueprints"`
 }
 
-type SimpleValue struct {
-	Value interface{} `yaml:"value"`
-}
-
-type SecretValue struct {
-	Value interface{} `yaml:"secret"`
-}
-
-type SimpleCredentialValue struct {
-	Value interface{} `yaml:"password"`
-}
-
-type CertificateValue struct {
-	CertPem        string `yaml:"cert_pem"`
-	CertPrivateKey string `yaml:"private_key_pem"`
-}
-
 func (p *PropertyMetadata) SelectorMetadata(selector string) ([]PropertyMetadata, error) {
 	return p.selectorMetadataByFunc(
 		selector,
@@ -78,11 +61,11 @@ func (p *PropertyMetadata) OptionTemplate(selectorReference string) (*OptionTemp
 	return nil, nil
 }
 
-func (p *PropertyMetadata) CollectionPropertyType(propertyName string) interface{} {
+func (p *PropertyMetadata) CollectionPropertyType(propertyName string) PropertyValue {
 	propertyName = strings.Replace(propertyName, "properties.", "", 1)
 	propertyName = fmt.Sprintf("%s_0", strings.Replace(propertyName, ".", "/", -1))
-	var collectionProperties []map[string]interface{}
-	properties := make(map[string]interface{})
+	var collectionProperties []map[string]SimpleType
+	properties := make(map[string]SimpleType)
 	for _, subProperty := range p.PropertyMetadata {
 		if subProperty.Configurable {
 			if subProperty.IsSecret() {
@@ -95,12 +78,12 @@ func (p *PropertyMetadata) CollectionPropertyType(propertyName string) interface
 					CertPrivateKey: fmt.Sprintf("((%s/%s))", propertyName, "privatekey"),
 				}
 			} else {
-				properties[subProperty.Name] = fmt.Sprintf("((%s/%s))", propertyName, subProperty.Name)
+				properties[subProperty.Name] = SimpleString(fmt.Sprintf("((%s/%s))", propertyName, subProperty.Name))
 			}
 		}
 	}
 	collectionProperties = append(collectionProperties, properties)
-	return &SimpleValue{
+	return &CollectionsPropertiesValueHolder{
 		Value: collectionProperties,
 	}
 }
@@ -120,12 +103,12 @@ func (p *PropertyMetadata) CollectionPropertyVars(propertyName string, vars map[
 	}
 }
 
-func (p *PropertyMetadata) CollectionOpsFile(numOfElements int, propertyName string) interface{} {
-	var collectionProperties []map[string]interface{}
+func (p *PropertyMetadata) CollectionOpsFile(numOfElements int, propertyName string) OpsValueType {
+	var collectionProperties []map[string]SimpleType
 	for i := 1; i <= numOfElements; i++ {
 		newPropertyName := strings.Replace(propertyName, "properties.", "", 1)
 		newPropertyName = fmt.Sprintf("%s_%d", strings.Replace(newPropertyName, ".", "/", -1), i-1)
-		properties := make(map[string]interface{})
+		properties := make(map[string]SimpleType)
 		for _, subProperty := range p.PropertyMetadata {
 			if subProperty.IsSecret() {
 				properties[subProperty.Name] = &SecretValue{
@@ -137,28 +120,28 @@ func (p *PropertyMetadata) CollectionOpsFile(numOfElements int, propertyName str
 					CertPrivateKey: fmt.Sprintf("((%s/%s))", newPropertyName, "privatekey"),
 				}
 			} else {
-				properties[subProperty.Name] = fmt.Sprintf("((%s/%s))", newPropertyName, subProperty.Name)
+				properties[subProperty.Name] = SimpleString(fmt.Sprintf("((%s/%s))", newPropertyName, subProperty.Name))
 			}
 		}
 		collectionProperties = append(collectionProperties, properties)
 	}
-	return &SimpleValue{
+	return &CollectionsPropertiesValueHolder{
 		Value: collectionProperties,
 	}
 }
 
-func (p *PropertyMetadata) PropertyType(propertyName string) interface{} {
+func (p *PropertyMetadata) PropertyType(propertyName string) PropertyValue {
 	propertyName = strings.Replace(propertyName, "properties.", "", 1)
 	propertyName = strings.Replace(propertyName, ".", "/", -1)
 	if p.IsSelector() {
 		if p.Default != nil {
-			return &SimpleValue{
+			return &SelectorValue{
 				Value: fmt.Sprintf("%s", p.Default),
 			}
 		}
 	}
 	if p.IsCertificate() {
-		return &SimpleValue{
+		return &CertificateValueHolder{
 			Value: &CertificateValue{
 				CertPem:        fmt.Sprintf("((%s/%s))", propertyName, "certificate"),
 				CertPrivateKey: fmt.Sprintf("((%s/%s))", propertyName, "privatekey"),
@@ -166,7 +149,7 @@ func (p *PropertyMetadata) PropertyType(propertyName string) interface{} {
 		}
 	}
 	if p.IsSecret() {
-		return &SimpleValue{
+		return &SecretValueHolder{
 			Value: &SecretValue{
 				Value: fmt.Sprintf("((%s))", propertyName),
 			},
@@ -174,7 +157,7 @@ func (p *PropertyMetadata) PropertyType(propertyName string) interface{} {
 	}
 
 	if p.IsSimpleCredentials() {
-		return &SimpleValue{
+		return &SimpleCredentialValueHolder{
 			Value: &SimpleCredentialValue{
 				Value: fmt.Sprintf("((%s))", propertyName),
 			},

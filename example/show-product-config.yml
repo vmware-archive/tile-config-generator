@@ -1,0 +1,33 @@
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
+resources:
+- name: tile-config-generator
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/tile-config-generator.git
+
+- name: pivnet-product
+  type: pivnet
+  source:
+    api_token: {{pivnet_token}}
+    product_slug: elastic-runtime
+    product_version: {{product_version}}
+
+jobs:
+- name: show product config
+  plan:
+  - aggregate:
+    - get: tile-config-generator
+    - get: product
+      resource: pivnet-product
+      params:
+        globs:
+        - "cf-*.pivotal"
+
+  - task: product-config
+    file: tile-config-generator/tasks/product-config.yml

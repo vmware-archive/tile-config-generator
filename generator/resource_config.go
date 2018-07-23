@@ -85,21 +85,21 @@ func AddResourceOpsFiles(jobName string, job jobtype, opsFiles map[string][]Ops)
 		Ops{
 			Type:  "replace",
 			Path:  fmt.Sprintf("/resource-config/%s/elb_names?", jobName),
-			Value: fmt.Sprintf("((%s_elb_names))", jobName),
+			Value: StringOpsValue(fmt.Sprintf("((%s_elb_names))", jobName)),
 		},
 	}
 	opsFiles[fmt.Sprintf("%s_internet_connected", jobName)] = []Ops{
 		Ops{
 			Type:  "replace",
 			Path:  fmt.Sprintf("/resource-config/%s/internet_connected?", jobName),
-			Value: fmt.Sprintf("((%s_internet_connected))", jobName),
+			Value: StringOpsValue(fmt.Sprintf("((%s_internet_connected))", jobName)),
 		},
 	}
 	opsFiles[fmt.Sprintf("%s_additional_vm_extensions", jobName)] = []Ops{
 		Ops{
 			Type:  "replace",
 			Path:  fmt.Sprintf("/resource-config/%s/additional_vm_extensions?", jobName),
-			Value: fmt.Sprintf("((%s_additional_vm_extensions))", jobName),
+			Value: StringOpsValue(fmt.Sprintf("((%s_additional_vm_extensions))", jobName)),
 		},
 	}
 }

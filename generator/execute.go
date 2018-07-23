@@ -27,7 +27,7 @@ func NewExecutor(filePath, baseDirectory string, doNotIncludeProductVersion bool
 }
 
 func (e *Executor) Generate() error {
-	metadataBytes, err := e.extractMetadataBytes()
+	metadataBytes, err := extractMetadataBytes(e.PathToPivotalFile)
 	if err != nil {
 		return err
 	}
@@ -173,8 +173,8 @@ func (e *Executor) createDirectory(path string) error {
 	return nil
 }
 
-func (e *Executor) extractMetadataBytes() ([]byte, error) {
-	zipReader, err := zip.OpenReader(e.PathToPivotalFile)
+func extractMetadataBytes(pathToPivotalFile string) ([]byte, error) {
+	zipReader, err := zip.OpenReader(pathToPivotalFile)
 	if err != nil {
 		return nil, err
 	}

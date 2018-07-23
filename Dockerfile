@@ -13,7 +13,7 @@ RUN go get -a github.com/pivotal-cf/om
 RUN go get -a github.com/cloudfoundry/bosh-cli
 FROM alpine
 
-RUN apk update && apk add bash unzip curl tree
+RUN apk update && apk add bash
 
 COPY --from=compilation /go/bin/tile-config-generator /usr/bin
 COPY --from=compilation /go/bin/om /usr/bin

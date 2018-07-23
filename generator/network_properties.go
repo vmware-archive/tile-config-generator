@@ -41,19 +41,19 @@ func CreateNetworkOpsFiles(metadata *Metadata) (map[string][]Ops, error) {
 		Ops{
 			Type:  "replace",
 			Path:  "/network-properties/other_availability_zones/0:after",
-			Value: NameValue{Value: "((az2_name))"},
+			Value: &OpsNameValue{Value: "((az2_name))"},
 		},
 	}
 	opsFiles["3-az-configuration"] = []Ops{
 		Ops{
 			Type:  "replace",
 			Path:  "/network-properties/other_availability_zones/0:after",
-			Value: NameValue{Value: "((az2_name))"},
+			Value: &OpsNameValue{Value: "((az2_name))"},
 		},
 		Ops{
 			Type:  "replace",
 			Path:  "/network-properties/other_availability_zones/1:after",
-			Value: NameValue{Value: "((az3_name))"},
+			Value: &OpsNameValue{Value: "((az3_name))"},
 		},
 	}
 	return opsFiles, nil

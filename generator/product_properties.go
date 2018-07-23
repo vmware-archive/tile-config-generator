@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-func CreateProductProperties(metadata *Metadata) (map[string]interface{}, error) {
-	productProperties := make(map[string]interface{})
+func CreateProductProperties(metadata *Metadata) (map[string]PropertyValue, error) {
+	productProperties := make(map[string]PropertyValue)
 	for _, property := range metadata.Properties() {
 		propertyMetadata, err := metadata.GetPropertyMetadata(property.Reference)
 		if err != nil {
@@ -165,11 +165,9 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 					if optionTemplate != nil {
 						ops = append(ops,
 							Ops{
-								Type: "replace",
-								Path: fmt.Sprintf("/product-properties/%s", property.Reference),
-								Value: map[string]string{
-									"value": optionTemplate.SelectValue,
-								},
+								Type:  "replace",
+								Path:  fmt.Sprintf("/product-properties/%s", property.Reference),
+								Value: &OpsValue{Value: optionTemplate.SelectValue},
 							},
 						)
 					}

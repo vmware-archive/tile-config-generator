@@ -1,11 +1,11 @@
 package generator
 
 type Template struct {
-	ProductName       string                 `yaml:"product_name"`
-	ProductVersion    string                 `yaml:"product_version"`
-	NetworkProperties *NetworkProperties     `yaml:"network-properties"`
-	ProductProperties map[string]interface{} `yaml:"product-properties"`
-	ResourceConfig    map[string]Resource    `yaml:"resource-config"`
+	ProductName       string                   `yaml:"product_name"`
+	ProductVersion    string                   `yaml:"product_version"`
+	NetworkProperties *NetworkProperties       `yaml:"network-properties"`
+	ProductProperties map[string]PropertyValue `yaml:"product-properties"`
+	ResourceConfig    map[string]Resource      `yaml:"resource-config"`
 }
 
 type FormType struct {
@@ -32,14 +32,4 @@ type SelectorProperty struct {
 type Option struct {
 	Label string      `json:"label"`
 	Name  interface{} `json:"name"`
-}
-
-type Ops struct {
-	Type  string      `yaml:"type"`
-	Path  string      `yaml:"path"`
-	Value interface{} `yaml:"value,omitempty"`
-}
-
-type NameValue struct {
-	Value string `yaml:"name"`
 }
