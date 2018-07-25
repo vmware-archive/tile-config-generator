@@ -5,7 +5,8 @@ type Template struct {
 	ProductVersion    string                   `yaml:"product_version"`
 	NetworkProperties *NetworkProperties       `yaml:"network-properties"`
 	ProductProperties map[string]PropertyValue `yaml:"product-properties"`
-	ResourceConfig    map[string]Resource      `yaml:"resource-config"`
+	ResourceConfig    map[string]Resource      `yaml:"resource-config,omitempty"`
+	ErrandConfig      map[string]Errand        `yaml:"errand-config,omitempty"`
 }
 
 type FormType struct {

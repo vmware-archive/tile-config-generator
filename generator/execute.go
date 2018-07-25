@@ -16,13 +16,15 @@ type Executor struct {
 	PathToPivotalFile          string
 	BaseDirectory              string
 	DoNotIncludeProductVersion bool
+	IncludeErrands             bool
 }
 
-func NewExecutor(filePath, baseDirectory string, doNotIncludeProductVersion bool) *Executor {
+func NewExecutor(filePath, baseDirectory string, doNotIncludeProductVersion, includeErrands bool) *Executor {
 	return &Executor{
 		PathToPivotalFile:          filePath,
 		BaseDirectory:              baseDirectory,
 		DoNotIncludeProductVersion: doNotIncludeProductVersion,
+		IncludeErrands:             includeErrands,
 	}
 }
 
@@ -97,6 +99,17 @@ func (e *Executor) Generate() error {
 		}
 	}
 
+	if e.IncludeErrands {
+		errandVars := CreateErrandVars(metadata)
+
+		if len(errandVars) > 0 {
+			if err = e.writeYamlFile(path.Join(targetDirectory, "errand-vars.yml"), errandVars); err != nil {
+				return err
+			}
+		}
+
+	}
+
 	resourceOpsFiles, err := CreateResourceOpsFiles(metadata)
 	if err != nil {
 		return err
@@ -159,6 +172,9 @@ func (e *Executor) CreateTemplate(metadata *Metadata) (*Template, error) {
 		return nil, err
 	}
 	template.ProductProperties = productProperties
+	if e.IncludeErrands {
+		template.ErrandConfig = CreateErrandConfig(metadata)
+	}
 	return template, nil
 }
 

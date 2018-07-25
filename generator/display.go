@@ -47,6 +47,11 @@ func (d *Displayer) Display() error {
 	if err != nil {
 		return err
 	}
+	d.Writer.Write([]byte("\n"))
+	err = d.errandDefaultsTable(metadata)
+	if err != nil {
+		return err
+	}
 
 	d.Writer.Write([]byte("\n"))
 	opsFiles, err := CreateProductPropertiesFeaturesOpsFiles(metadata)
@@ -181,6 +186,38 @@ func (d *Displayer) resourceDefaultsTable(metadata *Metadata) error {
 	}
 
 	d.Writer.Write([]byte("*****  Resource Property Values ******* (resource-vars.yml) \n"))
+
+	table := tablewriter.NewWriter(d.Writer)
+	table.SetAutoWrapText(false)
+	table.SetRowLine(true)
+	table.SetReflowDuringAutoWrap(false)
+	table.SetAlignment(tablewriter.ALIGN_LEFT)
+	table.SetHeader([]string{"Parameter", "Value"})
+
+	for _, v := range data {
+		table.Append(v)
+	}
+
+	table.Render()
+	return nil
+}
+
+func (d *Displayer) errandDefaultsTable(metadata *Metadata) error {
+	vars := CreateErrandVars(metadata)
+
+	var data [][]string
+	var keys []string
+	for k := range vars {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	for _, propertyName := range keys {
+		value := vars[propertyName]
+		data = append(data, []string{propertyName, fmt.Sprintf("%v", value)})
+	}
+
+	d.Writer.Write([]byte("*****  Errand Property Values ******* (errand-vars.yml) \n"))
 
 	table := tablewriter.NewWriter(d.Writer)
 	table.SetAutoWrapText(false)

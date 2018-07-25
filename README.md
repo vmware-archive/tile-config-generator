@@ -5,7 +5,7 @@ Tooling to help externalize the configuration of Pivotal Operations Manager and 
 
 ## Maintainer
 
-* [Caleb Washburn](https://github.com/pivotalservices)
+* [Caleb Washburn](https://github.com/calebwashburn)
 
 ## Support
 
@@ -59,10 +59,11 @@ Help Options:
 -h, --help                   Show this help message
 
 [generate command options]
-  --pivotal-file-path= path to pivotal file
-  --base-directory=    base directory to place generated config templates
+  --pivotal-file-path=              path to pivotal file
+  --base-directory=                 base directory to place generated config templates
+  --do-not-include-product-version  flag to use a flat output folder
+  --include-errands                 feature flag to include errands
 ```
-
 
 ## Example Usage
 

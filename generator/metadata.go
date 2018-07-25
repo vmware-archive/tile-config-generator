@@ -17,11 +17,21 @@ func NewMetadata(fileBytes []byte) (*Metadata, error) {
 }
 
 type Metadata struct {
-	Version          string             `yaml:"product_version"`
-	FormTypes        []FormType         `yaml:"form_types"`
-	PropertyMetadata []PropertyMetadata `yaml:"property_blueprints"`
-	JobTypes         []JobType          `yaml:"job_types"`
-	ProvidesVersions []ProvidesVersion  `yaml:"provides_product_versions"`
+	Version           string             `yaml:"product_version"`
+	FormTypes         []FormType         `yaml:"form_types"`
+	PropertyMetadata  []PropertyMetadata `yaml:"property_blueprints"`
+	JobTypes          []JobType          `yaml:"job_types"`
+	ProvidesVersions  []ProvidesVersion  `yaml:"provides_product_versions"`
+	PostDeployErrands []ErrandMetadata   `yaml:"post_deploy_errands"`
+	PreDeleteErrands  []ErrandMetadata   `yaml:"pre_delete_errands"`
+}
+
+func (m *Metadata) Errands() []ErrandMetadata {
+	return append(m.PostDeployErrands, m.PreDeleteErrands...)
+}
+
+type ErrandMetadata struct {
+	Name string `yaml:"name"`
 }
 
 type ProvidesVersion struct {

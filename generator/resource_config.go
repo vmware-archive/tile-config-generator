@@ -51,7 +51,7 @@ func CreateResource(jobName string, job jobtype) Resource {
 func CreateResourceVars(metadata *Metadata) map[string]interface{} {
 	vars := make(map[string]interface{})
 	for _, job := range metadata.JobTypes {
-		if !strings.Contains(job.Name, ".") {
+		if !strings.Contains(job.Name, ".") && job.InstanceDefinition.Configurable {
 			AddResourceVars(determineJobName(job.Name), &job, vars)
 		}
 	}
