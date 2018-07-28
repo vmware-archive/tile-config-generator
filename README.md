@@ -19,7 +19,7 @@ To build the binary yourself, follow these steps:
 * Install `Go`.
 * Install [dep](https://github.com/golang/dep), a dependency management tool for Go.
 * Clone the repo:
-  - `mkdir -p $(go env GOPATH)/src/github.com/tile-config-generator`
+  - `mkdir -p $(go env GOPATH)/src/github.com/pivotalservices`
   - `cd $(go env GOPATH)/src/github.com/pivotalservices`
   - `git clone git@github.com:pivotalservices/tile-config-generator.git`
 * Install dependencies:
