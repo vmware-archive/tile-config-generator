@@ -15,7 +15,7 @@ run:
   args:
     - -c
     - |
-      set -e
+      set -ex
       opsfiles=""
       for op in ${OPS_FILES}
       do
