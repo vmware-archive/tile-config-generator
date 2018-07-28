@@ -23,4 +23,4 @@ run:
       done
 
       cp config/*-vars.yml transformed-config/.
-      om interpolate -c config/product.yml ${opsfiles} > transformed-config/product.yml
+      bosh int config/product.yml ${opsfiles} > transformed-config/product.yml

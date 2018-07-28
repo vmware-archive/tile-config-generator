@@ -177,7 +177,7 @@ func (p *PropertyMetadata) IsString() bool {
 			p.Type == "ip_ranges" || p.Type == "string_list" ||
 			p.Type == "network_address" || p.Type == "wildcard_domain" ||
 			p.Type == "email" || p.Type == "ca_certificate" || p.Type == "http_url" ||
-			p.Type == "ldap_url" || p.Type == "service_network_az_single_select" || p.Type == "vm_type_dropdown"
+			p.Type == "ldap_url" || p.Type == "service_network_az_single_select" || p.Type == "vm_type_dropdown" || p.Type == "disk_type_dropdown"
 	}
 }
 func (p *PropertyMetadata) IsInt() bool {
@@ -219,6 +219,14 @@ func (p *PropertyMetadata) IsSelector() bool {
 
 func (p *PropertyMetadata) IsCertificate() bool {
 	return p.Type == "rsa_cert_credentials"
+}
+
+func (p *PropertyMetadata) IsDropdown() bool {
+	return p.Type == "vm_type_dropdown" || p.Type == "disk_type_dropdown"
+}
+
+func (p *PropertyMetadata) IsAZList() bool {
+	return p.Type == "service_network_az_multi_select"
 }
 
 func (p *PropertyMetadata) DataType() string {

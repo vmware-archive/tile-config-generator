@@ -92,6 +92,8 @@ func addPropertyToVars(propertyName string, propertyMetadata *PropertyMetadata, 
 			vars[newPropertyName] = propertyMetadata.Default
 		} else if propertyMetadata.IsBool() {
 			vars[newPropertyName] = false
+		} else if propertyMetadata.IsDropdown() {
+			vars[newPropertyName] = "automatic"
 		}
 	}
 }
