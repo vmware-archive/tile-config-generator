@@ -16,11 +16,11 @@ run:
     - -c
     - |
       set -ex
-      opsfiles=""
+      ops_files_args=""
       for op in ${OPS_FILES}
       do
-        opsfiles="${opsfiles} -o config/${op}"
+        ops_files_args+=("-o config/${op}")
       done
 
       cp config/*-vars.yml transformed-config/.
-      bosh int config/product.yml ${opsfiles} > transformed-config/product.yml
+      bosh int config/product.yml ${ops_files_args[@]} > transformed-config/product.yml
