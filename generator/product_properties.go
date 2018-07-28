@@ -65,7 +65,7 @@ func CreateProductPropertiesVars(metadata *Metadata) (map[string]interface{}, er
 		if propertyMetadata.IsSelector() {
 			defaultSelector := fmt.Sprintf("%s.%s", property.Reference, propertyMetadata.Default)
 			for _, selector := range property.Selectors {
-				if defaultSelector == selector.Reference {
+				if strings.EqualFold(defaultSelector, selector.Reference) {
 					selectorMetadata, err := propertyMetadata.SelectorMetadata(fmt.Sprintf("%s", propertyMetadata.Default))
 					if err != nil {
 						return nil, err

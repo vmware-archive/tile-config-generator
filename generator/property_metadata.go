@@ -44,7 +44,7 @@ func (p *PropertyMetadata) selectorMetadataByFunc(selector string, matchFunc fun
 		match := matchFunc(optionTemplate)
 		options = append(options, match)
 
-		if selector == match {
+		if strings.EqualFold(selector, match) {
 			return optionTemplate.PropertyMetadata, nil
 		}
 	}
