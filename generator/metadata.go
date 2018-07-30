@@ -48,6 +48,24 @@ func (m *Metadata) UsesServiceNetwork() bool {
 		}
 	}
 
+	for _, propertyMetadata := range m.PropertyMetadata {
+		if "service_network_az_multi_select" == propertyMetadata.Type {
+			return true
+		}
+		for _, subPropertyMetadata := range propertyMetadata.PropertyMetadata {
+			if "service_network_az_multi_select" == subPropertyMetadata.Type {
+				return true
+			}
+		}
+		for _, optionTemplates := range propertyMetadata.OptionTemplates {
+			for _, subPropertyMetadata := range optionTemplates.PropertyMetadata {
+				if "service_network_az_multi_select" == subPropertyMetadata.Type {
+					return true
+				}
+			}
+		}
+	}
+
 	return false
 }
 
