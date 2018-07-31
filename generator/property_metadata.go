@@ -159,7 +159,8 @@ func (p *PropertyMetadata) PropertyType(propertyName string) PropertyValue {
 	if p.IsSimpleCredentials() {
 		return &SimpleCredentialValueHolder{
 			Value: &SimpleCredentialValue{
-				Value: fmt.Sprintf("((%s))", propertyName),
+				Password: fmt.Sprintf("((%s_password))", propertyName),
+				Identity: fmt.Sprintf("((%s_identity))", propertyName),
 			},
 		}
 	}

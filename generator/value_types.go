@@ -42,7 +42,7 @@ type SimpleCredentialValueHolder struct {
 }
 
 func (s *SimpleCredentialValueHolder) Parameters() []string {
-	return []string{s.Value.Value}
+	return []string{s.Value.Password, s.Value.Identity}
 }
 
 func (s *SimpleCredentialValueHolder) IsSelector() bool {
@@ -74,7 +74,8 @@ func (s *SecretValue) IsSelector() bool {
 }
 
 type SimpleCredentialValue struct {
-	Value string `yaml:"password"`
+	Identity string `yaml:"identity"`
+	Password string `yaml:"password"`
 }
 
 type CertificateValueHolder struct {
