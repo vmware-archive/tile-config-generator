@@ -13,6 +13,9 @@ func CreateProductProperties(metadata *Metadata) (map[string]PropertyValue, erro
 			return nil, err
 		}
 		if propertyMetadata.Configurable && !propertyMetadata.Optional {
+			if propertyMetadata.IsDropdown() {
+				continue
+			}
 			if propertyMetadata.IsCollection() {
 				if propertyMetadata.IsRequiredCollection() {
 					productProperties[property.Reference] = propertyMetadata.CollectionPropertyType(strings.Replace(property.Reference, ".", "", 1))
@@ -89,11 +92,15 @@ func addPropertyToVars(propertyName string, propertyMetadata *PropertyMetadata, 
 		newPropertyName = strings.Replace(newPropertyName, "properties.", "", 1)
 		newPropertyName = strings.Replace(newPropertyName, ".", "/", -1)
 		if propertyMetadata.Default != nil {
-			vars[newPropertyName] = propertyMetadata.Default
+			if propertyMetadata.IsMultiSelect() {
+				if _, ok := propertyMetadata.Default.([]interface{}); ok {
+					vars[newPropertyName] = propertyMetadata.Default
+				}
+			} else {
+				vars[newPropertyName] = propertyMetadata.Default
+			}
 		} else if propertyMetadata.IsBool() {
 			vars[newPropertyName] = false
-		} else if propertyMetadata.IsDropdown() {
-			vars[newPropertyName] = "automatic"
 		}
 	}
 }
@@ -105,24 +112,8 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 		if err != nil {
 			return nil, err
 		}
-		if propertyMetadata.Configurable && propertyMetadata.Optional && !propertyMetadata.IsSelector() {
-
-			if propertyMetadata.IsCollection() {
-				for i := 1; i <= 10; i++ {
-					var ops []Ops
-					opsFileName := strings.Replace(property.Reference, ".", "", 1)
-					opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
-					opsFileName = strings.Replace(opsFileName, ".", "-", -1)
-					ops = append(ops,
-						Ops{
-							Type:  "replace",
-							Path:  fmt.Sprintf("/product-properties/%s?", property.Reference),
-							Value: propertyMetadata.CollectionOpsFile(i, strings.Replace(property.Reference, ".", "", 1)),
-						},
-					)
-					opsFiles[fmt.Sprintf("add-%d-%s", i, opsFileName)] = ops
-				}
-			} else {
+		if propertyMetadata.Configurable {
+			if propertyMetadata.IsDropdown() {
 				var ops []Ops
 				opsFileName := strings.Replace(property.Reference, ".", "", 1)
 				opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
@@ -135,8 +126,37 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 					},
 				)
 				opsFiles[fmt.Sprintf("add-%s", opsFileName)] = ops
+			} else if propertyMetadata.Optional && !propertyMetadata.IsSelector() {
+				if propertyMetadata.IsCollection() {
+					for i := 1; i <= 10; i++ {
+						var ops []Ops
+						opsFileName := strings.Replace(property.Reference, ".", "", 1)
+						opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
+						opsFileName = strings.Replace(opsFileName, ".", "-", -1)
+						ops = append(ops,
+							Ops{
+								Type:  "replace",
+								Path:  fmt.Sprintf("/product-properties/%s?", property.Reference),
+								Value: propertyMetadata.CollectionOpsFile(i, strings.Replace(property.Reference, ".", "", 1)),
+							},
+						)
+						opsFiles[fmt.Sprintf("add-%d-%s", i, opsFileName)] = ops
+					}
+				} else {
+					var ops []Ops
+					opsFileName := strings.Replace(property.Reference, ".", "", 1)
+					opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
+					opsFileName = strings.Replace(opsFileName, ".", "-", -1)
+					ops = append(ops,
+						Ops{
+							Type:  "replace",
+							Path:  fmt.Sprintf("/product-properties/%s?", property.Reference),
+							Value: propertyMetadata.PropertyType(strings.Replace(property.Reference, ".", "", 1)),
+						},
+					)
+					opsFiles[fmt.Sprintf("add-%s", opsFileName)] = ops
+				}
 			}
-
 		}
 	}
 
@@ -149,6 +169,25 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 		propertyMetadata, err := metadata.GetPropertyMetadata(property.Reference)
 		if err != nil {
 			return nil, err
+		}
+
+		if propertyMetadata.IsMultiSelect() {
+			for _, option := range propertyMetadata.Options {
+				var ops []Ops
+				opsFileName := strings.Replace(property.Reference, ".", "", 1)
+				opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
+				opsFileName = strings.Replace(opsFileName, ".", "-", -1)
+				opsFileName = fmt.Sprintf("%s_%v", opsFileName, option.Name)
+
+				ops = append(ops,
+					Ops{
+						Type:  "replace",
+						Path:  fmt.Sprintf("/product-properties/%s?/value/-", property.Reference),
+						Value: StringOpsValue(option.Name.(string)),
+					},
+				)
+				opsFiles[opsFileName] = ops
+			}
 		}
 
 		if propertyMetadata.IsSelector() {

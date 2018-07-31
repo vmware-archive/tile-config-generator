@@ -218,6 +218,10 @@ func (p *PropertyMetadata) IsSelector() bool {
 	return p.Type == "selector"
 }
 
+func (p *PropertyMetadata) IsMultiSelect() bool {
+	return p.Type == "multi_select_options"
+}
+
 func (p *PropertyMetadata) IsCertificate() bool {
 	return p.Type == "rsa_cert_credentials"
 }
