@@ -43,6 +43,12 @@ func (d *Displayer) Display() error {
 	}
 
 	d.Writer.Write([]byte("\n"))
+	err = d.requiredWithNoDefaultsTable(metadata)
+	if err != nil {
+		return err
+	}
+
+	d.Writer.Write([]byte("\n"))
 	err = d.resourceDefaultsTable(metadata)
 	if err != nil {
 		return err
@@ -126,6 +132,55 @@ func (d *Displayer) requiredTable(metadata *Metadata) error {
 	table.SetReflowDuringAutoWrap(false)
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
 	table.SetHeader([]string{"Name", "Parameter"})
+
+	for _, v := range data {
+		table.Append(v)
+	}
+
+	table.Render()
+	return nil
+}
+
+func (d *Displayer) requiredWithNoDefaultsTable(metadata *Metadata) error {
+	requiredProperties, err := CreateProductProperties(metadata)
+	if err != nil {
+		return err
+	}
+
+	var data [][]string
+
+	var keys []string
+	for k := range requiredProperties {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	defaultVars, err := CreateProductPropertiesVars(metadata)
+	if err != nil {
+		return err
+	}
+
+	for _, propertyName := range keys {
+		property := requiredProperties[propertyName]
+		if !property.IsSelector() {
+			parameters := d.cleanParamaters(property.Parameters())
+			for _, parameter := range parameters {
+				if _, ok := defaultVars[parameter]; !ok {
+					data = append(data, []string{parameter})
+				}
+			}
+		}
+
+	}
+
+	d.Writer.Write([]byte("*****  Required Properties With No Default *******\n"))
+
+	table := tablewriter.NewWriter(d.Writer)
+	table.SetAutoWrapText(false)
+	table.SetRowLine(true)
+	table.SetReflowDuringAutoWrap(false)
+	table.SetAlignment(tablewriter.ALIGN_LEFT)
+	table.SetHeader([]string{"Parameter"})
 
 	for _, v := range data {
 		table.Append(v)
