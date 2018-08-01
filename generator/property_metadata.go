@@ -15,6 +15,11 @@ type PropertyMetadata struct {
 	OptionTemplates  []OptionTemplate   `yaml:"option_templates"`
 	PropertyMetadata []PropertyMetadata `yaml:"property_blueprints"`
 }
+
+func (p *PropertyMetadata) IsRequired() bool {
+	return !p.Optional
+}
+
 type OptionTemplate struct {
 	Name             string             `yaml:"name"`
 	SelectValue      string             `yaml:"select_value"`

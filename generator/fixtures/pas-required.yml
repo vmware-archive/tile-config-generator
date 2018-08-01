@@ -62,16 +62,12 @@
   value: ((cf_networking_enable_space_developer_self_service))
 .properties.container_networking_interface_plugin:
   value: silk
-.properties.container_networking_interface_plugin.silk.dns_servers:
-  value: ((container_networking_interface_plugin/silk/dns_servers))
 .properties.container_networking_interface_plugin.silk.enable_log_traffic:
   value: ((container_networking_interface_plugin/silk/enable_log_traffic))
 .properties.container_networking_interface_plugin.silk.iptables_accepted_udp_logs_per_sec:
   value: ((container_networking_interface_plugin/silk/iptables_accepted_udp_logs_per_sec))
 .properties.container_networking_interface_plugin.silk.iptables_denied_logs_per_sec:
   value: ((container_networking_interface_plugin/silk/iptables_denied_logs_per_sec))
-.properties.container_networking_interface_plugin.silk.network_cidr:
-  value: ((container_networking_interface_plugin/silk/network_cidr))
 .properties.container_networking_interface_plugin.silk.network_mtu:
   value: ((container_networking_interface_plugin/silk/network_mtu))
 .properties.container_networking_interface_plugin.silk.vtep_port:
@@ -115,17 +111,6 @@
     name: ((networking_poe_ssl_certs_0/name))
 .properties.nfs_volume_driver:
   value: enable
-.properties.nfs_volume_driver.enable.ldap_server_host:
-  value: ((nfs_volume_driver/enable/ldap_server_host))
-.properties.nfs_volume_driver.enable.ldap_server_port:
-  value: ((nfs_volume_driver/enable/ldap_server_port))
-.properties.nfs_volume_driver.enable.ldap_service_account_password:
-  value:
-    secret: ((nfs_volume_driver/enable/ldap_service_account_password))
-.properties.nfs_volume_driver.enable.ldap_service_account_user:
-  value: ((nfs_volume_driver/enable/ldap_service_account_user))
-.properties.nfs_volume_driver.enable.ldap_user_fqdn:
-  value: ((nfs_volume_driver/enable/ldap_user_fqdn))
 .properties.push_apps_manager_currency_lookup:
   value: ((push_apps_manager_currency_lookup))
 .properties.push_apps_manager_display_plan_prices:

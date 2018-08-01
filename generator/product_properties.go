@@ -12,7 +12,7 @@ func CreateProductProperties(metadata *Metadata) (map[string]PropertyValue, erro
 		if err != nil {
 			return nil, err
 		}
-		if propertyMetadata.Configurable && !propertyMetadata.Optional {
+		if propertyMetadata.Configurable && propertyMetadata.IsRequired() {
 			if propertyMetadata.IsDropdown() {
 				continue
 			}
@@ -34,7 +34,7 @@ func CreateProductProperties(metadata *Metadata) (map[string]PropertyValue, erro
 						return nil, err
 					}
 					for _, metadata := range selectorMetadata {
-						if metadata.Configurable {
+						if metadata.Configurable && metadata.IsRequired() && !metadata.IsDropdown() {
 							selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
 							productProperties[selectorProperty] = metadata.PropertyType(strings.Replace(selectorProperty, ".", "", 1))
 						}
@@ -53,7 +53,7 @@ func CreateProductPropertiesVars(metadata *Metadata) (map[string]interface{}, er
 		if err != nil {
 			return nil, err
 		}
-		if propertyMetadata.Configurable && !propertyMetadata.Optional {
+		if propertyMetadata.Configurable && propertyMetadata.IsRequired() {
 			if propertyMetadata.IsCollection() {
 				if propertyMetadata.IsRequiredCollection() {
 					propertyMetadata.CollectionPropertyVars(strings.Replace(property.Reference, ".", "", 1), vars)
@@ -126,7 +126,7 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 					},
 				)
 				opsFiles[fmt.Sprintf("add-%s", opsFileName)] = ops
-			} else if propertyMetadata.Optional && !propertyMetadata.IsSelector() {
+			} else if !propertyMetadata.IsRequired() && !propertyMetadata.IsSelector() {
 				if propertyMetadata.IsCollection() {
 					for i := 1; i <= 10; i++ {
 						var ops []Ops
@@ -154,7 +154,25 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 							Value: propertyMetadata.PropertyType(strings.Replace(property.Reference, ".", "", 1)),
 						},
 					)
+					fmt.Println(property.Reference)
 					opsFiles[fmt.Sprintf("add-%s", opsFileName)] = ops
+
+					// if propertyMetadata.IsSelector() {
+					// 	defaultSelector := fmt.Sprintf("%s.%s", property.Reference, propertyMetadata.Default)
+					// 	for _, selector := range property.Selectors {
+					// 		if strings.EqualFold(defaultSelector, selector.Reference) {
+					// 			selectorMetadata, err := propertyMetadata.SelectorMetadataBySelectValue(fmt.Sprintf("%s", propertyMetadata.Default))
+					// 			if err != nil {
+					// 				return nil, err
+					// 			}
+					// 			for _, metadata := range selectorMetadata {
+					// 				if metadata.Configurable && metadata.IsRequired() && !metadata.IsDropdown() {
+					// 					selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
+					// 					productProperties[selectorProperty] = metadata.PropertyType(strings.Replace(selectorProperty, ".", "", 1))
+					// 				}
+					// 			}
+					// 		}
+					// 	}
 				}
 			}
 		}
