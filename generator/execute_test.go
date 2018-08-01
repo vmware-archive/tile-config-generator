@@ -59,9 +59,9 @@ var _ = Describe("Executor", func() {
 
 		})
 		AfterEach(func() {
-			err := os.RemoveAll(testGen)
-			Expect(err).ShouldNot(HaveOccurred())
-			os.Remove(zipPath)
+			// err := os.RemoveAll(testGen)
+			// Expect(err).ShouldNot(HaveOccurred())
+			// os.Remove(zipPath)
 		})
 
 		It("Should generate files for p-healthwatch", func() {
@@ -92,6 +92,14 @@ var _ = Describe("Executor", func() {
 		It("Should generate files for mysql_v2", func() {
 			zipPath = path.Join(tempDir, "mysql.pivotal")
 			err := createZipFile("fixtures/mysql_v2.yml", zipPath)
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			err = gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+		})
+		It("Should generate files for scs", func() {
+			zipPath = path.Join(tempDir, "scs.pivotal")
+			err := createZipFile("fixtures/scs.yml", zipPath)
 			Expect(err).ShouldNot(HaveOccurred())
 			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
 			err = gen.Generate()

@@ -154,7 +154,6 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 							Value: propertyMetadata.PropertyType(strings.Replace(property.Reference, ".", "", 1)),
 						},
 					)
-					fmt.Println(property.Reference)
 					opsFiles[fmt.Sprintf("add-%s", opsFileName)] = ops
 
 					// if propertyMetadata.IsSelector() {

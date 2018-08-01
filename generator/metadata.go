@@ -17,6 +17,7 @@ func NewMetadata(fileBytes []byte) (*Metadata, error) {
 }
 
 type Metadata struct {
+	Name              string             `yaml:"name"`
 	Version           string             `yaml:"product_version"`
 	FormTypes         []FormType         `yaml:"form_types"`
 	PropertyMetadata  []PropertyMetadata `yaml:"property_blueprints"`

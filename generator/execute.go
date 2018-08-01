@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path"
 	"regexp"
@@ -37,11 +38,20 @@ func (e *Executor) Generate() error {
 	if err != nil {
 		return err
 	}
-	providesVersion := metadata.ProvidesVersions[0]
+	var providesVersion string
+	var providesName string
+	if len(metadata.ProvidesVersions) > 0 {
+		providesVersion = metadata.ProvidesVersions[0].Version
+		providesName = metadata.ProvidesVersions[0].Name
+	} else {
+		providesVersion = metadata.Version
+		providesName = metadata.Name
+	}
 	targetDirectory := e.BaseDirectory
 	if !e.DoNotIncludeProductVersion {
-		targetDirectory = path.Join(e.BaseDirectory, providesVersion.Name, providesVersion.Version)
+		targetDirectory = path.Join(e.BaseDirectory, providesName, providesVersion)
 	}
+	log.Println(targetDirectory)
 	if err = e.createDirectory(targetDirectory); err != nil {
 		return err
 	}
@@ -71,7 +81,7 @@ func (e *Executor) Generate() error {
 		return err
 	}
 
-	template.ProductName = providesVersion.Name
+	template.ProductName = providesName
 	template.ProductVersion = metadata.Version
 
 	if err = e.writeYamlFile(path.Join(targetDirectory, "product.yml"), template); err != nil {
