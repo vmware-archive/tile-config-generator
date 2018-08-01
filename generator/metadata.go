@@ -43,30 +43,29 @@ type ProvidesVersion struct {
 func (m *Metadata) UsesServiceNetwork() bool {
 	for _, job := range m.JobTypes {
 		for _, propertyMetadata := range job.PropertyMetadata {
-			if "service_network_az_single_select" == propertyMetadata.Type {
+			if "service_network_az_single_select" == propertyMetadata.Type || "service_network_az_single_select" == propertyMetadata.Type {
 				return true
 			}
 		}
 	}
 
 	for _, propertyMetadata := range m.PropertyMetadata {
-		if "service_network_az_multi_select" == propertyMetadata.Type {
+		if "service_network_az_multi_select" == propertyMetadata.Type || "service_network_az_single_select" == propertyMetadata.Type {
 			return true
 		}
 		for _, subPropertyMetadata := range propertyMetadata.PropertyMetadata {
-			if "service_network_az_multi_select" == subPropertyMetadata.Type {
+			if "service_network_az_multi_select" == subPropertyMetadata.Type || "service_network_az_single_select" == subPropertyMetadata.Type {
 				return true
 			}
 		}
 		for _, optionTemplates := range propertyMetadata.OptionTemplates {
 			for _, subPropertyMetadata := range optionTemplates.PropertyMetadata {
-				if "service_network_az_multi_select" == subPropertyMetadata.Type {
+				if "service_network_az_multi_select" == subPropertyMetadata.Type || "service_network_az_single_select" == subPropertyMetadata.Type {
 					return true
 				}
 			}
 		}
 	}
-
 	return false
 }
 
