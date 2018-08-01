@@ -16,13 +16,17 @@ type PropertyMetadata struct {
 	PropertyMetadata []PropertyMetadata `yaml:"property_blueprints"`
 }
 
-func (p *PropertyMetadata) DefaultSelector(property string) string {
+func (p *PropertyMetadata) DefaultSelectorPath(property string) string {
+	return fmt.Sprintf("%s.%s", property, p.DefaultSelector())
+}
+
+func (p *PropertyMetadata) DefaultSelector() string {
 	for _, optiontemplate := range p.OptionTemplates {
 		if strings.EqualFold(optiontemplate.SelectValue, fmt.Sprintf("%v", p.Default)) {
-			return fmt.Sprintf("%s.%s", property, optiontemplate.Name)
+			return optiontemplate.Name
 		}
 	}
-	return fmt.Sprintf("%s.%s", property, p.Default)
+	return fmt.Sprintf("%v", p.Default)
 }
 
 func (p *PropertyMetadata) IsRequired() bool {
@@ -62,7 +66,7 @@ func (p *PropertyMetadata) selectorMetadataByFunc(selector string, matchFunc fun
 			return optionTemplate.PropertyMetadata, nil
 		}
 	}
-	return nil, fmt.Errorf("Option template not found for selector %s options include %v", selector, options)
+	return nil, fmt.Errorf("Option template not found for selector [%s] options include %v", selector, options)
 }
 
 func (p *PropertyMetadata) OptionTemplate(selectorReference string) (*OptionTemplate, error) {
