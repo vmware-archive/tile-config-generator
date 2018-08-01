@@ -26,7 +26,7 @@ func CreateProductProperties(metadata *Metadata) (map[string]PropertyValue, erro
 		}
 
 		if propertyMetadata.IsSelector() {
-			defaultSelector := fmt.Sprintf("%s.%s", property.Reference, propertyMetadata.Default)
+			defaultSelector := propertyMetadata.DefaultSelector(property.Reference)
 			for _, selector := range property.Selectors {
 				if strings.EqualFold(defaultSelector, selector.Reference) {
 					selectorMetadata, err := propertyMetadata.SelectorMetadataBySelectValue(fmt.Sprintf("%s", propertyMetadata.Default))
@@ -208,7 +208,7 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 		}
 
 		if propertyMetadata.IsSelector() {
-			defaultSelector := fmt.Sprintf("%s.%s", property.Reference, propertyMetadata.Default)
+			defaultSelector := propertyMetadata.DefaultSelector(property.Reference)
 			for _, selector := range property.Selectors {
 				if !strings.EqualFold(defaultSelector, selector.Reference) {
 					var ops []Ops

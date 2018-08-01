@@ -40,25 +40,6 @@ var _ = Describe("Product Properties", func() {
 			Expect(err).ShouldNot(HaveOccurred())
 			Expect(yml).Should(MatchYAML(string(expected)))
 		})
-
-		It("Should return new required product properties", func() {
-			fileData, err := ioutil.ReadFile("fixtures/p_push_notifications.yml")
-			Expect(err).ShouldNot(HaveOccurred())
-
-			expected, err := ioutil.ReadFile("fixtures/push-notifications-required.yml")
-			Expect(err).ShouldNot(HaveOccurred())
-
-			metadata, err := generator.NewMetadata(fileData)
-			Expect(err).ShouldNot(HaveOccurred())
-
-			productProperties, err := generator.CreateProductProperties(metadata)
-			Expect(err).ShouldNot(HaveOccurred())
-			Expect(productProperties).ShouldNot(BeNil())
-
-			yml, err := yaml.Marshal(productProperties)
-			Expect(err).ShouldNot(HaveOccurred())
-			Expect(yml).Should(MatchYAML(string(expected)))
-		})
 	})
 
 	Context("CreateProductPropertiesFeaturesOpsFiles", func() {

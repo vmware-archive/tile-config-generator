@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 	"regexp"
@@ -51,7 +50,6 @@ func (e *Executor) Generate() error {
 	if !e.DoNotIncludeProductVersion {
 		targetDirectory = path.Join(e.BaseDirectory, providesName, providesVersion)
 	}
-	log.Println(targetDirectory)
 	if err = e.createDirectory(targetDirectory); err != nil {
 		return err
 	}

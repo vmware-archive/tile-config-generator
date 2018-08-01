@@ -16,6 +16,15 @@ type PropertyMetadata struct {
 	PropertyMetadata []PropertyMetadata `yaml:"property_blueprints"`
 }
 
+func (p *PropertyMetadata) DefaultSelector(property string) string {
+	for _, optiontemplate := range p.OptionTemplates {
+		if strings.EqualFold(optiontemplate.SelectValue, fmt.Sprintf("%v", p.Default)) {
+			return fmt.Sprintf("%s.%s", property, optiontemplate.Name)
+		}
+	}
+	return fmt.Sprintf("%s.%s", property, p.Default)
+}
+
 func (p *PropertyMetadata) IsRequired() bool {
 	return !p.Optional
 }
