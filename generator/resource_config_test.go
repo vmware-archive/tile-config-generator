@@ -49,6 +49,7 @@ var _ = Describe("Resource Config", func() {
 		})
 		It("Should resource with persistent disk", func() {
 			jobType.HasPersistentDiskReturns(true)
+			jobType.InstanceDefinitionConfigurableReturns(true)
 			resource := generator.CreateResource("my-job", jobType)
 			Expect(resource).ShouldNot(BeNil())
 			Expect(resource.PersistentDisk).ShouldNot(BeNil())
@@ -56,6 +57,7 @@ var _ = Describe("Resource Config", func() {
 
 		It("Should marshall to yaml without persistent disk", func() {
 			jobType.HasPersistentDiskReturns(false)
+			jobType.InstanceDefinitionConfigurableReturns(true)
 			resource := generator.CreateResource("my-job", jobType)
 			Expect(resource).ShouldNot(BeNil())
 			Expect(resource.PersistentDisk).Should(BeNil())
@@ -63,6 +65,7 @@ var _ = Describe("Resource Config", func() {
 
 		It("Should marshall to yaml with persistent disk", func() {
 			jobType.HasPersistentDiskReturns(true)
+			jobType.InstanceDefinitionConfigurableReturns(true)
 			resource := generator.CreateResource("myjob", jobType)
 			Expect(resource).ShouldNot(BeNil())
 			yml, err := yaml.Marshal(resource)
@@ -72,6 +75,7 @@ var _ = Describe("Resource Config", func() {
 
 		It("Should resource without persistent disk", func() {
 			jobType.HasPersistentDiskReturns(false)
+			jobType.InstanceDefinitionConfigurableReturns(true)
 			resource := generator.CreateResource("myjob", jobType)
 			Expect(resource).ShouldNot(BeNil())
 			yml, err := yaml.Marshal(resource)

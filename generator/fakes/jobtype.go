@@ -10,6 +10,12 @@ type FakeJobType struct {
 	hasPersistentDiskReturns     struct {
 		result1 bool
 	}
+	InstanceDefinitionConfigurableStub        func() bool
+	instanceDefinitionConfigurableMutex       sync.RWMutex
+	instanceDefinitionConfigurableArgsForCall []struct{}
+	instanceDefinitionConfigurableReturns     struct {
+		result1 bool
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -39,11 +45,38 @@ func (fake *FakeJobType) HasPersistentDiskReturns(result1 bool) {
 	}{result1}
 }
 
+func (fake *FakeJobType) InstanceDefinitionConfigurable() bool {
+	fake.instanceDefinitionConfigurableMutex.Lock()
+	fake.instanceDefinitionConfigurableArgsForCall = append(fake.instanceDefinitionConfigurableArgsForCall, struct{}{})
+	fake.recordInvocation("InstanceDefinitionConfigurable", []interface{}{})
+	fake.instanceDefinitionConfigurableMutex.Unlock()
+	if fake.InstanceDefinitionConfigurableStub != nil {
+		return fake.InstanceDefinitionConfigurableStub()
+	} else {
+		return fake.instanceDefinitionConfigurableReturns.result1
+	}
+}
+
+func (fake *FakeJobType) InstanceDefinitionConfigurableCallCount() int {
+	fake.instanceDefinitionConfigurableMutex.RLock()
+	defer fake.instanceDefinitionConfigurableMutex.RUnlock()
+	return len(fake.instanceDefinitionConfigurableArgsForCall)
+}
+
+func (fake *FakeJobType) InstanceDefinitionConfigurableReturns(result1 bool) {
+	fake.InstanceDefinitionConfigurableStub = nil
+	fake.instanceDefinitionConfigurableReturns = struct {
+		result1 bool
+	}{result1}
+}
+
 func (fake *FakeJobType) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
 	fake.hasPersistentDiskMutex.RLock()
 	defer fake.hasPersistentDiskMutex.RUnlock()
+	fake.instanceDefinitionConfigurableMutex.RLock()
+	defer fake.instanceDefinitionConfigurableMutex.RUnlock()
 	return fake.invocations
 }
 

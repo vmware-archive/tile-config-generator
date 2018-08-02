@@ -12,6 +12,10 @@ type JobType struct {
 	InstanceDefinition  InstanceDefinition   `yaml:"instance_definition"`
 }
 
+func (j *JobType) InstanceDefinitionConfigurable() bool {
+	return j.InstanceDefinition.Configurable
+}
+
 type InstanceDefinition struct {
 	Configurable bool `yaml:"configurable"`
 }

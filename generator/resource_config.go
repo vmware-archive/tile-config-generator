@@ -6,8 +6,8 @@ import (
 )
 
 type Resource struct {
-	InstanceType   InstanceType    `yaml:"instance_type"`
-	Instances      interface{}     `yaml:"instances"`
+	InstanceType   InstanceType    `yaml:"instance_type,omitempty"`
+	Instances      interface{}     `yaml:"instances,omitempty"`
 	PersistentDisk *PersistentDisk `yaml:"persistent_disk,omitempty"`
 }
 
@@ -21,12 +21,13 @@ type PersistentDisk struct {
 //go:generate counterfeiter -o ./fakes/jobtype.go --fake-name FakeJobType . jobtype
 type jobtype interface {
 	HasPersistentDisk() bool
+	InstanceDefinitionConfigurable() bool
 }
 
 func CreateResourceConfig(metadata *Metadata) map[string]Resource {
 	resourceConfig := make(map[string]Resource)
 	for _, job := range metadata.JobTypes {
-		if !strings.Contains(job.Name, ".") && job.InstanceDefinition.Configurable {
+		if !strings.Contains(job.Name, ".") {
 			resourceConfig[job.Name] = CreateResource(determineJobName(job.Name), &job)
 		}
 	}
@@ -34,16 +35,18 @@ func CreateResourceConfig(metadata *Metadata) map[string]Resource {
 }
 
 func CreateResource(jobName string, job jobtype) Resource {
-	resource := Resource{
-		Instances: fmt.Sprintf("((%s_instances))", jobName),
-		InstanceType: InstanceType{
-			ID: fmt.Sprintf("((%s_instance_type))", jobName),
-		},
+	resource := Resource{}
+	if job.InstanceDefinitionConfigurable() {
+		resource.Instances = fmt.Sprintf("((%s_instances))", jobName)
+	}
+	resource.InstanceType = InstanceType{
+		ID: fmt.Sprintf("((%s_instance_type))", jobName),
 	}
 	if job.HasPersistentDisk() {
 		resource.PersistentDisk = &PersistentDisk{
 			Size: fmt.Sprintf("((%s_persistent_disk_size))", jobName),
 		}
+
 	}
 	return resource
 }
@@ -51,7 +54,7 @@ func CreateResource(jobName string, job jobtype) Resource {
 func CreateResourceVars(metadata *Metadata) map[string]interface{} {
 	vars := make(map[string]interface{})
 	for _, job := range metadata.JobTypes {
-		if !strings.Contains(job.Name, ".") && job.InstanceDefinition.Configurable {
+		if !strings.Contains(job.Name, ".") {
 			AddResourceVars(determineJobName(job.Name), &job, vars)
 		}
 	}
@@ -59,8 +62,11 @@ func CreateResourceVars(metadata *Metadata) map[string]interface{} {
 }
 
 func AddResourceVars(jobName string, job jobtype, vars map[string]interface{}) {
-	vars[fmt.Sprintf("%s_instances", jobName)] = "automatic"
+	if job.InstanceDefinitionConfigurable() {
+		vars[fmt.Sprintf("%s_instances", jobName)] = "automatic"
+	}
 	vars[fmt.Sprintf("%s_instance_type", jobName)] = "automatic"
+
 	if job.HasPersistentDisk() {
 		vars[fmt.Sprintf("%s_persistent_disk_size", jobName)] = "automatic"
 	}
