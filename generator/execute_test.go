@@ -147,6 +147,14 @@ var _ = Describe("Executor", func() {
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
+		It("Should generate files for apigee", func() {
+			zipPath = path.Join(tempDir, "apigee.pivotal")
+			err := createZipFile("fixtures/apigee.yml", zipPath)
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			err = gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+		})
 	})
 })
 

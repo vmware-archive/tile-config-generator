@@ -84,6 +84,23 @@ func (p *PropertyMetadata) CollectionPropertyType(propertyName string) PropertyV
 	propertyName = fmt.Sprintf("%s_0", strings.Replace(propertyName, ".", "/", -1))
 	var collectionProperties []map[string]SimpleType
 	properties := make(map[string]SimpleType)
+	if p.Default != nil {
+		if defaults, ok := p.Default.([]interface{}); ok {
+			for _, defaultValues := range defaults {
+				arrayProperties := make(map[string]SimpleType)
+				defaultMap := defaultValues.(map[interface{}]interface{})
+				for key, value := range defaultMap {
+					arrayProperties[key.(string)] = SimpleString(value.(string))
+				}
+				for _, subProperty := range p.PropertyMetadata {
+					if _, ok := arrayProperties[subProperty.Name]; !ok {
+						arrayProperties[subProperty.Name] = SimpleString(fmt.Sprintf("((%s/%s))", propertyName, subProperty.Name))
+					}
+				}
+				collectionProperties = append(collectionProperties, arrayProperties)
+			}
+		}
+	}
 	for _, subProperty := range p.PropertyMetadata {
 		if subProperty.Configurable {
 			if subProperty.IsSecret() {
@@ -100,7 +117,9 @@ func (p *PropertyMetadata) CollectionPropertyType(propertyName string) PropertyV
 			}
 		}
 	}
-	collectionProperties = append(collectionProperties, properties)
+	if len(properties) > 0 {
+		collectionProperties = append(collectionProperties, properties)
+	}
 	return &CollectionsPropertiesValueHolder{
 		Value: collectionProperties,
 	}
@@ -224,12 +243,7 @@ func (p *PropertyMetadata) IsCollection() bool {
 }
 
 func (p *PropertyMetadata) IsRequiredCollection() bool {
-	for _, subProperty := range p.PropertyMetadata {
-		if subProperty.Configurable {
-			return true
-		}
-	}
-	return false
+	return p.IsRequired()
 }
 
 func (p *PropertyMetadata) IsSelector() bool {

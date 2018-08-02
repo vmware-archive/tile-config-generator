@@ -117,6 +117,14 @@
   value: ((push_apps_manager_display_plan_prices))
 .properties.push_apps_manager_enable_invitations:
   value: ((push_apps_manager_enable_invitations))
+.properties.push_apps_manager_nav_links:
+  value:
+  - href: /marketplace
+    name: Marketplace
+  - href: https://docs.pivotal.io/pivotalcf/2-1/pas/intro.html
+    name: Docs
+  - href: /tools
+    name: Tools
 .properties.rep_proxy_enabled:
   value: ((rep_proxy_enabled))
 .properties.route_services:
