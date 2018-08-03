@@ -16,9 +16,18 @@ func (j *JobType) InstanceDefinitionConfigurable() bool {
 	return j.InstanceDefinition.Configurable
 }
 
+func (j *JobType) IsIncluded() bool {
+	if j.InstanceDefinition.Default == 0 && !j.InstanceDefinition.Configurable {
+		return false
+	}
+	return true
+}
+
 type InstanceDefinition struct {
 	Configurable bool `yaml:"configurable"`
+	Default      int  `yaml:"default"`
 }
+
 type ResourceDefinition struct {
 	Configurable bool        `yaml:"configurable"`
 	Default      interface{} `yaml:"default"`

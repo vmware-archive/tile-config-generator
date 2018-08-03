@@ -4,6 +4,12 @@ package fakes
 import "sync"
 
 type FakeJobType struct {
+	IsIncludedStub        func() bool
+	isIncludedMutex       sync.RWMutex
+	isIncludedArgsForCall []struct{}
+	isIncludedReturns     struct {
+		result1 bool
+	}
 	HasPersistentDiskStub        func() bool
 	hasPersistentDiskMutex       sync.RWMutex
 	hasPersistentDiskArgsForCall []struct{}
@@ -18,6 +24,31 @@ type FakeJobType struct {
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
+}
+
+func (fake *FakeJobType) IsIncluded() bool {
+	fake.isIncludedMutex.Lock()
+	fake.isIncludedArgsForCall = append(fake.isIncludedArgsForCall, struct{}{})
+	fake.recordInvocation("IsIncluded", []interface{}{})
+	fake.isIncludedMutex.Unlock()
+	if fake.IsIncludedStub != nil {
+		return fake.IsIncludedStub()
+	} else {
+		return fake.isIncludedReturns.result1
+	}
+}
+
+func (fake *FakeJobType) IsIncludedCallCount() int {
+	fake.isIncludedMutex.RLock()
+	defer fake.isIncludedMutex.RUnlock()
+	return len(fake.isIncludedArgsForCall)
+}
+
+func (fake *FakeJobType) IsIncludedReturns(result1 bool) {
+	fake.IsIncludedStub = nil
+	fake.isIncludedReturns = struct {
+		result1 bool
+	}{result1}
 }
 
 func (fake *FakeJobType) HasPersistentDisk() bool {
@@ -73,6 +104,8 @@ func (fake *FakeJobType) InstanceDefinitionConfigurableReturns(result1 bool) {
 func (fake *FakeJobType) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
+	fake.isIncludedMutex.RLock()
+	defer fake.isIncludedMutex.RUnlock()
 	fake.hasPersistentDiskMutex.RLock()
 	defer fake.hasPersistentDiskMutex.RUnlock()
 	fake.instanceDefinitionConfigurableMutex.RLock()

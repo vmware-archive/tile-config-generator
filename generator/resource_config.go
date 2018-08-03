@@ -20,6 +20,7 @@ type PersistentDisk struct {
 
 //go:generate counterfeiter -o ./fakes/jobtype.go --fake-name FakeJobType . jobtype
 type jobtype interface {
+	IsIncluded() bool
 	HasPersistentDisk() bool
 	InstanceDefinitionConfigurable() bool
 }
@@ -27,7 +28,7 @@ type jobtype interface {
 func CreateResourceConfig(metadata *Metadata) map[string]Resource {
 	resourceConfig := make(map[string]Resource)
 	for _, job := range metadata.JobTypes {
-		if !strings.Contains(job.Name, ".") {
+		if !strings.Contains(job.Name, ".") && job.IsIncluded() {
 			resourceConfig[job.Name] = CreateResource(determineJobName(job.Name), &job)
 		}
 	}
@@ -54,7 +55,7 @@ func CreateResource(jobName string, job jobtype) Resource {
 func CreateResourceVars(metadata *Metadata) map[string]interface{} {
 	vars := make(map[string]interface{})
 	for _, job := range metadata.JobTypes {
-		if !strings.Contains(job.Name, ".") {
+		if !strings.Contains(job.Name, ".") && job.IsIncluded() {
 			AddResourceVars(determineJobName(job.Name), &job, vars)
 		}
 	}
@@ -79,7 +80,7 @@ func determineJobName(jobName string) string {
 func CreateResourceOpsFiles(metadata *Metadata) (map[string][]Ops, error) {
 	opsFiles := make(map[string][]Ops)
 	for _, job := range metadata.JobTypes {
-		if !strings.Contains(job.Name, ".") {
+		if !strings.Contains(job.Name, ".") && job.IsIncluded() {
 			AddResourceOpsFiles(determineJobName(job.Name), &job, opsFiles)
 		}
 	}
