@@ -113,6 +113,33 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 			return nil, err
 		}
 		if propertyMetadata.Configurable {
+			if propertyMetadata.IsSelector() {
+				for _, selector := range property.Selectors {
+					selectorMetadata, err := propertyMetadata.SelectorMetadata(strings.Replace(selector.Reference, property.Reference+".", "", 1))
+					if err != nil {
+						return nil, err
+					}
+					for _, metadata := range selectorMetadata {
+						if metadata.Configurable {
+							if !metadata.IsRequired() || metadata.IsDropdown() {
+								selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
+								var ops []Ops
+								opsFileName := strings.Replace(selectorProperty, ".", "", 1)
+								opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
+								opsFileName = strings.Replace(opsFileName, ".", "-", -1)
+								ops = append(ops,
+									Ops{
+										Type:  "replace",
+										Path:  fmt.Sprintf("/product-properties/%s?", selectorProperty),
+										Value: metadata.PropertyType(strings.Replace(selectorProperty, ".", "", 1)),
+									},
+								)
+								opsFiles[fmt.Sprintf("add-%s", opsFileName)] = ops
+							}
+						}
+					}
+				}
+			}
 			if propertyMetadata.IsDropdown() {
 				var ops []Ops
 				opsFileName := strings.Replace(property.Reference, ".", "", 1)
@@ -155,23 +182,6 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 						},
 					)
 					opsFiles[fmt.Sprintf("add-%s", opsFileName)] = ops
-
-					// if propertyMetadata.IsSelector() {
-					// 	defaultSelector := fmt.Sprintf("%s.%s", property.Reference, propertyMetadata.Default)
-					// 	for _, selector := range property.Selectors {
-					// 		if strings.EqualFold(defaultSelector, selector.Reference) {
-					// 			selectorMetadata, err := propertyMetadata.SelectorMetadataBySelectValue(fmt.Sprintf("%s", propertyMetadata.Default))
-					// 			if err != nil {
-					// 				return nil, err
-					// 			}
-					// 			for _, metadata := range selectorMetadata {
-					// 				if metadata.Configurable && metadata.IsRequired() && !metadata.IsDropdown() {
-					// 					selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
-					// 					productProperties[selectorProperty] = metadata.PropertyType(strings.Replace(selectorProperty, ".", "", 1))
-					// 				}
-					// 			}
-					// 		}
-					// 	}
 				}
 			}
 		}
@@ -243,6 +253,7 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 									Path: fmt.Sprintf("/product-properties/%s?", selectorProperty),
 								},
 							)
+
 						}
 					}
 
@@ -252,14 +263,16 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 						return nil, err
 					}
 					for _, metadata := range selectorMetadata {
-						selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
-						ops = append(ops,
-							Ops{
-								Type:  "replace",
-								Path:  fmt.Sprintf("/product-properties/%s?", selectorProperty),
-								Value: metadata.PropertyType(strings.Replace(selectorProperty, ".", "", 1)),
-							},
-						)
+						if metadata.Configurable && metadata.IsRequired() && !metadata.IsDropdown() {
+							selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
+							ops = append(ops,
+								Ops{
+									Type:  "replace",
+									Path:  fmt.Sprintf("/product-properties/%s?", selectorProperty),
+									Value: metadata.PropertyType(strings.Replace(selectorProperty, ".", "", 1)),
+								},
+							)
+						}
 					}
 					opsFiles[opsFileName] = ops
 				}

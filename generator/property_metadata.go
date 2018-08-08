@@ -66,7 +66,8 @@ func (p *PropertyMetadata) selectorMetadataByFunc(selector string, matchFunc fun
 			return optionTemplate.PropertyMetadata, nil
 		}
 	}
-	return nil, fmt.Errorf("Option template not found for selector [%s] options include %v", selector, options)
+	fmt.Println(fmt.Sprintf("Option template not found for selector [%s] options include %v", selector, options))
+	return nil, nil
 }
 
 func (p *PropertyMetadata) OptionTemplate(selectorReference string) (*OptionTemplate, error) {
