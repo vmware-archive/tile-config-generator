@@ -22,6 +22,7 @@ func main() {
 type manager struct {
 	Generate commands.Generate `command:"generate" description:"generates configuration template that can be used with om configure-product command"`
 	Display  commands.Display  `command:"display" description:"displays information about tile"`
+	Version  commands.Version  `command:"version" description:"displays version"`
 }
 
 var Manager manager

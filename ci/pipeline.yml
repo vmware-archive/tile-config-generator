@@ -1,0 +1,74 @@
+groups:
+- name: compile
+  jobs:
+  - test-and-build
+- name: deploy
+  jobs:
+  - deploy
+
+resources:
+- name: source
+  type: git
+  source:
+    uri: git@github.com:pivotalservices/tile-config-generator.git
+    branch: master
+    private_key: {{git-ssh-key}}
+    ignore_paths: ["README.md","docs/*"]
+
+- name: draft-cfmgmt-resource
+  type: github-release
+  source:
+    owner: pivotalservices
+    repository: cf-mgmt
+    access_token: {{github-token}}
+    drafts: true
+
+- name: releases
+  type: github-release
+  source:
+    owner: pivotalservices
+    repository: cf-mgmt
+    access_token: {{github-token}}
+
+- name: docker-registry
+  type: docker-image
+  source:
+    repository: {{docker-repository}}
+    username: {{docker-registry-username}}
+    password: {{docker-registry-password}}
+    tag: {{docker-tag}}
+
+jobs:
+- name: test-and-build
+  plan:
+    - aggregate:
+      - get: source
+        trigger: true
+    - task: test
+      file: source/ci/tasks/runTests.yml
+    - task: build
+      file: source/ci/tasks/build.yml
+    - put: draft-cfmgmt-resource
+      params:
+        name: compiled-output/name
+        tag: compiled-output/tag
+        globs:
+        - compiled-output/cf-mgmt-linux
+        - compiled-output/cf-mgmt-osx
+        - compiled-output/cf-mgmt.exe
+        - compiled-output/cf-mgmt-config-linux
+        - compiled-output/cf-mgmt-config-osx
+        - compiled-output/cf-mgmt-config.exe
+- name: deploy
+  plan:
+    - aggregate:
+      - get: source
+      - get: releases
+        trigger: true
+    - task: prepare
+      file: source/ci/tasks/prepare.yml
+    - put: docker-registry
+      params:
+        build: prepare-output
+        tag_as_latest: true
+        tag: prepare-output/version
