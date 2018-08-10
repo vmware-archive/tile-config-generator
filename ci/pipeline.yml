@@ -62,6 +62,9 @@ jobs:
       - get: source
       - get: releases
         trigger: true
+        params:
+          globs:
+          - tile-config-generator-linux
     - task: prepare
       file: source/ci/tasks/prepare.yml
     - put: docker-registry
