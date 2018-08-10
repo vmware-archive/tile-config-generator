@@ -10,7 +10,7 @@ SOURCE_DIR=$PWD/source
 
 cp source/Dockerfile ${OUTPUT_DIR}/.
 
-go get github.com/Masterminds/glide
+go get -u github.com/golang/dep/cmd/dep
 go get github.com/xchapter7x/versioning
 
 cd ${SOURCE_DIR}
@@ -25,7 +25,7 @@ WORKING_DIR=$GOPATH/src/github.com/pivotalservices/tile-config-generator
 mkdir -p ${WORKING_DIR}
 cp -R ${SOURCE_DIR}/* ${WORKING_DIR}/.
 cd ${WORKING_DIR}
-glide install
+dep ensure
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ${OUTPUT_DIR}/tile-config-generator-linux -ldflags "-X github.com/pivotalservices/tile-config-generator/commands.VERSION=${DRAFT_VERSION}" cmd/tile-config-generator/main.go
 GOOS=darwin GOARCH=amd64 go build -o ${OUTPUT_DIR}/tile-config-generator-osx -ldflags "-X github.com/pivotalservices/tile-config-generator/commands.VERSION=${DRAFT_VERSION}" cmd/tile-config-generator/main.go
 GOOS=windows GOARCH=amd64 go build -o ${OUTPUT_DIR}/tile-config-generator.exe -ldflags "-X github.com/pivotalservices/tile-config-generator/commands.VERSION=${DRAFT_VERSION}" cmd/tile-config-generator/main.go

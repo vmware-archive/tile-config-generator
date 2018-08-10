@@ -15,11 +15,11 @@ resources:
     private_key: {{git-ssh-key}}
     ignore_paths: ["README.md","docs/*"]
 
-- name: draft-cfmgmt-resource
+- name: draft-resource
   type: github-release
   source:
     owner: pivotalservices
-    repository: cf-mgmt
+    repository: tile-config-generator
     access_token: {{github-token}}
     drafts: true
 
@@ -27,7 +27,7 @@ resources:
   type: github-release
   source:
     owner: pivotalservices
-    repository: cf-mgmt
+    repository: tile-config-generator
     access_token: {{github-token}}
 
 - name: docker-registry
@@ -48,17 +48,14 @@ jobs:
       file: source/ci/tasks/runTests.yml
     - task: build
       file: source/ci/tasks/build.yml
-    - put: draft-cfmgmt-resource
+    - put: draft-resource
       params:
         name: compiled-output/name
         tag: compiled-output/tag
         globs:
-        - compiled-output/cf-mgmt-linux
-        - compiled-output/cf-mgmt-osx
-        - compiled-output/cf-mgmt.exe
-        - compiled-output/cf-mgmt-config-linux
-        - compiled-output/cf-mgmt-config-osx
-        - compiled-output/cf-mgmt-config.exe
+        - compiled-output/tile-config-generator-linux
+        - compiled-output/tile-config-generator-osx
+        - compiled-output/tile-config-generator.exe
 - name: deploy
   plan:
     - aggregate:
