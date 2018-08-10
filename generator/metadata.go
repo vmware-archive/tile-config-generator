@@ -43,7 +43,7 @@ type ProvidesVersion struct {
 func (m *Metadata) UsesServiceNetwork() bool {
 	for _, job := range m.JobTypes {
 		for _, propertyMetadata := range job.PropertyMetadata {
-			if "service_network_az_single_select" == propertyMetadata.Type || "service_network_az_single_select" == propertyMetadata.Type {
+			if "service_network_az_multi_select" == propertyMetadata.Type || "service_network_az_single_select" == propertyMetadata.Type {
 				return true
 			}
 		}
