@@ -10,4 +10,4 @@ cp -R source/* ${WORKING_DIR}/.
 cd ${WORKING_DIR}
 go version
 dep ensure
-go test $(glide nv) -v
+go test ./generator -v
