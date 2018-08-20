@@ -7,10 +7,19 @@ import (
 	"os"
 	"path"
 
+	"gopkg.in/yaml.v2"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/pivotalservices/tile-config-generator/generator"
 )
+
+type Template struct {
+	NetworkProperties interface{} `yaml:"network-properties"`
+	ProductProperties interface{} `yaml:"product-properties"`
+	ResourceConfig    interface{} `yaml:"resource-config,omitempty"`
+	ErrandConfig      interface{} `yaml:"errand-config,omitempty"`
+}
 
 var _ = Describe("Executor", func() {
 	Context("CreateTemplate", func() {
@@ -155,13 +164,29 @@ var _ = Describe("Executor", func() {
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
-		It("Should generate files for pks", func() {
+		FIt("Should generate files for pks", func() {
 			zipPath = path.Join(tempDir, "pks.pivotal")
 			err := createZipFile("fixtures/pks.yml", zipPath)
 			Expect(err).ShouldNot(HaveOccurred())
 			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
+			template, err := unmarshalProduct(path.Join(tmpPath, "pivotal-container-service", "1.1.3-build.11", "product.yml"))
+			Expect(err).ShouldNot(HaveOccurred())
+			Expect(template.NetworkProperties).ShouldNot(BeNil())
+			Expect(template.ResourceConfig).ShouldNot(BeNil())
+		})
+		FIt("Should generate files for nsx-t", func() {
+			zipPath = path.Join(tempDir, "nsx-t.pivotal")
+			err := createZipFile("fixtures/nsx-t.yml", zipPath)
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			err = gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+			template, err := unmarshalProduct(path.Join(tmpPath, "VMware-NSX-T", "2.2.1.9149087", "product.yml"))
+			Expect(err).ShouldNot(HaveOccurred())
+			Expect(template.NetworkProperties).Should(BeNil())
+			Expect(template.ResourceConfig).Should(BeNil())
 		})
 	})
 })
@@ -192,4 +217,17 @@ func createZipFile(metadataFile string, targetFile string) error {
 		return err
 	}
 	return ioutil.WriteFile(targetFile, buf.Bytes(), 0755)
+}
+
+func unmarshalProduct(targetFile string) (*Template, error) {
+	template := &Template{}
+	yamlFile, err := ioutil.ReadFile(targetFile)
+	if err != nil {
+		return nil, err
+	}
+	err = yaml.Unmarshal(yamlFile, template)
+	if err != nil {
+		return nil, err
+	}
+	return template, nil
 }

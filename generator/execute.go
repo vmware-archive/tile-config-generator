@@ -81,7 +81,6 @@ func (e *Executor) Generate() error {
 
 	template.ProductName = providesName
 	template.ProductVersion = metadata.Version
-
 	if err = e.writeYamlFile(path.Join(targetDirectory, "product.yml"), template); err != nil {
 		return err
 	}
@@ -173,8 +172,10 @@ func (e *Executor) Generate() error {
 
 func (e *Executor) CreateTemplate(metadata *Metadata) (*Template, error) {
 	template := &Template{}
-	template.NetworkProperties = CreateNetworkProperties(metadata)
-	template.ResourceConfig = CreateResourceConfig(metadata)
+	if len(metadata.JobTypes) > 0 {
+		template.NetworkProperties = CreateNetworkProperties(metadata)
+		template.ResourceConfig = CreateResourceConfig(metadata)
+	}
 	productProperties, err := CreateProductProperties(metadata)
 	if err != nil {
 		return nil, err
