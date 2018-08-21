@@ -164,7 +164,7 @@ var _ = Describe("Executor", func() {
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
-		FIt("Should generate files for pks", func() {
+		It("Should generate files for pks", func() {
 			zipPath = path.Join(tempDir, "pks.pivotal")
 			err := createZipFile("fixtures/pks.yml", zipPath)
 			Expect(err).ShouldNot(HaveOccurred())
@@ -176,7 +176,7 @@ var _ = Describe("Executor", func() {
 			Expect(template.NetworkProperties).ShouldNot(BeNil())
 			Expect(template.ResourceConfig).ShouldNot(BeNil())
 		})
-		FIt("Should generate files for nsx-t", func() {
+		It("Should generate files for nsx-t", func() {
 			zipPath = path.Join(tempDir, "nsx-t.pivotal")
 			err := createZipFile("fixtures/nsx-t.yml", zipPath)
 			Expect(err).ShouldNot(HaveOccurred())
