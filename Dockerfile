@@ -12,3 +12,4 @@ RUN apk update && apk add bash
 COPY tile-config-generator-linux /usr/bin/tile-config-generator
 COPY --from=compilation /go/bin/om /usr/bin
 COPY --from=compilation /go/bin/bosh-cli /usr/bin/bosh
+RUN chmod +x /usr/bin/tile-config-generator
