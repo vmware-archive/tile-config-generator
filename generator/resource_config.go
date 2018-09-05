@@ -109,4 +109,11 @@ func AddResourceOpsFiles(jobName string, job jobtype, opsFiles map[string][]Ops)
 			Value: StringOpsValue(fmt.Sprintf("((%s_additional_vm_extensions))", jobName)),
 		},
 	}
+	opsFiles[fmt.Sprintf("%s_nsx_security_groups", jobName)] = []Ops{
+                Ops{
+                        Type:  "replace",
+                        Path:  fmt.Sprintf("/resource-config?/%s?/nsx_security_groups?", jobName),
+                        Value: StringOpsValue(fmt.Sprintf("((%s_nsx_security_groups))", jobName)),
+                },
+        }
 }
