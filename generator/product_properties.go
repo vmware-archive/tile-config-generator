@@ -139,23 +139,26 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 						}
 					}
 				}
-			}
-			if propertyMetadata.IsDropdown() {
-				var ops []Ops
-				opsFileName := strings.Replace(property.Reference, ".", "", 1)
-				opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
-				opsFileName = strings.Replace(opsFileName, ".", "-", -1)
-				ops = append(ops,
-					Ops{
-						Type:  "replace",
-						Path:  fmt.Sprintf("/product-properties/%s?", property.Reference),
-						Value: propertyMetadata.PropertyType(strings.Replace(property.Reference, ".", "", 1)),
-					},
-				)
-				opsFiles[fmt.Sprintf("add-%s", opsFileName)] = ops
-			} else if !propertyMetadata.IsRequired() && !propertyMetadata.IsSelector() {
-				if propertyMetadata.IsCollection() {
-					for i := 1; i <= 10; i++ {
+			} else {
+				if propertyMetadata.IsDropdown() {
+					var ops []Ops
+					opsFileName := strings.Replace(property.Reference, ".", "", 1)
+					opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
+					opsFileName = strings.Replace(opsFileName, ".", "-", -1)
+					ops = append(ops,
+						Ops{
+							Type:  "replace",
+							Path:  fmt.Sprintf("/product-properties/%s?", property.Reference),
+							Value: propertyMetadata.PropertyType(strings.Replace(property.Reference, ".", "", 1)),
+						},
+					)
+					opsFiles[fmt.Sprintf("add-%s", opsFileName)] = ops
+				} else if propertyMetadata.IsCollection() {
+					x := 1
+					if propertyMetadata.IsRequired() {
+						x = 2
+					}
+					for i := x; i <= 10; i++ {
 						var ops []Ops
 						opsFileName := strings.Replace(property.Reference, ".", "", 1)
 						opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
@@ -169,7 +172,7 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 						)
 						opsFiles[fmt.Sprintf("add-%d-%s", i, opsFileName)] = ops
 					}
-				} else {
+				} else if !propertyMetadata.IsRequired() {
 					var ops []Ops
 					opsFileName := strings.Replace(property.Reference, ".", "", 1)
 					opsFileName = strings.Replace(opsFileName, "properties.", "", 1)
