@@ -1,8 +1,8 @@
 package generator
 
 type Template struct {
-	ProductName       string                   `yaml:"product_name"`
-	ProductVersion    string                   `yaml:"product_version"`
+	ProductName       string                   `yaml:"product-name"`
+	ProductVersion    string                   `yaml:"product_version"` //is this used?
 	NetworkProperties *NetworkProperties       `yaml:"network-properties"`
 	ProductProperties map[string]PropertyValue `yaml:"product-properties"`
 	ResourceConfig    map[string]Resource      `yaml:"resource-config,omitempty"`
