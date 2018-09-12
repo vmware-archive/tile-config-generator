@@ -37,18 +37,12 @@ func (e *Executor) Generate() error {
 	if err != nil {
 		return err
 	}
-	var providesVersion string
-	var providesName string
-	if len(metadata.ProvidesVersions) > 0 {
-		providesVersion = metadata.ProvidesVersions[0].Version
-		providesName = metadata.ProvidesVersions[0].Name
-	} else {
-		providesVersion = metadata.Version
-		providesName = metadata.Name
-	}
+	productVersion := metadata.ProductVersion()
+	productName := metadata.ProductName()
+
 	targetDirectory := e.BaseDirectory
 	if !e.DoNotIncludeProductVersion {
-		targetDirectory = path.Join(e.BaseDirectory, providesName, providesVersion)
+		targetDirectory = path.Join(e.BaseDirectory, productName, productVersion)
 	}
 	if err = e.createDirectory(targetDirectory); err != nil {
 		return err
@@ -79,8 +73,8 @@ func (e *Executor) Generate() error {
 		return err
 	}
 
-	template.ProductName = providesName
-	template.ProductVersion = metadata.Version
+	template.ProductName = productName
+	template.ProductVersion = productVersion
 	if err = e.writeYamlFile(path.Join(targetDirectory, "product.yml"), template); err != nil {
 		return err
 	}

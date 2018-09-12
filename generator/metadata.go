@@ -40,6 +40,18 @@ type ProvidesVersion struct {
 	Version string `yaml:"version"`
 }
 
+func (m *Metadata) ProductName() string {
+	return m.Name
+}
+
+func (m *Metadata) ProductVersion() string {
+	if len(m.ProvidesVersions) > 0 {
+		return m.ProvidesVersions[0].Version
+	} else {
+		return m.Version
+	}
+}
+
 func (m *Metadata) UsesServiceNetwork() bool {
 	for _, job := range m.JobTypes {
 		for _, propertyMetadata := range job.PropertyMetadata {
