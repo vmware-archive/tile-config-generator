@@ -1,48 +1,42 @@
 package generator
 
 import (
-	"archive/zip"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
-	"regexp"
 
 	"gopkg.in/yaml.v2"
 )
 
 type Executor struct {
-	PathToPivotalFile          string
-	BaseDirectory              string
-	DoNotIncludeProductVersion bool
-	IncludeErrands             bool
+	metdataBytes               []byte
+	baseDirectory              string
+	doNotIncludeProductVersion bool
+	includeErrands             bool
 }
 
-func NewExecutor(filePath, baseDirectory string, doNotIncludeProductVersion, includeErrands bool) *Executor {
+func NewExecutor(metadataBytes []byte, baseDirectory string, doNotIncludeProductVersion, includeErrands bool) *Executor {
 	return &Executor{
-		PathToPivotalFile:          filePath,
-		BaseDirectory:              baseDirectory,
-		DoNotIncludeProductVersion: doNotIncludeProductVersion,
-		IncludeErrands:             includeErrands,
+		metdataBytes:               metadataBytes,
+		baseDirectory:              baseDirectory,
+		doNotIncludeProductVersion: doNotIncludeProductVersion,
+		includeErrands:             includeErrands,
 	}
 }
 
 func (e *Executor) Generate() error {
-	metadataBytes, err := extractMetadataBytes(e.PathToPivotalFile)
-	if err != nil {
-		return err
-	}
-	metadata, err := NewMetadata(metadataBytes)
+
+	metadata, err := NewMetadata(e.metdataBytes)
 	if err != nil {
 		return err
 	}
 	productVersion := metadata.ProductVersion()
 	productName := metadata.ProductName()
 
-	targetDirectory := e.BaseDirectory
-	if !e.DoNotIncludeProductVersion {
-		targetDirectory = path.Join(e.BaseDirectory, productName, productVersion)
+	targetDirectory := e.baseDirectory
+	if !e.doNotIncludeProductVersion {
+		targetDirectory = path.Join(e.baseDirectory, productName, productVersion)
 	}
 	if err = e.createDirectory(targetDirectory); err != nil {
 		return err
@@ -101,7 +95,7 @@ func (e *Executor) Generate() error {
 		}
 	}
 
-	if e.IncludeErrands {
+	if e.includeErrands {
 		errandVars := CreateErrandVars(metadata)
 
 		if len(errandVars) > 0 {
@@ -176,7 +170,7 @@ func (e *Executor) CreateTemplate(metadata *Metadata) (*Template, error) {
 		return nil, err
 	}
 	template.ProductProperties = productProperties
-	if e.IncludeErrands {
+	if e.includeErrands {
 		template.ErrandConfig = CreateErrandConfig(metadata)
 	}
 	return template, nil
@@ -191,30 +185,6 @@ func (e *Executor) createDirectory(path string) error {
 	}
 
 	return nil
-}
-
-func extractMetadataBytes(pathToPivotalFile string) ([]byte, error) {
-	zipReader, err := zip.OpenReader(pathToPivotalFile)
-	if err != nil {
-		return nil, err
-	}
-
-	defer zipReader.Close()
-
-	for _, file := range zipReader.File {
-		metadataRegexp := regexp.MustCompile("metadata/.*\\.yml")
-		matched := metadataRegexp.MatchString(file.Name)
-
-		if matched {
-			metadataFile, err := file.Open()
-			contents, err := ioutil.ReadAll(metadataFile)
-			if err != nil {
-				return nil, err
-			}
-			return contents, nil
-		}
-	}
-	return nil, errors.New("no metadata file was found in provided .pivotal")
 }
 
 func (e *Executor) writeYamlFile(targetFile string, dataType interface{}) error {

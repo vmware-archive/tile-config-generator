@@ -12,5 +12,9 @@ type Display struct {
 
 //Execute - shows table with tile details
 func (c *Display) Execute([]string) error {
-	return generator.NewDisplayer(c.PathToPivotalFile, os.Stdout).Display()
+	metadataBytes, err := extractMetadataBytes(c.PathToPivotalFile)
+	if err != nil {
+		return err
+	}
+	return generator.NewDisplayer(metadataBytes, os.Stdout).Display()
 }

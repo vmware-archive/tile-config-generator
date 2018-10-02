@@ -1,8 +1,6 @@
 package generator_test
 
 import (
-	"archive/zip"
-	"bytes"
 	"io/ioutil"
 	"os"
 	"path"
@@ -58,11 +56,9 @@ var _ = Describe("Executor", func() {
 	Context("Generate", func() {
 		var (
 			gen     *generator.Executor
-			pwd, _         = os.Getwd()
-			testGen        = path.Join(pwd, "_testGen")
-			tmpPath        = path.Join(testGen, "templates")
-			tempDir string = os.TempDir()
-			zipPath string
+			pwd, _  = os.Getwd()
+			testGen = path.Join(pwd, "_testGen")
+			tmpPath = path.Join(testGen, "templates")
 		)
 		BeforeEach(func() {
 
@@ -70,105 +66,92 @@ var _ = Describe("Executor", func() {
 		AfterEach(func() {
 			err := os.RemoveAll(testGen)
 			Expect(err).ShouldNot(HaveOccurred())
-			os.Remove(zipPath)
 		})
 
 		It("Should generate files for p-healthwatch", func() {
-			zipPath = path.Join(tempDir, "p-healthwatch.pivotal")
-			err := createZipFile("fixtures/p_healthwatch.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/p_healthwatch.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 
 		It("Should generate files for pas", func() {
-			zipPath = path.Join(tempDir, "pas.pivotal")
-			err := createZipFile("fixtures/pas.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/pas.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 		It("Should generate files for pas 2.2", func() {
-			zipPath = path.Join(tempDir, "pas.pivotal")
-			err := createZipFile("fixtures/pas_2_2.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/pas_2_2.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 		It("Should generate files for mysql_v2", func() {
-			zipPath = path.Join(tempDir, "mysql.pivotal")
-			err := createZipFile("fixtures/mysql_v2.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/mysql_v2.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 		It("Should generate files for scs", func() {
-			zipPath = path.Join(tempDir, "scs.pivotal")
-			err := createZipFile("fixtures/scs.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/scs.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 		It("Should generate files for srt", func() {
-			zipPath = path.Join(tempDir, "srt.pivotal")
-			err := createZipFile("fixtures/srt.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/srt.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, true, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, true, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 
 		It("Should generate files for push notifications", func() {
-			zipPath = path.Join(tempDir, "push_notifications.pivotal")
-			err := createZipFile("fixtures/p_push_notifications.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/p_push_notifications.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 
 		It("Should generate files for pivotal cloud cache", func() {
-			zipPath = path.Join(tempDir, "pcc.pivotal")
-			err := createZipFile("fixtures/cloudcache.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/cloudcache.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 		It("Should generate files for rabbitmq", func() {
-			zipPath = path.Join(tempDir, "rabbit.pivotal")
-			err := createZipFile("fixtures/rabbit-mq.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/rabbit-mq.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 		It("Should generate files for redis", func() {
-			zipPath = path.Join(tempDir, "redis.pivotal")
-			err := createZipFile("fixtures/p-redis.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/p-redis.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 		It("Should generate files for apigee", func() {
-			zipPath = path.Join(tempDir, "apigee.pivotal")
-			err := createZipFile("fixtures/apigee.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/apigee.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 		It("Should generate files for pks", func() {
-			zipPath = path.Join(tempDir, "pks.pivotal")
-			err := createZipFile("fixtures/pks.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/pks.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 			template, err := unmarshalProduct(path.Join(tmpPath, "pivotal-container-service", "1.1.3-build.11", "product.yml"))
@@ -177,10 +160,9 @@ var _ = Describe("Executor", func() {
 			Expect(template.ResourceConfig).ShouldNot(BeNil())
 		})
 		It("Should generate files for nsx-t", func() {
-			zipPath = path.Join(tempDir, "nsx-t.pivotal")
-			err := createZipFile("fixtures/nsx-t.yml", zipPath)
+			metadataBytes, err := getFileBytes("fixtures/nsx-t.yml")
 			Expect(err).ShouldNot(HaveOccurred())
-			gen = generator.NewExecutor(zipPath, tmpPath, false, true)
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 			template, err := unmarshalProduct(path.Join(tmpPath, "VMware-NSX-T", "2.2.1.9149087", "product.yml"))
@@ -191,32 +173,8 @@ var _ = Describe("Executor", func() {
 	})
 })
 
-func createZipFile(metadataFile string, targetFile string) error {
-	// Create a buffer to write our archive to.
-	buf := new(bytes.Buffer)
-
-	// Create a new zip archive.
-	w := zip.NewWriter(buf)
-
-	fileData, err := ioutil.ReadFile(metadataFile)
-	if err != nil {
-		return err
-	}
-	f, err := w.Create("metadata/metadata.yml")
-	if err != nil {
-		return err
-	}
-	_, err = f.Write(fileData)
-	if err != nil {
-		return err
-	}
-
-	// Make sure to check the error on Close.
-	err = w.Close()
-	if err != nil {
-		return err
-	}
-	return ioutil.WriteFile(targetFile, buf.Bytes(), 0755)
+func getFileBytes(metadataFile string) ([]byte, error) {
+	return ioutil.ReadFile(metadataFile)
 }
 
 func unmarshalProduct(targetFile string) (*Template, error) {

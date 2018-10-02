@@ -13,5 +13,10 @@ type Generate struct {
 
 //Execute - generates config template and ops files
 func (c *Generate) Execute([]string) error {
-	return generator.NewExecutor(c.PathToPivotalFile, c.BaseDirectory, c.DoNotIncludeProductVersion, c.IncludeErrands).Generate()
+
+	metadataBytes, err := extractMetadataBytes(c.PathToPivotalFile)
+	if err != nil {
+		return err
+	}
+	return generator.NewExecutor(metadataBytes, c.BaseDirectory, c.DoNotIncludeProductVersion, c.IncludeErrands).Generate()
 }

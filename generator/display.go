@@ -10,23 +10,19 @@ import (
 )
 
 type Displayer struct {
-	PathToPivotalFile string
-	Writer            io.Writer
+	metadataBytes []byte
+	writer        io.Writer
 }
 
-func NewDisplayer(filePath string, writer io.Writer) *Displayer {
+func NewDisplayer(metadataBytes []byte, writer io.Writer) *Displayer {
 	return &Displayer{
-		PathToPivotalFile: filePath,
-		Writer:            writer,
+		metadataBytes: metadataBytes,
+		writer:        writer,
 	}
 }
 
 func (d *Displayer) Display() error {
-	metadataBytes, err := extractMetadataBytes(d.PathToPivotalFile)
-	if err != nil {
-		return err
-	}
-	metadata, err := NewMetadata(metadataBytes)
+	metadata, err := NewMetadata(d.metadataBytes)
 	if err != nil {
 		return err
 	}
@@ -36,30 +32,30 @@ func (d *Displayer) Display() error {
 		return err
 	}
 
-	d.Writer.Write([]byte("\n"))
+	d.writer.Write([]byte("\n"))
 	err = d.defaultsTable(metadata)
 	if err != nil {
 		return err
 	}
 
-	d.Writer.Write([]byte("\n"))
+	d.writer.Write([]byte("\n"))
 	err = d.requiredWithNoDefaultsTable(metadata)
 	if err != nil {
 		return err
 	}
 
-	d.Writer.Write([]byte("\n"))
+	d.writer.Write([]byte("\n"))
 	err = d.resourceDefaultsTable(metadata)
 	if err != nil {
 		return err
 	}
-	d.Writer.Write([]byte("\n"))
+	d.writer.Write([]byte("\n"))
 	err = d.errandDefaultsTable(metadata)
 	if err != nil {
 		return err
 	}
 
-	d.Writer.Write([]byte("\n"))
+	d.writer.Write([]byte("\n"))
 	opsFiles, err := CreateProductPropertiesFeaturesOpsFiles(metadata)
 	if err != nil {
 		return err
@@ -69,7 +65,7 @@ func (d *Displayer) Display() error {
 		return err
 	}
 
-	d.Writer.Write([]byte("\n"))
+	d.writer.Write([]byte("\n"))
 	opsFiles, err = CreateProductPropertiesOptionalOpsFiles(metadata)
 	if err != nil {
 		return err
@@ -79,7 +75,7 @@ func (d *Displayer) Display() error {
 		return err
 	}
 
-	d.Writer.Write([]byte("\n"))
+	d.writer.Write([]byte("\n"))
 	opsFiles, err = CreateResourceOpsFiles(metadata)
 	if err != nil {
 		return err
@@ -89,7 +85,7 @@ func (d *Displayer) Display() error {
 		return err
 	}
 
-	d.Writer.Write([]byte("\n"))
+	d.writer.Write([]byte("\n"))
 	opsFiles, err = CreateNetworkOpsFiles(metadata)
 	if err != nil {
 		return err
@@ -124,9 +120,9 @@ func (d *Displayer) requiredTable(metadata *Metadata) error {
 		}
 	}
 
-	d.Writer.Write([]byte("*****  Required Properties ******* (product.yml) \n"))
+	d.writer.Write([]byte("*****  Required Properties ******* (product.yml) \n"))
 
-	table := tablewriter.NewWriter(d.Writer)
+	table := tablewriter.NewWriter(d.writer)
 	table.SetAutoWrapText(false)
 	table.SetRowLine(true)
 	table.SetReflowDuringAutoWrap(false)
@@ -173,9 +169,9 @@ func (d *Displayer) requiredWithNoDefaultsTable(metadata *Metadata) error {
 
 	}
 
-	d.Writer.Write([]byte("*****  Required Properties With No Default *******\n"))
+	d.writer.Write([]byte("*****  Required Properties With No Default *******\n"))
 
-	table := tablewriter.NewWriter(d.Writer)
+	table := tablewriter.NewWriter(d.writer)
 	table.SetAutoWrapText(false)
 	table.SetRowLine(true)
 	table.SetReflowDuringAutoWrap(false)
@@ -208,9 +204,9 @@ func (d *Displayer) defaultsTable(metadata *Metadata) error {
 		data = append(data, []string{propertyName, fmt.Sprintf("%v", value)})
 	}
 
-	d.Writer.Write([]byte("*****  Default Property Values ******* (product-default-vars.yml) \n"))
+	d.writer.Write([]byte("*****  Default Property Values ******* (product-default-vars.yml) \n"))
 
-	table := tablewriter.NewWriter(d.Writer)
+	table := tablewriter.NewWriter(d.writer)
 	table.SetAutoWrapText(false)
 	table.SetRowLine(true)
 	table.SetReflowDuringAutoWrap(false)
@@ -240,9 +236,9 @@ func (d *Displayer) resourceDefaultsTable(metadata *Metadata) error {
 		data = append(data, []string{propertyName, fmt.Sprintf("%v", value)})
 	}
 
-	d.Writer.Write([]byte("*****  Resource Property Values ******* (resource-vars.yml) \n"))
+	d.writer.Write([]byte("*****  Resource Property Values ******* (resource-vars.yml) \n"))
 
-	table := tablewriter.NewWriter(d.Writer)
+	table := tablewriter.NewWriter(d.writer)
 	table.SetAutoWrapText(false)
 	table.SetRowLine(true)
 	table.SetReflowDuringAutoWrap(false)
@@ -272,9 +268,9 @@ func (d *Displayer) errandDefaultsTable(metadata *Metadata) error {
 		data = append(data, []string{propertyName, fmt.Sprintf("%v", value)})
 	}
 
-	d.Writer.Write([]byte("*****  Errand Property Values ******* (errand-vars.yml) \n"))
+	d.writer.Write([]byte("*****  Errand Property Values ******* (errand-vars.yml) \n"))
 
-	table := tablewriter.NewWriter(d.Writer)
+	table := tablewriter.NewWriter(d.writer)
 	table.SetAutoWrapText(false)
 	table.SetRowLine(true)
 	table.SetReflowDuringAutoWrap(false)
@@ -310,9 +306,9 @@ func (d *Displayer) operationsFileTable(operationsFiles map[string][]Ops, prefix
 		data = append(data, []string{fmt.Sprintf("%s/%s.yml", prefix, fileName), strings.Join(parameters, "\n")})
 	}
 
-	d.Writer.Write([]byte(fmt.Sprintf("*****  %s Operations Files ******* \n", description)))
+	d.writer.Write([]byte(fmt.Sprintf("*****  %s Operations Files ******* \n", description)))
 
-	table := tablewriter.NewWriter(d.Writer)
+	table := tablewriter.NewWriter(d.writer)
 	table.SetAutoWrapText(false)
 	table.SetRowLine(true)
 	table.SetReflowDuringAutoWrap(false)
