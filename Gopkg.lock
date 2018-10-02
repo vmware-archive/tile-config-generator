@@ -32,10 +32,22 @@
   version = "v1.3.0"
 
 [[projects]]
+  name = "github.com/pivotal-cf/go-pivnet"
+  packages = [".","download","logger","logshim"]
+  revision = "ef1eaf8cfb531ed28bfa0a8cb617119f541df3e4"
+  version = "v0.0.48"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = ["html","html/atom","html/charset"]
+  packages = ["context","html","html/atom","html/charset"]
   revision = "640f4622ab692b87c2f3a94265e6f579fe38263d"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sync"
+  packages = ["errgroup"]
+  revision = "1d60e4601c6fd243af51cc01ddf169918a5407ca"
 
 [[projects]]
   branch = "master"
@@ -50,14 +62,26 @@
   version = "v0.3.0"
 
 [[projects]]
+  name = "gopkg.in/cheggaaa/pb.v1"
+  packages = ["."]
+  revision = "2af8bbdea9e99e83b3ac400d8f6b6d1b8cbbf338"
+  version = "v1.0.25"
+
+[[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
   version = "v2.2.1"
 
+[[projects]]
+  branch = "master"
+  name = "howett.net/ranger"
+  packages = ["."]
+  revision = "e2e137620847062fc5c81aba252b1a1783862503"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cb2570c8fca48153dc630379d6eba0b38683ad2e725869fda7d1503060208abf"
+  inputs-digest = "e76288749b5938e469b3c4d445bac6293773cac890791649f1be158a4129ad70"
   solver-name = "gps-cdcl"
   solver-version = 1

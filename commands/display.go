@@ -7,12 +7,14 @@ import (
 )
 
 type Display struct {
-	PathToPivotalFile string `long:"pivotal-file-path" description:"path to pivotal file" required:"true"`
+	PathToPivotalFile string               `long:"pivotal-file-path" description:"path to pivotal file"`
+	Pivnet            *PivnetConfiguration `group:"pivnet"`
 }
 
 //Execute - shows table with tile details
 func (c *Display) Execute([]string) error {
-	metadataBytes, err := extractMetadataBytes(c.PathToPivotalFile)
+	provider := getProvider(c.PathToPivotalFile, c.Pivnet)
+	metadataBytes, err := provider.MetadataBytes()
 	if err != nil {
 		return err
 	}

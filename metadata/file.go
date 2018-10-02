@@ -1,23 +1,24 @@
-package commands
+package metadata
 
 import (
 	"archive/zip"
 	"errors"
 	"io/ioutil"
 	"regexp"
-
-	"github.com/pivotalservices/tile-config-generator/metadata"
 )
 
-func getProvider(pathToPivotalFile string, pivnet *PivnetConfiguration) metadata.Provider {
-	if pivnet != nil {
-		return metadata.NewPivnetProvider(pivnet.Token, pivnet.Slug, pivnet.Version, pivnet.Glob)
-	} else {
-		return metadata.NewFileProvider(pathToPivotalFile)
+func NewFileProvider(pathToPivotalFile string) Provider {
+	return &FileProvider{
+		pathToPivotalFile: pathToPivotalFile,
 	}
 }
-func extractMetadataBytes(pathToPivotalFile string) ([]byte, error) {
-	zipReader, err := zip.OpenReader(pathToPivotalFile)
+
+type FileProvider struct {
+	pathToPivotalFile string
+}
+
+func (f *FileProvider) MetadataBytes() ([]byte, error) {
+	zipReader, err := zip.OpenReader(f.pathToPivotalFile)
 	if err != nil {
 		return nil, err
 	}
