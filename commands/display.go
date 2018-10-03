@@ -13,7 +13,10 @@ type Display struct {
 
 //Execute - shows table with tile details
 func (c *Display) Execute([]string) error {
-	provider := getProvider(c.PathToPivotalFile, c.Pivnet)
+	provider, err := getProvider(c.PathToPivotalFile, c.Pivnet)
+	if err != nil {
+		return err
+	}
 	metadataBytes, err := provider.MetadataBytes()
 	if err != nil {
 		return err

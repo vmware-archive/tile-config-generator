@@ -9,11 +9,14 @@ import (
 	"github.com/pivotalservices/tile-config-generator/metadata"
 )
 
-func getProvider(pathToPivotalFile string, pivnet *PivnetConfiguration) metadata.Provider {
-	if pivnet != nil {
-		return metadata.NewPivnetProvider(pivnet.Token, pivnet.Slug, pivnet.Version, pivnet.Glob)
+func getProvider(pathToPivotalFile string, pivnet *PivnetConfiguration) (metadata.Provider, error) {
+	if pathToPivotalFile != "" {
+		return metadata.NewFileProvider(pathToPivotalFile), nil
 	} else {
-		return metadata.NewFileProvider(pathToPivotalFile)
+		if pivnet.Token == "" || pivnet.Slug == "" || pivnet.Version == "" {
+			return nil, errors.New("Must provide either --pivotal-file-path or pivnet --token --product-slug --product-version")
+		}
+		return metadata.NewPivnetProvider(pivnet.Token, pivnet.Slug, pivnet.Version, pivnet.Glob), nil
 	}
 }
 func extractMetadataBytes(pathToPivotalFile string) ([]byte, error) {
