@@ -144,6 +144,12 @@ func (d *Displayer) requiredWithNoDefaultsTable(metadata *Metadata) error {
 	}
 
 	var data [][]string
+	networkProperties := CreateNetworkProperties(metadata)
+	data = append(data, []string{strings.Trim(networkProperties.Network.Name, "()")})
+	if metadata.UsesServiceNetwork() {
+		data = append(data, []string{strings.Trim(networkProperties.ServiceNetwork.Name, "()")})
+	}
+	data = append(data, []string{strings.Trim(networkProperties.SingletonAvailabilityZone.Name, "()")})
 
 	var keys []string
 	for k := range requiredProperties {
