@@ -91,7 +91,19 @@ func (p *PropertyMetadata) CollectionPropertyType(propertyName string) PropertyV
 				arrayProperties := make(map[string]SimpleType)
 				defaultMap := defaultValues.(map[interface{}]interface{})
 				for key, value := range defaultMap {
-					arrayProperties[key.(string)] = SimpleString(value.(string))
+					if value != nil {
+						switch value.(type) {
+						case string:
+							arrayProperties[key.(string)] = SimpleString(value.(string))
+						case bool:
+							arrayProperties[key.(string)] = SimpleBoolean(value.(bool))
+						case int:
+							arrayProperties[key.(string)] = SimpleInteger(value.(int))
+
+						default:
+							panic(fmt.Sprintf("Value %v is not known", value))
+						}
+					}
 				}
 				for _, subProperty := range p.PropertyMetadata {
 					if _, ok := arrayProperties[subProperty.Name]; !ok {

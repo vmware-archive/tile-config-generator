@@ -14,6 +14,34 @@ type SimpleType interface {
 
 type SimpleString string
 
+func (s SimpleString) Parameters() []string {
+	return []string{fmt.Sprintf("%v", s)}
+}
+
+func (s SimpleString) IsSelector() bool {
+	return false
+}
+
+type SimpleBoolean bool
+
+func (s SimpleBoolean) Parameters() []string {
+	return []string{fmt.Sprintf("%v", s)}
+}
+
+func (s SimpleBoolean) IsSelector() bool {
+	return false
+}
+
+type SimpleInteger int
+
+func (s SimpleInteger) Parameters() []string {
+	return []string{fmt.Sprintf("%v", s)}
+}
+
+func (s SimpleInteger) IsSelector() bool {
+	return false
+}
+
 type SelectorValue struct {
 	Value string `yaml:"value"`
 }
@@ -100,14 +128,6 @@ func (s *CertificateValue) Parameters() []string {
 }
 
 func (s *CertificateValue) IsSelector() bool {
-	return false
-}
-
-func (s SimpleString) Parameters() []string {
-	return []string{fmt.Sprintf("%v", s)}
-}
-
-func (s SimpleString) IsSelector() bool {
 	return false
 }
 

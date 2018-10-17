@@ -170,6 +170,14 @@ var _ = Describe("Executor", func() {
 			Expect(template.NetworkProperties).Should(BeNil())
 			Expect(template.ResourceConfig).Should(BeNil())
 		})
+
+		It("Should generate files for aws-services", func() {
+			metadataBytes, err := getFileBytes("fixtures/aws-services.yml")
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
+			err = gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+		})
 	})
 })
 
