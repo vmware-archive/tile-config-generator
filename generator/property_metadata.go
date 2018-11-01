@@ -184,11 +184,16 @@ func (p *PropertyMetadata) PropertyType(propertyName string) PropertyValue {
 	propertyName = strings.Replace(propertyName, "properties.", "", 1)
 	propertyName = strings.Replace(propertyName, ".", "/", -1)
 	if p.IsSelector() {
-		if p.Default != nil {
-			return &SelectorValue{
-				Value: fmt.Sprintf("%s", p.Default),
-			}
+		// if p.Default != nil {
+		var av []string
+		for _, opt := range p.OptionTemplates {
+			av = append(av, opt.SelectValue)
 		}
+		return &SelectorValue{
+			Value: fmt.Sprintf("%s", p.Default),
+			AV:    av,
+		}
+		// }
 	}
 	if p.IsCertificate() {
 		return &CertificateValueHolder{

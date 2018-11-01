@@ -5,6 +5,7 @@ import "fmt"
 type PropertyValue interface {
 	Parameters() []string
 	IsSelector() bool
+	AllowedValues() []string
 }
 
 type SimpleType interface {
@@ -22,6 +23,11 @@ func (s SimpleString) IsSelector() bool {
 	return false
 }
 
+func (s SimpleString) AllowedValues() []string {
+	var av []string
+	return av
+}
+
 type SimpleBoolean bool
 
 func (s SimpleBoolean) Parameters() []string {
@@ -30,6 +36,11 @@ func (s SimpleBoolean) Parameters() []string {
 
 func (s SimpleBoolean) IsSelector() bool {
 	return false
+}
+
+func (s SimpleBoolean) AllowedValues() []string {
+	var av []string
+	return av
 }
 
 type SimpleInteger int
@@ -42,8 +53,14 @@ func (s SimpleInteger) IsSelector() bool {
 	return false
 }
 
+func (s SimpleInteger) AllowedValues() []string {
+	var av []string
+	return av
+}
+
 type SelectorValue struct {
 	Value string `yaml:"value"`
+	AV    []string
 }
 
 func (s *SelectorValue) Parameters() []string {
@@ -51,6 +68,9 @@ func (s *SelectorValue) Parameters() []string {
 }
 func (s *SelectorValue) IsSelector() bool {
 	return true
+}
+func (s *SelectorValue) AllowedValues() []string {
+	return s.AV
 }
 
 type SimpleValue struct {
@@ -65,6 +85,11 @@ func (s *SimpleValue) IsSelector() bool {
 	return false
 }
 
+func (s *SimpleValue) AllowedValues() []string {
+	var av []string
+	return av
+}
+
 type SimpleCredentialValueHolder struct {
 	Value *SimpleCredentialValue `yaml:"value"`
 }
@@ -75,6 +100,11 @@ func (s *SimpleCredentialValueHolder) Parameters() []string {
 
 func (s *SimpleCredentialValueHolder) IsSelector() bool {
 	return false
+}
+
+func (s *SimpleCredentialValueHolder) AllowedValues() []string {
+	var av []string
+	return av
 }
 
 type SecretValueHolder struct {
@@ -89,6 +119,11 @@ func (s *SecretValueHolder) IsSelector() bool {
 	return false
 }
 
+func (s *SecretValueHolder) AllowedValues() []string {
+	var av []string
+	return av
+}
+
 type SecretValue struct {
 	Value string `yaml:"secret"`
 }
@@ -99,6 +134,11 @@ func (s *SecretValue) Parameters() []string {
 
 func (s *SecretValue) IsSelector() bool {
 	return false
+}
+
+func (s *SecretValue) AllowedValues() []string {
+	var av []string
+	return av
 }
 
 type SimpleCredentialValue struct {
@@ -118,6 +158,11 @@ func (s *CertificateValueHolder) IsSelector() bool {
 	return false
 }
 
+func (s *CertificateValueHolder) AllowedValues() []string {
+	var av []string
+	return av
+}
+
 type CertificateValue struct {
 	CertPem        string `yaml:"cert_pem"`
 	CertPrivateKey string `yaml:"private_key_pem"`
@@ -129,6 +174,11 @@ func (s *CertificateValue) Parameters() []string {
 
 func (s *CertificateValue) IsSelector() bool {
 	return false
+}
+
+func (s *CertificateValue) AllowedValues() []string {
+	var av []string
+	return av
 }
 
 type CollectionsPropertiesValueHolder struct {
@@ -148,4 +198,9 @@ func (s *CollectionsPropertiesValueHolder) Parameters() []string {
 
 func (s *CollectionsPropertiesValueHolder) IsSelector() bool {
 	return false
+}
+
+func (s *CollectionsPropertiesValueHolder) AllowedValues() []string {
+	var av []string
+	return av
 }

@@ -23,6 +23,7 @@ type Property struct {
 	Placeholder string             `yaml:"placeholder"`
 	Reference   string             `yaml:"reference"`
 	Selectors   []SelectorProperty `yaml:"selector_property_inputs"`
+	Properties  []Property         `yaml:"property_inputs"`
 }
 
 type SelectorProperty struct {
