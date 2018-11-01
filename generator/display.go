@@ -130,9 +130,6 @@ func (d *Displayer) requiredTable(metadata *Metadata) error {
 				}
 			}
 		}
-		fmt.Println(property.IsSelector())
-		fmt.Println(property.Parameters())
-		fmt.Println(property.AllowedValues())
 		data = append(data, []string{propertyName, strings.Join(parameters, "\n"), strings.Join(description, "\n"), strings.Join(property.AllowedValues(), "\n")})
 		// }
 	}
