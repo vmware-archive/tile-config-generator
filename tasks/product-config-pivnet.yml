@@ -1,0 +1,22 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: pivotalservices/tile-config-generator
+outputs:
+- name: config
+params:
+  PIVNET_TOKEN:
+  PIVNET_PRODUCT_SLUG:
+  PIVNET_PRODUCT_VERSION:
+  PIVNET_PRODUCT_GLOB: *.pivotal
+run:
+  path: bash
+  args:
+    - -c
+    - |
+      set -e
+      tile-config-generator generate --base-directory config --do-not-include-product-version pivnet
+
+      tile-config-generator display pivnet
