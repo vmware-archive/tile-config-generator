@@ -7,7 +7,7 @@ RUN go get -u github.com/pivotal-cf/om
 RUN go get -u github.com/cloudfoundry/bosh-cli
 FROM alpine
 
-RUN apk update && apk add bash
+RUN apk update && apk add ca-certificates && apk add bash
 
 COPY tile-config-generator-linux /usr/bin/tile-config-generator
 COPY --from=compilation /go/bin/om /usr/bin
