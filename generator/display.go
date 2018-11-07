@@ -113,24 +113,24 @@ func (d *Displayer) requiredTable(metadata *Metadata) error {
 	sort.Strings(keys)
 
 	for _, propertyName := range keys {
-		var description []string
+		// var description []string
 		property := requiredProperties[propertyName]
 		if !property.IsSelector() {
 			parameters := d.cleanParamaters(property.Parameters())
-			for _, formType := range metadata.FormTypes {
-				for _, p := range formType.Properties {
-					if strings.EqualFold(p.Reference, propertyName) {
-						if len(p.Properties) > 0 {
-							for _, pi := range p.Properties {
-								description = append(description, pi.Description)
-							}
-						} else {
-							description = append(description, p.Description)
-						}
-					}
-				}
-			}
-			data = append(data, []string{propertyName, strings.Join(parameters, "\n"), strings.Join(description, "\n"), strings.Join(property.AllowedValues(), "\n")})
+			// for _, formType := range metadata.FormTypes {
+			// 	for _, p := range formType.Properties {
+			// 		if strings.EqualFold(p.Reference, propertyName) {
+			// 			if len(p.Properties) > 0 {
+			// 				for _, pi := range p.Properties {
+			// 					description = append(description, pi.Description)
+			// 				}
+			// 			} else {
+			// 				description = append(description, p.Description)
+			// 			}
+			// 		}
+			// 	}
+			// }
+			data = append(data, []string{propertyName, strings.Join(parameters, "\n"), strings.Join(property.AllowedValues(), "\n")})
 		}
 	}
 
@@ -141,7 +141,7 @@ func (d *Displayer) requiredTable(metadata *Metadata) error {
 	table.SetRowLine(true)
 	table.SetReflowDuringAutoWrap(true)
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
-	table.SetHeader([]string{"Name", "Parameter", "Description", "Allowed Values"})
+	table.SetHeader([]string{"Name", "Parameter", "Allowed Values"})
 
 	for _, v := range data {
 		table.Append(v)
