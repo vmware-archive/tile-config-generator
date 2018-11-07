@@ -6,6 +6,7 @@ type PropertyValue interface {
 	Parameters() []string
 	IsSelector() bool
 	AllowedValues() []string
+	IsSetByFeatureFile() bool
 }
 
 type SimpleType interface {
@@ -24,8 +25,11 @@ func (s SimpleString) IsSelector() bool {
 }
 
 func (s SimpleString) AllowedValues() []string {
-	var av []string
-	return av
+	return nil
+}
+
+func (s SimpleString) IsSetByFeatureFile() bool {
+	return false
 }
 
 type SimpleBoolean bool
@@ -39,8 +43,11 @@ func (s SimpleBoolean) IsSelector() bool {
 }
 
 func (s SimpleBoolean) AllowedValues() []string {
-	var av []string
-	return av
+	return nil
+}
+
+func (s SimpleBoolean) IsSetByFeatureFile() bool {
+	return false
 }
 
 type SimpleInteger int
@@ -54,13 +61,16 @@ func (s SimpleInteger) IsSelector() bool {
 }
 
 func (s SimpleInteger) AllowedValues() []string {
-	var av []string
-	return av
+	return nil
+}
+
+func (s SimpleInteger) IsSetByFeatureFile() bool {
+	return false
 }
 
 type SelectorValue struct {
-	Value string `yaml:"value"`
-	AV    []string
+	Value string   `yaml:"value"`
+	AV    []string `yaml:"-"`
 }
 
 func (s *SelectorValue) Parameters() []string {
@@ -72,9 +82,14 @@ func (s *SelectorValue) IsSelector() bool {
 func (s *SelectorValue) AllowedValues() []string {
 	return s.AV
 }
+func (s *SelectorValue) IsSetByFeatureFile() bool {
+	return false
+}
 
 type SimpleValue struct {
-	Value string `yaml:"value"`
+	Value            string   `yaml:"value"`
+	AV               []string `yaml:"-"`
+	SetByFeatureFile bool     `yaml:"-"`
 }
 
 func (s *SimpleValue) Parameters() []string {
@@ -86,8 +101,11 @@ func (s *SimpleValue) IsSelector() bool {
 }
 
 func (s *SimpleValue) AllowedValues() []string {
-	var av []string
-	return av
+	return s.AV
+}
+
+func (s *SimpleValue) IsSetByFeatureFile() bool {
+	return s.SetByFeatureFile
 }
 
 type SimpleCredentialValueHolder struct {
@@ -103,8 +121,11 @@ func (s *SimpleCredentialValueHolder) IsSelector() bool {
 }
 
 func (s *SimpleCredentialValueHolder) AllowedValues() []string {
-	var av []string
-	return av
+	return nil
+}
+
+func (s *SimpleCredentialValueHolder) IsSetByFeatureFile() bool {
+	return false
 }
 
 type SecretValueHolder struct {
@@ -120,8 +141,11 @@ func (s *SecretValueHolder) IsSelector() bool {
 }
 
 func (s *SecretValueHolder) AllowedValues() []string {
-	var av []string
-	return av
+	return nil
+}
+
+func (s *SecretValueHolder) IsSetByFeatureFile() bool {
+	return false
 }
 
 type SecretValue struct {
@@ -137,8 +161,11 @@ func (s *SecretValue) IsSelector() bool {
 }
 
 func (s *SecretValue) AllowedValues() []string {
-	var av []string
-	return av
+	return nil
+}
+
+func (s *SecretValue) IsSetByFeatureFile() bool {
+	return false
 }
 
 type SimpleCredentialValue struct {
@@ -159,8 +186,11 @@ func (s *CertificateValueHolder) IsSelector() bool {
 }
 
 func (s *CertificateValueHolder) AllowedValues() []string {
-	var av []string
-	return av
+	return nil
+}
+
+func (s *CertificateValueHolder) IsSetByFeatureFile() bool {
+	return false
 }
 
 type CertificateValue struct {
@@ -177,8 +207,11 @@ func (s *CertificateValue) IsSelector() bool {
 }
 
 func (s *CertificateValue) AllowedValues() []string {
-	var av []string
-	return av
+	return nil
+}
+
+func (s *CertificateValue) IsSetByFeatureFile() bool {
+	return false
 }
 
 type CollectionsPropertiesValueHolder struct {
@@ -201,6 +234,9 @@ func (s *CollectionsPropertiesValueHolder) IsSelector() bool {
 }
 
 func (s *CollectionsPropertiesValueHolder) AllowedValues() []string {
-	var av []string
-	return av
+	return nil
+}
+
+func (s *CollectionsPropertiesValueHolder) IsSetByFeatureFile() bool {
+	return false
 }

@@ -183,17 +183,17 @@ func (p *PropertyMetadata) CollectionOpsFile(numOfElements int, propertyName str
 func (p *PropertyMetadata) PropertyType(propertyName string) PropertyValue {
 	propertyName = strings.Replace(propertyName, "properties.", "", 1)
 	propertyName = strings.Replace(propertyName, ".", "/", -1)
+	var av []string
 	if p.IsSelector() {
-		// if p.Default != nil {
-		var av []string
 		for _, opt := range p.OptionTemplates {
 			av = append(av, opt.SelectValue)
 		}
-		return &SelectorValue{
-			Value: fmt.Sprintf("%s", p.Default),
-			AV:    av,
+		if p.Default != nil {
+			return &SelectorValue{
+				Value: fmt.Sprintf("%s", p.Default),
+				AV:    av,
+			}
 		}
-		// }
 	}
 	if p.IsCertificate() {
 		return &CertificateValueHolder{
@@ -219,8 +219,24 @@ func (p *PropertyMetadata) PropertyType(propertyName string) PropertyValue {
 			},
 		}
 	}
+
+	if len(p.Options) > 1 {
+		if p.IsString() {
+			for _, opt := range p.Options {
+				av = append(av, opt.Name.(string))
+			}
+		}
+		if p.IsInt() {
+			for _, opt := range p.Options {
+				av = append(av, string(opt.Name.(int)))
+			}
+		}
+	}
+
 	return &SimpleValue{
-		Value: fmt.Sprintf("((%s))", propertyName),
+		Value:            fmt.Sprintf("((%s))", propertyName),
+		AV:               av,
+		SetByFeatureFile: p.IsSelector(),
 	}
 }
 

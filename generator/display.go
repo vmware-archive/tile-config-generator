@@ -115,23 +115,23 @@ func (d *Displayer) requiredTable(metadata *Metadata) error {
 	for _, propertyName := range keys {
 		var description []string
 		property := requiredProperties[propertyName]
-		// if !property.IsSelector() {
-		parameters := d.cleanParamaters(property.Parameters())
-		for _, formType := range metadata.FormTypes {
-			for _, p := range formType.Properties {
-				if strings.EqualFold(p.Reference, propertyName) {
-					if len(p.Properties) > 0 {
-						for _, pi := range p.Properties {
-							description = append(description, pi.Description)
+		if !property.IsSelector() {
+			parameters := d.cleanParamaters(property.Parameters())
+			for _, formType := range metadata.FormTypes {
+				for _, p := range formType.Properties {
+					if strings.EqualFold(p.Reference, propertyName) {
+						if len(p.Properties) > 0 {
+							for _, pi := range p.Properties {
+								description = append(description, pi.Description)
+							}
+						} else {
+							description = append(description, p.Description)
 						}
-					} else {
-						description = append(description, p.Description)
 					}
 				}
 			}
+			data = append(data, []string{propertyName, strings.Join(parameters, "\n"), strings.Join(description, "\n"), strings.Join(property.AllowedValues(), "\n")})
 		}
-		data = append(data, []string{propertyName, strings.Join(parameters, "\n"), strings.Join(description, "\n"), strings.Join(property.AllowedValues(), "\n")})
-		// }
 	}
 
 	d.writer.Write([]byte("*****  Required Properties ******* (product.yml) \n"))
@@ -159,11 +159,11 @@ func (d *Displayer) requiredWithNoDefaultsTable(metadata *Metadata) error {
 
 	var data [][]string
 	networkProperties := CreateNetworkProperties(metadata)
-	data = append(data, []string{strings.Trim(networkProperties.Network.Name, "()")})
+	data = append(data, []string{strings.Trim(networkProperties.Network.Name, "()"), ""})
 	if metadata.UsesServiceNetwork() {
-		data = append(data, []string{strings.Trim(networkProperties.ServiceNetwork.Name, "()")})
+		data = append(data, []string{strings.Trim(networkProperties.ServiceNetwork.Name, "()"), ""})
 	}
-	data = append(data, []string{strings.Trim(networkProperties.SingletonAvailabilityZone.Name, "()")})
+	data = append(data, []string{strings.Trim(networkProperties.SingletonAvailabilityZone.Name, "()"), ""})
 
 	var keys []string
 	for k := range requiredProperties {
@@ -176,13 +176,32 @@ func (d *Displayer) requiredWithNoDefaultsTable(metadata *Metadata) error {
 		return err
 	}
 
+	opsFiles, err := CreateProductPropertiesFeaturesOpsFiles(metadata)
+	if err != nil {
+		return err
+	}
+
 	for _, propertyName := range keys {
+		var files []string
 		property := requiredProperties[propertyName]
 		if !property.IsSelector() {
 			parameters := d.cleanParamaters(property.Parameters())
 			for _, parameter := range parameters {
 				if _, ok := defaultVars[parameter]; !ok {
-					data = append(data, []string{parameter})
+					if property.IsSetByFeatureFile() {
+						var keys []string
+						for k := range opsFiles {
+							keys = append(keys, k)
+						}
+						sort.Strings(keys)
+
+						for _, fileName := range keys {
+							if strings.Contains(fileName, parameter) {
+								files = append(files, fmt.Sprintf("features/%s.yml", fileName))
+							}
+						}
+					}
+					data = append(data, []string{parameter, strings.Join(files, "\n")})
 				}
 			}
 		}
@@ -196,7 +215,7 @@ func (d *Displayer) requiredWithNoDefaultsTable(metadata *Metadata) error {
 	table.SetRowLine(true)
 	table.SetReflowDuringAutoWrap(false)
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
-	table.SetHeader([]string{"Parameter"})
+	table.SetHeader([]string{"Parameter", "Set By"})
 
 	for _, v := range data {
 		table.Append(v)
@@ -319,7 +338,6 @@ func (d *Displayer) operationsFileTable(operationsFiles map[string][]Ops, prefix
 		operations := operationsFiles[fileName]
 		for _, op := range operations {
 			if op.Value != nil {
-
 				parameters = append(parameters, d.cleanParamaters(op.Value.Parameters())...)
 			}
 		}
