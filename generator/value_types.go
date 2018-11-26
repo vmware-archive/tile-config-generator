@@ -53,6 +53,18 @@ func (s *SelectorValue) IsSelector() bool {
 	return true
 }
 
+type MultiSelectorValue struct {
+	Value []string `yaml:"value"`
+}
+
+func (s *MultiSelectorValue) Parameters() []string {
+	return []string{fmt.Sprintf("selector -> %s", s.Value)}
+}
+
+func (s *MultiSelectorValue) IsSelector() bool {
+	return true
+}
+
 type SimpleValue struct {
 	Value string `yaml:"value"`
 }

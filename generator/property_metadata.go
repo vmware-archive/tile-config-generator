@@ -190,6 +190,11 @@ func (p *PropertyMetadata) PropertyType(propertyName string) PropertyValue {
 			}
 		}
 	}
+	if p.IsMultiSelect() {
+		return &MultiSelectorValue{
+			Value: []string{fmt.Sprintf("((%s))", propertyName)},
+		}
+	}
 	if p.IsCertificate() {
 		return &CertificateValueHolder{
 			Value: &CertificateValue{
