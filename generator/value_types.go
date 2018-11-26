@@ -58,11 +58,11 @@ type MultiSelectorValue struct {
 }
 
 func (s *MultiSelectorValue) Parameters() []string {
-	return []string{fmt.Sprintf("selector -> %s", s.Value)}
+	return s.Value
 }
 
 func (s *MultiSelectorValue) IsSelector() bool {
-	return true
+	return false
 }
 
 type SimpleValue struct {
