@@ -53,6 +53,18 @@ func (s *SelectorValue) IsSelector() bool {
 	return true
 }
 
+type MultiSelectorValue struct {
+	Value []string `yaml:"value"`
+}
+
+func (s *MultiSelectorValue) Parameters() []string {
+	return s.Value
+}
+
+func (s *MultiSelectorValue) IsSelector() bool {
+	return false
+}
+
 type SimpleValue struct {
 	Value string `yaml:"value"`
 }
