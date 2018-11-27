@@ -2,6 +2,7 @@ package generator
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 )
 
@@ -188,12 +189,35 @@ func (p *PropertyMetadata) PropertyType(propertyName string) PropertyValue {
 			return &SelectorValue{
 				Value: fmt.Sprintf("%s", p.Default),
 			}
+		} else {
+			return nil
 		}
 	}
 	if p.IsMultiSelect() {
-		return &MultiSelectorValue{
-			Value: []string{fmt.Sprintf("((%s))", propertyName)},
+		if len(p.Options) == 1 {
+			return &MultiSelectorValue{
+				Value: []string{fmt.Sprintf("%v", p.Options[0].Name)},
+			}
 		}
+
+		if p.Default == nil {
+			return nil
+		}
+		rt := reflect.TypeOf(p.Default)
+		switch rt.Kind() {
+		case reflect.Slice:
+			values := []string{}
+			for _, option := range p.Default.([]interface{}) {
+				values = append(values, fmt.Sprintf("%v", option))
+			}
+			return &MultiSelectorValue{
+				Value: values,
+			}
+
+		default:
+			return nil
+		}
+
 	}
 	if p.IsCertificate() {
 		return &CertificateValueHolder{

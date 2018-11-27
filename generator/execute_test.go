@@ -134,6 +134,13 @@ var _ = Describe("Executor", func() {
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
+		It("Should generate files for rabbitmq 1.4", func() {
+			metadataBytes, err := getFileBytes("fixtures/rabbit-mq-1.4.yml")
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
+			err = gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+		})
 		It("Should generate files for redis", func() {
 			metadataBytes, err := getFileBytes("fixtures/p-redis.yml")
 			Expect(err).ShouldNot(HaveOccurred())
