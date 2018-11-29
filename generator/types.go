@@ -1,9 +1,7 @@
 package generator
 
 type Template struct {
-	OriginalProductName string                   `yaml:"product_name,omitempty"` //Remove eventually added for backward compatibility
 	ProductName         string                   `yaml:"product-name"`
-	ProductVersion      string                   `yaml:"product_version"`
 	NetworkProperties   *NetworkProperties       `yaml:"network-properties"`
 	ProductProperties   map[string]PropertyValue `yaml:"product-properties"`
 	ResourceConfig      map[string]Resource      `yaml:"resource-config,omitempty"`

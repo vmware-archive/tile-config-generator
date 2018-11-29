@@ -68,8 +68,6 @@ func (e *Executor) Generate() error {
 	}
 
 	template.ProductName = productName
-	template.OriginalProductName = productName
-	template.ProductVersion = productVersion
 	if err = e.writeYamlFile(path.Join(targetDirectory, "product.yml"), template); err != nil {
 		return err
 	}
