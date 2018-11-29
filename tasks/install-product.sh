@@ -1,4 +1,6 @@
 #!/bin/bash -e
+echo "Use om tool directly as it supports operations files"
+exit 1
 pivotal_file=$(find product -name '*.pivotal')
 mkdir -p config
 tile-config-generator generate --pivotal-file-path ${pivotal_file} --base-directory config --do-not-include-product-version

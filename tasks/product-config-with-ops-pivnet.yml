@@ -11,13 +11,15 @@ params:
   PIVNET_TOKEN:
   PIVNET_PRODUCT_SLUG:
   PIVNET_PRODUCT_VERSION:
-  PIVNET_PRODUCT_GLOB: *.pivotal
+  PIVNET_PRODUCT_GLOB: "*.pivotal"
 run:
   path: bash
   args:
     - -c
     - |
       set -ex
+      echo "Use om tool directly as it supports operations files"
+      exit 1
       tile-config-generator generate --base-directory config --do-not-include-product-version pivnet
 
       tile-config-generator display pivnet

@@ -18,6 +18,8 @@ run:
     - -c
     - |
       set -ex
+      echo "Use om tool directly as it supports operations files"
+      exit 1
       tile-config-generator generate --base-directory config --do-not-include-product-version --include-errands pivnet
 
       tile-config-generator display pivnet

@@ -16,6 +16,8 @@ run:
     - -c
     - |
       set -ex
+      echo "Use om tool directly as it supports operations files"
+      exit 1
       ops_files_args=""
       for op in ${OPS_FILES}
       do
