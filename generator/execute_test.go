@@ -185,6 +185,14 @@ var _ = Describe("Executor", func() {
 			err = gen.Generate()
 			Expect(err).ShouldNot(HaveOccurred())
 		})
+
+		It("Should generate files for a9s postgres", func() {
+			metadataBytes, err := getFileBytes("fixtures/a9s_postgres.yml")
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
+			err = gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+		})
 	})
 })
 

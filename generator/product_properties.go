@@ -12,7 +12,7 @@ func CreateProductProperties(metadata *Metadata) (map[string]PropertyValue, erro
 		if err != nil {
 			return nil, err
 		}
-		if propertyMetadata.Configurable && propertyMetadata.IsRequired() {
+		if propertyMetadata.IsConfigurable() && propertyMetadata.IsRequired() {
 			if propertyMetadata.IsDropdown() {
 				continue
 			}
@@ -40,7 +40,7 @@ func CreateProductProperties(metadata *Metadata) (map[string]PropertyValue, erro
 						return nil, err
 					}
 					for _, metadata := range selectorMetadata {
-						if metadata.Configurable && metadata.IsRequired() && !metadata.IsDropdown() {
+						if metadata.IsExplicityConfigurable() && metadata.IsRequired() && !metadata.IsDropdown() {
 							selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
 							propertyType := metadata.PropertyType(strings.Replace(selectorProperty, ".", "", 1))
 							if propertyType != nil {
@@ -65,7 +65,7 @@ func CreateProductPropertiesVars(metadata *Metadata) (map[string]interface{}, er
 		if propertyMetadata.IsMultiSelect() {
 			continue
 		}
-		if propertyMetadata.Configurable && propertyMetadata.IsRequired() {
+		if propertyMetadata.IsConfigurable() && propertyMetadata.IsRequired() {
 			if propertyMetadata.IsCollection() {
 				if propertyMetadata.IsRequiredCollection() {
 					propertyMetadata.CollectionPropertyVars(strings.Replace(property.Reference, ".", "", 1), vars)
@@ -86,7 +86,7 @@ func CreateProductPropertiesVars(metadata *Metadata) (map[string]interface{}, er
 						return nil, err
 					}
 					for _, metadata := range selectorMetadata {
-						if metadata.Configurable {
+						if metadata.IsConfigurable() {
 							selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
 							addPropertyToVars(selectorProperty, &metadata, vars)
 						}
@@ -124,7 +124,7 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 		if err != nil {
 			return nil, err
 		}
-		if propertyMetadata.Configurable {
+		if propertyMetadata.IsConfigurable() {
 			if propertyMetadata.IsSelector() {
 				for _, selector := range property.Selectors {
 					selectorMetadata, err := propertyMetadata.SelectorMetadata(strings.Replace(selector.Reference, property.Reference+".", "", 1))
@@ -132,7 +132,7 @@ func CreateProductPropertiesOptionalOpsFiles(metadata *Metadata) (map[string][]O
 						return nil, err
 					}
 					for _, metadata := range selectorMetadata {
-						if metadata.Configurable {
+						if metadata.IsConfigurable() {
 							if !metadata.IsRequired() || metadata.IsDropdown() {
 								selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
 								var ops []Ops
@@ -234,7 +234,7 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 						ops = append(ops,
 							Ops{
 								Type:  "replace",
-								Path:  fmt.Sprintf("/product-properties/%s", property.Reference),
+								Path:  fmt.Sprintf("/product-properties/%s?", property.Reference),
 								Value: &OpsValue{Value: optionTemplate.SelectValue},
 							},
 						)
@@ -253,10 +253,8 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 									Path: fmt.Sprintf("/product-properties/%s?", selectorProperty),
 								},
 							)
-
 						}
 					}
-
 					selectorParts := strings.Split(selector.Reference, ".")
 					selectorMetadata, err := propertyMetadata.SelectorMetadata(selectorParts[len(selectorParts)-1])
 					if err != nil {
@@ -266,8 +264,7 @@ func CreateProductPropertiesFeaturesOpsFiles(metadata *Metadata) (map[string][]O
 						if metadata.IsMultiSelect() && len(metadata.Options) > 1 {
 							multiselectOpsFiles(selector.Reference + "." + metadata.Name, &metadata, opsFiles)
 						}
-
-						if metadata.Configurable && metadata.IsRequired() && !metadata.IsDropdown() {
+						if metadata.IsConfigurable() && metadata.IsRequired() && !metadata.IsDropdown() {
 							selectorProperty := fmt.Sprintf("%s.%s", selector.Reference, metadata.Name)
 							ops = append(ops,
 								Ops{
