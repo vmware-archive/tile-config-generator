@@ -135,6 +135,13 @@ type CertificateValue struct {
 	CertPrivateKey string `yaml:"private_key_pem"`
 }
 
+func NewCertificateValue(propertyName string) *CertificateValue{
+	return &CertificateValue{
+		CertPem:        fmt.Sprintf("((%s/%s))", propertyName, "certificate"),
+		CertPrivateKey: fmt.Sprintf("((%s/%s))", propertyName, "privatekey"),
+	}
+}
+
 func (s *CertificateValue) Parameters() []string {
 	return []string{s.CertPem, s.CertPrivateKey}
 }

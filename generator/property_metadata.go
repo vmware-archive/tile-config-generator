@@ -17,6 +17,12 @@ type PropertyMetadata struct {
 	PropertyMetadata []PropertyMetadata `yaml:"property_blueprints"`
 }
 
+type OptionTemplate struct {
+	Name             string             `yaml:"name"`
+	SelectValue      string             `yaml:"select_value"`
+	PropertyMetadata []PropertyMetadata `yaml:"property_blueprints"`
+}
+
 func (p *PropertyMetadata) IsConfigurable() bool {
 	return !strings.EqualFold(p.Configurable, "false")
 }
@@ -30,53 +36,17 @@ func (p *PropertyMetadata) DefaultSelectorPath(property string) string {
 }
 
 func (p *PropertyMetadata) DefaultSelector() string {
+	defaultAsString := fmt.Sprintf("%v", p.Default)
 	for _, optiontemplate := range p.OptionTemplates {
-		if strings.EqualFold(optiontemplate.SelectValue, fmt.Sprintf("%v", p.Default)) {
+		if strings.EqualFold(optiontemplate.SelectValue, defaultAsString) {
 			return optiontemplate.Name
 		}
 	}
-	return fmt.Sprintf("%v", p.Default)
+	return defaultAsString
 }
 
 func (p *PropertyMetadata) IsRequired() bool {
 	return !p.Optional
-}
-
-type OptionTemplate struct {
-	Name             string             `yaml:"name"`
-	SelectValue      string             `yaml:"select_value"`
-	PropertyMetadata []PropertyMetadata `yaml:"property_blueprints"`
-}
-
-func (p *PropertyMetadata) SelectorMetadata(selector string) ([]PropertyMetadata, error) {
-	return p.selectorMetadataByFunc(
-		selector,
-		func(optionTemplate OptionTemplate) string {
-			return optionTemplate.Name
-		})
-}
-
-// SelectorMetadataBySelectValue - uses the option template SelectValue properties of each OptionTemplate to perform the property medata selection
-func (p *PropertyMetadata) SelectorMetadataBySelectValue(selector string) ([]PropertyMetadata, error) {
-	return p.selectorMetadataByFunc(
-		selector,
-		func(optionTemplate OptionTemplate) string {
-			return optionTemplate.SelectValue
-		})
-}
-
-func (p *PropertyMetadata) selectorMetadataByFunc(selector string, matchFunc func(optionTemplate OptionTemplate) string) ([]PropertyMetadata, error) {
-	var options []string
-	for _, optionTemplate := range p.OptionTemplates {
-		match := matchFunc(optionTemplate)
-		options = append(options, match)
-
-		if strings.EqualFold(selector, match) {
-			return optionTemplate.PropertyMetadata, nil
-		}
-	}
-	fmt.Println(fmt.Sprintf("Option template not found for selector [%s] options include %v", selector, options))
-	return nil, nil
 }
 
 func (p *PropertyMetadata) OptionTemplate(selectorReference string) (*OptionTemplate, error) {
@@ -89,115 +59,13 @@ func (p *PropertyMetadata) OptionTemplate(selectorReference string) (*OptionTemp
 	return nil, nil
 }
 
-func (p *PropertyMetadata) CollectionPropertyType(propertyName string) PropertyValue {
-	propertyName = strings.Replace(propertyName, "properties.", "", 1)
-	propertyName = fmt.Sprintf("%s_0", strings.Replace(propertyName, ".", "/", -1))
-	var collectionProperties []map[string]SimpleType
-	properties := make(map[string]SimpleType)
-	if p.Default != nil {
-		if defaults, ok := p.Default.([]interface{}); ok {
-			for _, defaultValues := range defaults {
-				arrayProperties := make(map[string]SimpleType)
-				defaultMap := defaultValues.(map[interface{}]interface{})
-				for key, value := range defaultMap {
-					if value != nil {
-						switch value.(type) {
-						case string:
-							arrayProperties[key.(string)] = SimpleString(value.(string))
-						case bool:
-							arrayProperties[key.(string)] = SimpleBoolean(value.(bool))
-						case int:
-							arrayProperties[key.(string)] = SimpleInteger(value.(int))
-
-						default:
-							panic(fmt.Sprintf("Value %v is not known", value))
-						}
-					}
-				}
-				for _, subProperty := range p.PropertyMetadata {
-					if _, ok := arrayProperties[subProperty.Name]; !ok {
-						arrayProperties[subProperty.Name] = SimpleString(fmt.Sprintf("((%s/%s))", propertyName, subProperty.Name))
-					}
-				}
-				collectionProperties = append(collectionProperties, arrayProperties)
-			}
-		}
-	} else {
-		for _, subProperty := range p.PropertyMetadata {
-
-			if subProperty.IsConfigurable() {
-				if subProperty.IsSecret() {
-					properties[subProperty.Name] = &SecretValue{
-						Value: fmt.Sprintf("((%s/%s))", propertyName, subProperty.Name),
-					}
-				} else if subProperty.IsCertificate() {
-					properties[subProperty.Name] = &CertificateValue{
-						CertPem:        fmt.Sprintf("((%s/%s))", propertyName, "certificate"),
-						CertPrivateKey: fmt.Sprintf("((%s/%s))", propertyName, "privatekey"),
-					}
-				} else {
-					properties[subProperty.Name] = SimpleString(fmt.Sprintf("((%s/%s))", propertyName, subProperty.Name))
-				}
-			}
-		}
-	}
-	if len(properties) > 0 {
-		collectionProperties = append(collectionProperties, properties)
-	}
-	return &CollectionsPropertiesValueHolder{
-		Value: collectionProperties,
-	}
-}
-
-func (p *PropertyMetadata) CollectionPropertyVars(propertyName string, vars map[string]interface{}) {
-	propertyName = strings.Replace(propertyName, "properties.", "", 1)
-	propertyName = fmt.Sprintf("%s_0", strings.Replace(propertyName, ".", "/", -1))
-	for _, subProperty := range p.PropertyMetadata {
-		if subProperty.IsConfigurable() {
-			if !subProperty.IsSecret() && !subProperty.IsSimpleCredentials() && !subProperty.IsCertificate() {
-				subPropertyName := fmt.Sprintf("%s/%s", propertyName, subProperty.Name)
-				if subProperty.Default != nil {
-					vars[subPropertyName] = subProperty.Default
-				}
-			}
-		}
-	}
-}
-
-func (p *PropertyMetadata) CollectionOpsFile(numOfElements int, propertyName string) OpsValueType {
-	var collectionProperties []map[string]SimpleType
-	for i := 1; i <= numOfElements; i++ {
-		newPropertyName := strings.Replace(propertyName, "properties.", "", 1)
-		newPropertyName = fmt.Sprintf("%s_%d", strings.Replace(newPropertyName, ".", "/", -1), i-1)
-		properties := make(map[string]SimpleType)
-		for _, subProperty := range p.PropertyMetadata {
-			if subProperty.IsSecret() {
-				properties[subProperty.Name] = &SecretValue{
-					Value: fmt.Sprintf("((%s/%s))", newPropertyName, subProperty.Name),
-				}
-			} else if subProperty.IsCertificate() {
-				properties[subProperty.Name] = &CertificateValue{
-					CertPem:        fmt.Sprintf("((%s/%s))", newPropertyName, "certificate"),
-					CertPrivateKey: fmt.Sprintf("((%s/%s))", newPropertyName, "privatekey"),
-				}
-			} else {
-				properties[subProperty.Name] = SimpleString(fmt.Sprintf("((%s/%s))", newPropertyName, subProperty.Name))
-			}
-		}
-		collectionProperties = append(collectionProperties, properties)
-	}
-	return &CollectionsPropertiesValueHolder{
-		Value: collectionProperties,
-	}
-}
-
 func (p *PropertyMetadata) PropertyType(propertyName string) PropertyValue {
 	propertyName = strings.Replace(propertyName, "properties.", "", 1)
 	propertyName = strings.Replace(propertyName, ".", "/", -1)
 	if p.IsSelector() {
 		if p.Default != nil {
 			return &SelectorValue{
-				Value: fmt.Sprintf("%s", p.Default),
+				Value: fmt.Sprintf("%v", p.Default),
 			}
 		} else {
 			return nil
@@ -231,10 +99,7 @@ func (p *PropertyMetadata) PropertyType(propertyName string) PropertyValue {
 	}
 	if p.IsCertificate() {
 		return &CertificateValueHolder{
-			Value: &CertificateValue{
-				CertPem:        fmt.Sprintf("((%s/%s))", propertyName, "certificate"),
-				CertPrivateKey: fmt.Sprintf("((%s/%s))", propertyName, "privatekey"),
-			},
+			Value: NewCertificateValue(propertyName),
 		}
 	}
 	if p.IsSecret() {
