@@ -91,6 +91,10 @@ func (e *Executor) Generate() error {
 		if err = e.writeYamlFile(path.Join(targetDirectory, "resource-vars.yml"), resourceVars); err != nil {
 			return err
 		}
+	} else {
+		if err = e.writeYamlFile(path.Join(targetDirectory, "resource-vars.yml"), nil); err != nil {
+			return err
+		}
 	}
 
 	if e.includeErrands {
@@ -100,8 +104,15 @@ func (e *Executor) Generate() error {
 			if err = e.writeYamlFile(path.Join(targetDirectory, "errand-vars.yml"), errandVars); err != nil {
 				return err
 			}
+		} else {
+			if err = e.writeYamlFile(path.Join(targetDirectory, "errand-vars.yml"), nil); err != nil {
+				return err
+			}
 		}
-
+	} else {
+		if err = e.writeYamlFile(path.Join(targetDirectory, "errand-vars.yml"), nil); err != nil {
+			return err
+		}
 	}
 
 	resourceOpsFiles, err := CreateResourceOpsFiles(metadata)
@@ -124,6 +135,10 @@ func (e *Executor) Generate() error {
 
 	if len(productPropertyVars) > 0 {
 		if err = e.writeYamlFile(path.Join(targetDirectory, "product-default-vars.yml"), productPropertyVars); err != nil {
+			return err
+		}
+	} else {
+		if err = e.writeYamlFile(path.Join(targetDirectory, "product-default-vars.yml"), nil); err != nil {
 			return err
 		}
 	}
@@ -186,9 +201,14 @@ func (e *Executor) createDirectory(path string) error {
 }
 
 func (e *Executor) writeYamlFile(targetFile string, dataType interface{}) error {
-	data, err := yaml.Marshal(dataType)
-	if err != nil {
-		return err
+	if dataType != nil {
+		data, err := yaml.Marshal(dataType)
+		if err != nil {
+			return err
+		}
+		return ioutil.WriteFile(targetFile, data, 0755)
+	} else {
+		return ioutil.WriteFile(targetFile, nil, 0755)
 	}
-	return ioutil.WriteFile(targetFile, data, 0755)
+
 }
