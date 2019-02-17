@@ -16,7 +16,32 @@ type PropertyMetadata struct {
 }
 
 func (p PropertyMetadata) MarshalJSON() ([]byte, error) {
-	return nil, nil
+	var alias struct {
+		Configurable   bool         `json:"configurable"`
+		Credential     bool         `json:"credential"`
+		Optional       bool         `json:"optional"`
+		Options        []Option     `json:"options"`
+		SelectedOption string       `json:"selected_option"`
+		Type           PropertyType `json:"type"`
+		Value          interface{}  `json:"value"`
+	}
+
+	if p.Type == "" {
+		return nil, errors.New("Can't marshal a property without knowing it's type")
+	}
+
+	alias.Configurable = p.Configurable
+	alias.Credential = p.Credential
+	alias.Optional = p.Optional
+	alias.Options = p.Options
+	alias.SelectedOption = p.SelectedOption
+	alias.Type = p.Type
+
+	if p.Value.IsSet {
+		alias.Value = p.Value.Value
+	}
+
+	return json.Marshal(alias)
 }
 
 func (p *PropertyMetadata) UnmarshalJSON(data []byte) error {
@@ -45,7 +70,6 @@ func (p *PropertyMetadata) UnmarshalJSON(data []byte) error {
 	p.Options = alias.Options
 	p.SelectedOption = alias.SelectedOption
 	p.Type = alias.Type
-	// p.Value.Type = alias.Type
 
 	if alias.Value == nil {
 		return nil
@@ -64,7 +88,10 @@ func (p *PropertyMetadata) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-		json.Unmarshal(collectionBytes, &collection)
+		err = json.Unmarshal(collectionBytes, &collection)
+		if err != nil {
+			return err
+		}
 		p.Value.Value = collection
 	case PropertyTypeDropdownSelect:
 		p.Value.Value = PropertyValueDropDownSelect(alias.Value.(string))
@@ -81,21 +108,16 @@ func (p *PropertyMetadata) UnmarshalJSON(data []byte) error {
 	case PropertyTypeLDAPURL:
 		p.Value.Value = PropertyValueLDAPURL(alias.Value.(string))
 	case PropertyTypeMultiSelectOptions:
-		multiSelectOptions := PropertyValueMultiSelectOptions{}
-		switch x := alias.Value.(type) {
-		case []interface{}:
-			options := []string{}
-			for _, option := range x {
-				options = append(options, option.(string))
-			}
-
-			multiSelectOptions.Value = options
-		case string:
-			multiSelectOptions.NonExistentValue = true
-		default:
-			return errors.New("found unknown value in multi_select_options type")
+		options := PropertyValueMultiSelectOptions{}
+		optionsBytes, err := json.Marshal(alias.Value)
+		if err != nil {
+			return err
 		}
-		p.Value.Value = multiSelectOptions
+		err = json.Unmarshal(optionsBytes, &options)
+		if err != nil {
+			return err
+		}
+		p.Value.Value = options
 	case PropertyTypeNetworkAddress:
 		p.Value.Value = PropertyValueNetworkAddress(alias.Value.(string))
 	case PropertyTypePort:
@@ -106,7 +128,10 @@ func (p *PropertyMetadata) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-		json.Unmarshal(credsBytes, &creds)
+		err = json.Unmarshal(credsBytes, &creds)
+		if err != nil {
+			return err
+		}
 		p.Value.Value = creds
 	case PropertyTypeRSAPKeyCredentials:
 		creds := PropertyValueRSAPKeyCredentials{}
@@ -114,7 +139,10 @@ func (p *PropertyMetadata) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-		json.Unmarshal(credsBytes, &creds)
+		err = json.Unmarshal(credsBytes, &creds)
+		if err != nil {
+			return err
+		}
 		p.Value.Value = creds
 	case PropertyTypeSaltedCredentials:
 		creds := PropertyValueSaltedCredentials{}
@@ -122,7 +150,10 @@ func (p *PropertyMetadata) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-		json.Unmarshal(credsBytes, &creds)
+		err = json.Unmarshal(credsBytes, &creds)
+		if err != nil {
+			return err
+		}
 		p.Value.Value = creds
 	case PropertyTypeSecret:
 		secret := PropertyValueSecret{}
@@ -130,7 +161,10 @@ func (p *PropertyMetadata) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-		json.Unmarshal(secretBytes, &secret)
+		err = json.Unmarshal(secretBytes, &secret)
+		if err != nil {
+			return err
+		}
 		p.Value.Value = secret
 	case PropertyTypeSelector:
 		p.Value.Value = PropertyValueSelector(alias.Value.(string))
@@ -148,7 +182,10 @@ func (p *PropertyMetadata) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-		json.Unmarshal(credsBytes, &creds)
+		err = json.Unmarshal(credsBytes, &creds)
+		if err != nil {
+			return err
+		}
 		p.Value.Value = creds
 	case PropertyTypeString:
 		p.Value.Value = PropertyValueString(alias.Value.(string))
@@ -164,6 +201,5 @@ func (p *PropertyMetadata) UnmarshalJSON(data []byte) error {
 		p.Value.Value = PropertyValueWildcardDomain(alias.Value.(string))
 	}
 
-	// Recursive type matching value magic
 	return nil
 }

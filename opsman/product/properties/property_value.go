@@ -1,12 +1,15 @@
 package properties
 
+import (
+	"encoding/json"
+	"errors"
+	"reflect"
+)
+
 type PropertyValue struct {
 	IsSet bool
 	// Type  PropertyType
 	Value interface{}
-}
-
-func (v *PropertyValue) PopulateValue(value interface{}) {
 }
 
 type PropertyValueBoolean bool
@@ -34,6 +37,35 @@ type PropertyValueLDAPURL string
 type PropertyValueMultiSelectOptions struct {
 	NonExistentValue bool
 	Value            []string
+}
+
+func (p *PropertyValueMultiSelectOptions) UnmarshalJSON(propertyBytes []byte) error {
+	if reflect.DeepEqual(propertyBytes, []byte(`"non-existent-value"`)) {
+		p.NonExistentValue = true
+	} else {
+		var value interface{}
+		err := json.Unmarshal(propertyBytes, &value)
+		if err != nil {
+			return err
+		}
+		switch x := value.(type) {
+		case []interface{}:
+			for _, option := range x {
+				p.Value = append(p.Value, option.(string))
+			}
+		default:
+			return errors.New("found unknown value in multi_select_options type")
+		}
+	}
+	return nil
+}
+
+func (p *PropertyValueMultiSelectOptions) MarshalJSON() ([]byte, error) {
+	if p.NonExistentValue {
+		return []byte(`"non-existent-value"`), nil
+	}
+
+	return json.Marshal(p.Value)
 }
 
 type PropertyValueNetworkAddress string
