@@ -40,7 +40,7 @@ type PropertyValueMultiSelectOptions struct {
 }
 
 func (p *PropertyValueMultiSelectOptions) UnmarshalJSON(propertyBytes []byte) error {
-	if reflect.DeepEqual(propertyBytes, []byte(`"non-existent-value"`)) {
+	if reflect.DeepEqual(propertyBytes, []byte(`"non-existant-value"`)) {
 		p.NonExistentValue = true
 	} else {
 		var value interface{}
@@ -60,9 +60,9 @@ func (p *PropertyValueMultiSelectOptions) UnmarshalJSON(propertyBytes []byte) er
 	return nil
 }
 
-func (p *PropertyValueMultiSelectOptions) MarshalJSON() ([]byte, error) {
+func (p PropertyValueMultiSelectOptions) MarshalJSON() ([]byte, error) {
 	if p.NonExistentValue {
-		return []byte(`"non-existent-value"`), nil
+		return []byte(`"non-existant-value"`), nil
 	}
 
 	return json.Marshal(p.Value)

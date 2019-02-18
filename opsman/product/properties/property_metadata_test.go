@@ -26,6 +26,29 @@ var _ = Describe("PropertyMetadata", func() {
 			Expect(err).ToNot(HaveOccurred())
 		})
 
+		Context("when marshaling a `multi_select_options`", func() {
+			BeforeEach(func() {
+				propertyMetadata.Type = PropertyTypeMultiSelectOptions
+				propertyMetadata.Value.IsSet = true
+				propertyMetadata.Value.Value = PropertyValueMultiSelectOptions{
+					NonExistentValue: true,
+				}
+			})
+
+			It("marshals the property metadata correctly", func() {
+				expectedBytes := []byte(`{
+"configurable": false,
+"credential": false,
+"optional": false,
+"options": null,
+"selected_option": "",
+"type": "multi_select_options",
+"value": "non-existant-value"
+}`)
+				Expect(expectedBytes).To(MatchJSON(propertyBytes))
+			})
+		})
+
 		Context("when marshalling a null value", func() {
 			BeforeEach(func() {
 				propertyMetadata.Type = PropertyTypeInteger
@@ -160,9 +183,9 @@ var _ = Describe("PropertyMetadata", func() {
 			Expect(err).ToNot(HaveOccurred())
 		})
 
-		Context("when a 'non-existent-value' is passed in", func() {
+		Context("when a 'non-existant-value' is passed in", func() {
 			BeforeEach(func() {
-				propertyBytes = []byte(`{"type": "multi_select_options", "value": "non-existent-value"}`)
+				propertyBytes = []byte(`{"type": "multi_select_options", "value": "non-existant-value"}`)
 			})
 
 			It("sets the property metadata value to a correct PropertyValue", func() {

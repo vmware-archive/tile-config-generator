@@ -24,13 +24,13 @@ var _ = Describe("PropertyValueMultiSelectOptions", func() {
 			Expect(err).ToNot(HaveOccurred())
 		})
 
-		Context("when marshaling 'non-existent-value'", func() {
+		Context("when marshaling 'non-existant-value'", func() {
 			BeforeEach(func() {
 				propertyValue.NonExistentValue = true
 			})
 
-			It("sets marshals the string 'non-existent-value'", func() {
-				Expect(propertyValueBytes).To(Equal([]byte(`"non-existent-value"`)))
+			It("sets marshals the string 'non-existant-value'", func() {
+				Expect(propertyValueBytes).To(Equal([]byte(`"non-existant-value"`)))
 			})
 		})
 
@@ -52,9 +52,9 @@ var _ = Describe("PropertyValueMultiSelectOptions", func() {
 			Expect(err).ToNot(HaveOccurred())
 		})
 
-		Context("when unmarshaling 'non-existent-value'", func() {
+		Context("when unmarshaling 'non-existant-value'", func() {
 			BeforeEach(func() {
-				propertyValueBytes = []byte(`"non-existent-value"`)
+				propertyValueBytes = []byte(`"non-existant-value"`)
 			})
 
 			It("sets NonExistentValue to true", func() {
