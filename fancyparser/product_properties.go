@@ -6,9 +6,6 @@ type ProductProperties struct {
 	Properties interface{} `json:"properties"`
 }
 
-type FeaturePropertyOperation struct {
-}
-
 func LookupProductProperty(indexList []Index, property interface{}) (interface{}, error) {
 	if len(indexList) == 0 {
 		switch property.(type) {
@@ -24,6 +21,7 @@ func LookupProductProperty(indexList []Index, property interface{}) (interface{}
 		index := indexList[0]
 		switch index.Type {
 		case IndexTypeMap:
+			// TODO: validate property is actually indexable via map
 			if nestedValue, ok := property.(map[string]interface{})[index.MapIndex]; ok {
 				return LookupProductProperty(indexList[1:], nestedValue)
 			} else if nestedValue, ok := property.(map[string]interface{})["value"]; ok {
