@@ -5,10 +5,6 @@ import (
 	"strings"
 )
 
-type ResourceProperties struct {
-	Resources []interface{} `json:"resources"`
-}
-
 func LookupResourceProperty(indexList []Index, resources []interface{}) (interface{}, error) {
 	if len(indexList) < 2 {
 		return nil, errors.New("more than 1 index is required to lookup a resource property")

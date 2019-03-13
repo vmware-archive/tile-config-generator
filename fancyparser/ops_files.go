@@ -1,7 +1,8 @@
 package fancyparser
 
-// import yaml "gopkg.in/yaml.v2"
-import "github.com/ghodss/yaml"
+import (
+	"github.com/ghodss/yaml"
+)
 
 type OpsFile struct {
 	Exclude  bool

@@ -17,7 +17,6 @@ func (o *OpsFile) CheckFeatureIncludeAndGetIndexMap(properties interface{}, prod
 			topIndex := GetIndexFromPath(operation.Path)
 			hardcodedIndexes := indexMap.GetHardcodedValueIndexes().GetMapWithPrependedIndex(topIndex)
 			for value, indexes := range hardcodedIndexes {
-				print(indexes)
 				if configuredValue, err := LookupProductProperty(indexes, properties); err == nil {
 					if value == configuredValue {
 						o.Include = true

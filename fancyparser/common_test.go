@@ -6,7 +6,7 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	. "github.com/pivotalservices/tile-config-generator/commands"
+	. "github.com/pivotalservices/tile-config-generator/fancyparser"
 )
 
 var _ = Describe("Common", func() {

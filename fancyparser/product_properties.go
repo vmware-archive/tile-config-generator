@@ -2,10 +2,6 @@ package fancyparser
 
 import "errors"
 
-type ProductProperties struct {
-	Properties interface{} `json:"properties"`
-}
-
 func LookupProductProperty(indexList []Index, property interface{}) (interface{}, error) {
 	if len(indexList) == 0 {
 		switch property.(type) {
