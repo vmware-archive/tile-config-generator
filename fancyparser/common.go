@@ -11,7 +11,8 @@ import (
 func ExtractYAMLBytesInDir(pathToDir string) (map[string][]byte, error) {
 	files, err := ioutil.ReadDir(pathToDir)
 	if err != nil {
-		return nil, err
+		// TODO: handle better
+		return nil, nil // err
 	}
 
 	dirMap := make(map[string][]byte)

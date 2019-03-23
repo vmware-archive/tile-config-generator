@@ -10,11 +10,7 @@ import (
 )
 
 var _ = Describe("Common", func() {
-	Describe("PruneFilepath", func() {
-		// TODO: test
-	})
-
-	Describe("ExtractYMLBytesInDir", func() {
+	Context("ExtractYMLBytesInDir", func() {
 		var (
 			pathToDir string
 			dirBytes  map[string][]byte

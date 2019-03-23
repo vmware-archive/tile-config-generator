@@ -7,13 +7,10 @@ import (
 )
 
 var _ = Describe("IndexMap", func() {
-	var (
-		productProperties map[string]interface{}
-		indexMap          IndexMap
-		err               error
-	)
 
 	Context("Filtering keys", func() {
+		var indexMap IndexMap
+
 		Context("IsPlaceholder", func() {
 			Context("When a placeholder is provided", func() {
 				It("returns true", func() {
@@ -109,6 +106,8 @@ var _ = Describe("IndexMap", func() {
 	})
 
 	Context("GetMapWithPrependedIndex", func() {
+		var indexMap IndexMap
+
 		BeforeEach(func() {
 			indexMap = IndexMap{
 				"((networking_poe_ssl_certs_0/certificate))": []Index{
@@ -148,6 +147,12 @@ var _ = Describe("IndexMap", func() {
 	})
 
 	Context("GetPropertiesIndexMap", func() {
+		var (
+			productProperties map[string]interface{}
+			indexMap          IndexMap
+			err               error
+		)
+
 		JustBeforeEach(func() {
 			indexMap = GetPropertiesIndexMap(productProperties)
 			Expect(err).ToNot(HaveOccurred())
@@ -266,6 +271,175 @@ var _ = Describe("IndexMap", func() {
 						Index{Type: IndexTypeMap, MapIndex: "name"},
 					},
 				}))
+			})
+		})
+	})
+
+	Context("LookupPropertyWithIndexList", func() {
+		var (
+			productProperties interface{}
+			indexList         []Index
+			value             interface{}
+			err               error
+		)
+
+		JustBeforeEach(func() {
+			value, err = LookupPropertyWithIndexList(indexList, productProperties)
+		})
+
+		Context("when the indexlist doesn't reach a value", func() {
+			BeforeEach(func() {
+				indexList = []Index{
+					Index{Type: IndexTypeMap, MapIndex: ".uaa.service_provider_key_credentials"},
+					Index{Type: IndexTypeMap, MapIndex: "value"},
+				}
+				productProperties = map[string]interface{}{
+					".uaa.service_provider_key_credentials": map[string]interface{}{
+						"value": map[string]interface{}{
+							"cert_pem":        "-----BEGIN CERTIFICATE-----\nbeep\n-----END CERTIFICATE-----\n",
+							"private_key_pem": "***",
+						},
+					},
+				}
+			})
+
+			It("returns a NoValueAtEndOfIndex", func() {
+				Expect(err).To(MatchError(NoValueAtEndOfIndexError{
+					RemainingValue: map[string]interface{}{
+						"cert_pem":        "-----BEGIN CERTIFICATE-----\nbeep\n-----END CERTIFICATE-----\n",
+						"private_key_pem": "***",
+					},
+				}))
+			})
+		})
+
+		Context("when there is a mismatched type in the indexlist", func() {
+			Context("when the mismatched provided type is a Map", func() {
+				BeforeEach(func() {
+					indexList = []Index{
+						Index{Type: IndexTypeMap, MapIndex: ".uaa.service_provider_key_credentials"},
+						Index{Type: IndexTypeMap, MapIndex: "value"},
+						Index{Type: IndexTypeMap, MapIndex: "cert_pem"},
+					}
+
+					productProperties = map[string]interface{}{
+						".uaa.service_provider_key_credentials": map[string]interface{}{
+							"value": []interface{}{
+								map[string]interface{}{
+									"cert_pem":        "-----BEGIN CERTIFICATE-----\nbeep\n-----END CERTIFICATE-----\n",
+									"private_key_pem": "***",
+								},
+							},
+						},
+					}
+				})
+
+				It("returns an InvalidIndexTypeError", func() {
+					Expect(err).To(MatchError(InvalidIndexTypeError{
+						ProvidedType: IndexTypeMap,
+						RequiredType: IndexTypeList,
+					}))
+				})
+			})
+
+			Context("when the mismatched provided type is a List", func() {
+				BeforeEach(func() {
+					indexList = []Index{
+						Index{Type: IndexTypeMap, MapIndex: ".uaa.service_provider_key_credentials"},
+						Index{Type: IndexTypeList, ListIndex: 1},
+						Index{Type: IndexTypeMap, MapIndex: "cert_pem"},
+					}
+
+					productProperties = map[string]interface{}{
+						".uaa.service_provider_key_credentials": map[string]interface{}{
+							"value": map[string]interface{}{
+								"cert_pem":        "-----BEGIN CERTIFICATE-----\nbeep\n-----END CERTIFICATE-----\n",
+								"private_key_pem": "***",
+							},
+						},
+					}
+				})
+
+				It("returns an InvalidIndexTypeError", func() {
+					Expect(err).To(MatchError(InvalidIndexTypeError{
+						ProvidedType: IndexTypeList,
+						RequiredType: IndexTypeMap,
+					}))
+				})
+			})
+		})
+
+		Context("when the product properties contain a nested map", func() {
+			BeforeEach(func() {
+				indexList = []Index{
+					Index{Type: IndexTypeMap, MapIndex: ".uaa.service_provider_key_credentials"},
+					Index{Type: IndexTypeMap, MapIndex: "value"},
+					Index{Type: IndexTypeMap, MapIndex: "cert_pem"},
+				}
+				productProperties = map[string]interface{}{
+					".uaa.service_provider_key_credentials": map[string]interface{}{
+						"value": map[string]interface{}{
+							"cert_pem":        "-----BEGIN CERTIFICATE-----\nbeep\n-----END CERTIFICATE-----\n",
+							"private_key_pem": "***",
+						},
+					},
+				}
+			})
+
+			It("creates a valid IndexMap", func() {
+				Expect(err).ToNot(HaveOccurred())
+				Expect(value).To(Equal("-----BEGIN CERTIFICATE-----\nbeep\n-----END CERTIFICATE-----\n"))
+			})
+		})
+
+		// Context("when the index map skips an extra 'value' nesting", func() {
+		// 	BeforeEach(func() {
+		// 		indexList = []Index{
+		// 			Index{Type: IndexTypeMap, MapIndex: ".uaa.service_provider_key_credentials"},
+		// 			Index{Type: IndexTypeMap, MapIndex: "cert_pem"},
+		// 		}
+		// 		productProperties = map[string]interface{}{
+		// 			".uaa.service_provider_key_credentials": map[string]interface{}{
+		// 				"value": map[string]interface{}{
+		// 					"cert_pem":        "-----BEGIN CERTIFICATE-----\nbeep\n-----END CERTIFICATE-----\n",
+		// 					"private_key_pem": "***",
+		// 				},
+		// 			},
+		// 		}
+		// 	})
+
+		// 	It("creates a valid IndexMap", func() {
+		// 		Expect(value).To(Equal("-----BEGIN CERTIFICATE-----\nbeep\n-----END CERTIFICATE-----\n"))
+		// 	})
+		// })
+
+		Context("when the product properties contain a nested list", func() {
+			BeforeEach(func() {
+				indexList = []Index{
+					Index{Type: IndexTypeMap, MapIndex: ".properties.networking_poe_ssl_certs"},
+					Index{Type: IndexTypeMap, MapIndex: "value"},
+					Index{Type: IndexTypeList, ListIndex: 0},
+					Index{Type: IndexTypeMap, MapIndex: "certificate"},
+					Index{Type: IndexTypeMap, MapIndex: "cert_pem"},
+				}
+				productProperties = map[string]interface{}{
+					".properties.networking_poe_ssl_certs": map[string]interface{}{
+						"value": []interface{}{
+							map[string]interface{}{
+								"certificate": map[string]interface{}{
+									"cert_pem":        "-----BEGIN CERTIFICATE-----\nbeep\n-----END CERTIFICATE-----\n",
+									"private_key_pem": "***",
+								},
+								"name": "((networking_poe_ssl_certs_0/name))",
+							},
+						},
+					},
+				}
+			})
+
+			It("creates a valid IndexMap", func() {
+				Expect(err).ToNot(HaveOccurred())
+				Expect(value).To(Equal("-----BEGIN CERTIFICATE-----\nbeep\n-----END CERTIFICATE-----\n"))
 			})
 		})
 	})

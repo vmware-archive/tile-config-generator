@@ -5,7 +5,6 @@ import (
 )
 
 type OpsFile struct {
-	Exclude  bool
 	Include  bool
 	Ops      []Operation
 	IndexMap IndexMap

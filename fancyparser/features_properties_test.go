@@ -74,7 +74,6 @@ var _ = Describe("Features Properties", func() {
 
 			It("includes the ops file and collects the index maps", func() {
 				Expect(opsFile.Include).To(BeTrue())
-				Expect(opsFile.Exclude).To(BeFalse())
 				Expect(opsFile.IndexMap).To(Equal(IndexMap{
 					"uaa_database/external/host": []Index{
 						Index{Type: IndexTypeMap, MapIndex: ".properties.uaa_database.external.host"},
@@ -88,6 +87,7 @@ var _ = Describe("Features Properties", func() {
 			})
 		})
 
+		// TODO: test
 		Context("when the ops file is excluded", func() {
 			BeforeEach(func() {
 				opsFile.Ops = []Operation{

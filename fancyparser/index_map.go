@@ -1,5 +1,7 @@
 package fancyparser
 
+import "errors"
+
 // IndexMap is an "inverted tree" of a nested map[string]inteface{}
 // where the keys are leaves of the original tree, and the Values are the
 // paths (represented as Indexes) to those leaves
@@ -14,11 +16,11 @@ type Index struct {
 }
 
 // IndexType specifies whether we're indexing into a dictionary or an array
-type IndexType int
+type IndexType string
 
 const (
-	IndexTypeList IndexType = iota
-	IndexTypeMap
+	IndexTypeList IndexType = "list"
+	IndexTypeMap  IndexType = "map"
 )
 
 // GetPlaceholderValueIndexes returns a sub map consisting of keys from map i
@@ -101,4 +103,58 @@ func GetPropertiesIndexMap(property interface{}) IndexMap {
 		}
 	}
 	return indexMap
+}
+
+func LookupPropertyWithIndexList(indexList []Index, property interface{}) (interface{}, error) {
+	switch len(indexList) {
+	case 0:
+		switch property.(type) {
+		case bool, float64, string, nil:
+			return property, nil
+		default:
+			return nil, NoValueAtEndOfIndexError{
+				RemainingValue: property,
+			}
+		}
+	default:
+		index := indexList[0]
+		switch property.(type) {
+		case map[string]interface{}:
+			switch index.Type {
+			case IndexTypeMap:
+				propertyMap := property.(map[string]interface{})
+				if nestedValue, ok := propertyMap[index.MapIndex]; ok {
+					return LookupPropertyWithIndexList(indexList[1:], nestedValue)
+				} else {
+					return nil, errors.New("nested index not found in Map")
+				}
+			case IndexTypeList:
+				return nil, InvalidIndexTypeError{
+					ProvidedType: IndexTypeList,
+					RequiredType: IndexTypeMap,
+				}
+			default:
+				return nil, errors.New("unsupported index type!")
+			}
+		case []interface{}:
+			switch index.Type {
+			case IndexTypeMap:
+				return nil, InvalidIndexTypeError{
+					ProvidedType: IndexTypeMap,
+					RequiredType: IndexTypeList,
+				}
+			case IndexTypeList:
+				propertyList := property.([]interface{})
+				if len(propertyList) > index.ListIndex {
+					return LookupPropertyWithIndexList(indexList[1:], propertyList[index.ListIndex])
+				} else {
+					return nil, errors.New("nested index not found in List")
+				}
+			default:
+				return nil, errors.New("unsupported index type!")
+			}
+		default:
+			return nil, errors.New("reached end of tree!")
+		}
+	}
 }

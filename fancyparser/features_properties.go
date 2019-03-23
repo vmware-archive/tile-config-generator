@@ -17,11 +17,11 @@ func (o *OpsFile) CheckFeatureIncludeAndGetIndexMap(properties interface{}, prod
 			topIndex := GetIndexFromPath(operation.Path)
 			hardcodedIndexes := indexMap.GetHardcodedValueIndexes().GetMapWithPrependedIndex(topIndex)
 			for value, indexes := range hardcodedIndexes {
-				if configuredValue, err := LookupProductProperty(indexes, properties); err == nil {
+				if configuredValue, err := LookupPropertyWithIndexList(indexes, properties); err == nil {
 					if value == configuredValue {
 						o.Include = true
 					} else {
-						o.Exclude = true
+						o.Include = false
 						return nil
 					}
 				}

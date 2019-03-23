@@ -44,6 +44,7 @@ type TileConfigBytes struct {
 	Metadata []byte
 }
 
+// TODO: test!!!
 func GetTileConfig(tileDir string) (TileConfig, error) {
 	tileConfigBytes, err := GetTileConfigBytes(tileDir)
 	if err != nil {
