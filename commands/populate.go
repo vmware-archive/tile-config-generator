@@ -7,7 +7,7 @@ import (
 )
 
 type Populate struct {
-	TileConfigDirectory         string `long:"tile-config-dir" required:"true" description:"path to metadata.yml file containing awesome deets on pivotal tiles"`
+	TileConfigDirectory         string `long:"tile-config-dir" required:"true" description:"path to tile-config-generator output for your tile"`
 	ExportedPropertiesDirectory string `long:"exported-properties-dir" required:"true" description:"path to directory containing exported tile config json files"`
 	OutputFile                  string `long:"output-file" required:"true" description:"path to file where to store populate output"`
 	pcfAutomationConfig         fancyparser.PCFAutomationConfiguration
