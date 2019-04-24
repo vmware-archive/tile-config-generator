@@ -24,6 +24,9 @@ type OptionTemplate struct {
 }
 
 func (p *PropertyMetadata) IsConfigurable() bool {
+	if p.IsUUID() {
+		return false
+	}
 	return !strings.EqualFold(p.Configurable, "false")
 }
 
@@ -57,6 +60,15 @@ func (p *PropertyMetadata) OptionTemplate(selectorReference string) (*OptionTemp
 	}
 	fmt.Println(fmt.Sprintf("Unable to find option template for %s", selectorReference))
 	return nil, nil
+}
+
+func (p *PropertyMetadata) GetPropertyMetadata(propertyName string) *PropertyMetadata {
+	for _, m := range p.PropertyMetadata {
+		if m.Name == propertyName {
+			return &m
+		}
+	}
+	return nil
 }
 
 func (p *PropertyMetadata) PropertyType(propertyName string) PropertyValue {
@@ -142,6 +154,10 @@ func (p *PropertyMetadata) IsInt() bool {
 	} else {
 		return p.Type == "port" || p.Type == "integer"
 	}
+}
+
+func (p *PropertyMetadata) IsUUID() bool {
+	return p.Type == "uuid"
 }
 
 func (p *PropertyMetadata) IsBool() bool {
