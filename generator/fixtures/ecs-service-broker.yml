@@ -1,0 +1,2604 @@
+---
+description: ECS Broker for Pivotal CF
+icon_image: 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
+label: DELL EMC ECS Broker
+metadata_version: '1.8'
+minimum_version_for_upgrade: 0.0.1
+name: ecs-service-broker
+product_version: 1.2.1
+rank: 50
+requires_product_versions:
+- name: cf
+  version: '>= 1.9'
+serial: true
+service_broker: false
+
+
+releases:
+- file: ecs-service-broker-1.2.1.tgz
+  name: ecs-service-broker
+  version: '1.2.1'
+
+stemcell_criteria:
+  os: ubuntu-xenial
+  requires_cpi: false
+  version: '250'
+
+
+property_blueprints:
+- configurable: true
+  default: ecs-service-broker-org
+  name: org
+  type: string
+- configurable: true
+  default: ecs-service-broker-space
+  name: space
+  type: string
+- configurable: true
+  default: false
+  name: apply_open_security_group
+  type: boolean
+- configurable: true
+  default: true
+  name: allow_paid_service_plans
+  type: boolean
+- configurable: true
+  default: (( .properties.enable_global_access_to_plans.value ))
+  name: ecs_broker_enable_global_access_to_plans
+  type: boolean
+- configurable: false
+  name: catalog_services_0_guid
+  optional: false
+  type: uuid
+- configurable: false
+  name: catalog_services_1_guid
+  optional: false
+  type: uuid
+- configurable: false
+  name: catalog_services_2_guid
+  optional: false
+  type: uuid
+- configurable: false
+  name: catalog_services_3_guid
+  optional: false
+  type: uuid
+- configurable: false
+  name: catalog_services_4_guid
+  optional: false
+  type: uuid
+- configurable: true
+  description: Enter the URI/endpoint for the ECS HTTPS management API. This is typically accessed from port `4443`, but may be on a different port if accessed through a load balancer
+  label: ECS Management Endpoint
+  name: broker_management_endpoint
+  optional: false
+  type: string
+- configurable: true
+  description: Enter the name of the ECS replication group to be used for created buckets. This can be found in the ECS management UI
+  label: Replication Group
+  name: broker_replication_group
+  optional: false
+  type: string
+- configurable: true
+  description: Enter the name of the ECS namespace to be used for created buckets and users. This can be found in the ECS management UI
+  label: Namespace
+  name: broker_namespace
+  optional: false
+  type: string
+- configurable: true
+  description: Enter the name of the ECS Management API admin user. This should be a namespace admin or system administrator management user on the ECS
+  label: ECS Admin Username
+  name: broker_username
+  optional: false
+  type: string
+- configurable: true
+  description: Enter the ECS Management API password
+  label: ECS Admin Password
+  name: broker_password
+  optional: false
+  type: secret
+- configurable: true
+  description: (Optional) Enter the name of the ECS configured base URL, to discover the object endpoint. If not provided, the broker will attempt to discover a default base URL. Alternatively, the URI/endpoint can be specified using the 'Object Endpoint' parameter
+  label: ECS Base URL
+  name: broker_base_url
+  optional: true
+  type: string
+- configurable: true
+  default: 'No'
+  description: If the ECS does not have a properly signed certificate from a trust authority (a self-signed certificate, for example), then customers will need to provide the SSL certificate.
+  label: Is the ECS SSL certificate is signed by a trust authority?
+  name: broker_certificate_selector
+  option_templates:
+  - name: untrusted_ssl
+    named_manifests:
+    - manifest: "certificate: (( .properties.broker_certificate_selector.untrusted_ssl.certificate.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      description: SSL certificate to enable broker to communicate with ECS API Managment. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source
+      label: ECS Management Certificate
+      name: certificate
+      optional: true
+      type: text
+    select_value: 'No'
+  - name: trusted_ssl
+    named_manifests:
+    - manifest: ''
+      name: manifest_snippet
+    property_blueprints: []
+    select_value: 'Yes'
+  optional: false
+  type: selector
+- configurable: true
+  description: (Optional) Manually specify the URI/endpoint of the ECS S3 API, rather than discover from the ECS configured 'base URL'. This is typically accessed form port 9020 (HTTP) or port 9021 (HTTPS), but may be on a different port if accessed through a load balancer
+  label: ECS Object Endpoint
+  name: broker_object_endpoint
+  optional: true
+  type: string
+- configurable: true
+  description: (Optional) Enter a string used to prefix all broker created buckets and users. Defaults to 'ecs-cf-broker-'
+  label: Broker Prefix
+  name: broker_prefix
+  optional: true
+  type: string
+- configurable: true
+  description: (Optional) Enter the URI/endpoint for the ECS S3 API that should be used for storing broker metadata.  Defaults to the object endpoint or base URL
+  label: Repository Endpoint
+  name: broker_repository_endpoint
+  optional: true
+  type: string
+- configurable: true
+  description: (Optional) Enter the name of the user that should be created/used for managing broker metadata. Defaults to '{prefix}-user'
+  label: Repository User
+  name: broker_repository_user
+  optional: true
+  type: string
+- configurable: true
+  description: (Optional) Enter the name of the bucket that should be created/used for managing broker metadata. Defaults to {prefix}-repository
+  label: Repository Bucket
+  name: broker_repository_bucket
+  optional: true
+  type: string
+- configurable: true
+  default: true
+  description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+  label: Enable Catalog Service 1
+  name: catalog_services_0_active
+  optional: false
+  type: boolean
+- configurable: true
+  default: ecs-bucket
+  description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+  label: Name
+  name: catalog_services_0_name
+  optional: false
+  type: string
+- configurable: true
+  default: Dell EMC ECS private object storage bucket
+  description: Full description of the service appearing in the marketplace
+  label: Description
+  name: catalog_services_0_description
+  optional: false
+  type: string
+- configurable: true
+  default: s3,bucket
+  description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+  label: Tags
+  name: catalog_services_0_tags
+  optional: false
+  type: string_list
+- configurable: true
+  default: true
+  description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+  label: Bindable
+  name: catalog_services_0_bindable
+  optional: false
+  type: boolean
+- configurable: true
+  default: true
+  description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+  label: Enable as Repository Service
+  name: catalog_services_0_repository_service
+  optional: false
+  type: boolean
+- configurable: true
+  default: ECS Bucket
+  description: The name that will show in the PCF Apps Manager Marketplace
+  label: Display Name
+  name: catalog_services_0_display_name
+  optional: false
+  type: string
+- configurable: true
+  default: https://avatars.githubusercontent.com/u/12926680
+  description: The image that will show in the PCF Apps Manager Marketplace
+  label: Image URL
+  name: catalog_services_0_image_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: Dell EMC Elastic Cloud Storage (ECS) private object storage Bucket
+  description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+  label: Long Description
+  name: catalog_services_0_long_description
+  optional: false
+  type: text
+- configurable: true
+  default: Dell EMC
+  description: Provider name that will show in the PCF Apps Manager Marketplace
+  label: Provider Display Name
+  name: catalog_services_0_provider_display_name
+  optional: false
+  type: string
+- configurable: true
+  default: https://community.emc.com/docs/DOC-45012
+  description: The documentation link that will show in the PCF Apps Manager Marketplace
+  label: Documentation URL
+  name: catalog_services_0_documentation_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+  description: The support link that will show in the PCF Apps Manager Marketplace
+  label: Support URL
+  name: catalog_services_0_support_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: Bucket
+  description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tenant 'area' where multiple buckets can be provisioned
+  label: Type of Service
+  name: catalog_service_settings0
+  option_templates:
+  - name: bucket_option
+    named_manifests:
+    - manifest: "head_type: (( .properties.catalog_service_settings0.bucket_option.head_type.value ))\r\nfile_accessible: (( .properties.catalog_service_settings0.bucket_option.file_accessible.value ))\r\ndefault_retention: (( .properties.catalog_service_settings0.bucket_option.default_retention.value ))\r\nencrypted: (( .properties.catalog_service_settings0.bucket_option.encrypted.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      default: s3
+      description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+      label: Object Head Type
+      name: head_type
+      options:
+      - label: S3
+        name: s3
+      type: dropdown_select
+    - configurable: true
+      default: false
+      description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+      label: Enable File Access
+      name: file_accessible
+      type: boolean
+    - configurable: true
+      description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      label: Default Retention (Seconds)
+      name: default_retention
+      optional: true
+      type: integer
+    - configurable: true
+      default: false
+      description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      label: Enable Encryption
+      name: encrypted
+      type: boolean
+    select_value: Bucket
+  - name: namespace_option
+    named_manifests:
+    - manifest: "compliance_enabled: (( .properties.catalog_service_settings0.namespace_option.compliance_enabled.value ))\r\ndefault_bucket_quota: (( .properties.catalog_service_settings0.namespace_option.default_bucket_quota.value ))\r\nencrypted: (( .properties.catalog_service_settings0.namespace_option.encrypted.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      default: false
+      description: Strongly enforce object retention for compliance. This only applies to namespace services
+      label: Enable Compliance
+      name: compliance_enabled
+      type: boolean
+    - configurable: true
+      description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+      label: Default Bucket Quota (GB)
+      name: default_bucket_quota
+      optional: true
+      type: integer
+    - configurable: true
+      default: false
+      description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      label: Enable Encryption
+      name: encrypted
+      type: boolean
+    select_value: Namespace
+  optional: false
+  type: selector
+- configurable: true
+  default:
+  - bullet_1: Shared Object Storage
+    bullet_2: 5 GB Storage Limit
+    bullet_3: S3 Protocol Access
+    cost_unit: MONTHLY
+    cost_usd: 0.0
+    description: 5 GB free trial
+    free: true
+    name: 5gb
+    quota_limit: 5
+    quota_warn: 4
+  - bullet_1: Shared Object Storage
+    bullet_2: Unlimited Storage
+    bullet_3: S3 Protocol Access
+    cost_unit: PER_GB_PER_MONTH
+    cost_usd: 0.03
+    description: Usage based billing
+    name: unlimited
+    repository_plan: true
+  label: Customize Plans for this Service
+  name: catalog_plan_collection0
+  optional: false
+  property_blueprints:
+  - configurable: true
+    description: Name of this service plan to show in Cloud Foundry marketplace
+    label: Name
+    name: name
+    type: string
+  - configurable: true
+    description: Description of this service plan to show in Cloud Foundry marketplace
+    label: Description
+    name: description
+    type: string
+  - configurable: true
+    description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+    label: Enable as Repository Plan
+    name: repository_plan
+    type: boolean
+  - configurable: true
+    description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    label: Cost in US Dollars
+    name: cost_usd
+    type: string
+  - configurable: true
+    description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+    label: Cost Unit
+    name: cost_unit
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 1
+    name: bullet_1
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 2
+    name: bullet_2
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 3
+    name: bullet_3
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 4
+    name: bullet_4
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 5
+    name: bullet_5
+    optional: true
+    type: string
+  - configurable: true
+    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+    label: Quota Limit (GB)
+    name: quota_limit
+    optional: true
+    type: integer
+  - configurable: true
+    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+    label: Quota Warning (GB)
+    name: quota_warn
+    optional: true
+    type: integer
+  - configurable: true
+    description: Whether this service is free or paid
+    label: Free of Charge
+    name: free
+    type: boolean
+  - configurable: true
+    default: true
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    label: Enable Access During Outage
+    name: access_during_outage
+    type: boolean
+  - configurable: true
+    description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    label: Default Retention (Seconds)
+    name: default_retention
+    optional: true
+    type: integer
+  type: collection
+- configurable: true
+  default: false
+  description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+  label: Enable Catalog Service 2
+  name: catalog_services_1_active
+  optional: false
+  type: boolean
+- configurable: true
+  default: ecs-namespace
+  description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+  label: Name
+  name: catalog_services_1_name
+  optional: false
+  type: string
+- configurable: true
+  default: Dell EMC ECS private object storage namespace
+  description: Full description of the service appearing in the marketplace
+  label: Description
+  name: catalog_services_1_description
+  optional: false
+  type: string
+- configurable: true
+  default: s3,namespace
+  description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+  label: Tags
+  name: catalog_services_1_tags
+  optional: false
+  type: string_list
+- configurable: true
+  default: true
+  description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+  label: Bindable
+  name: catalog_services_1_bindable
+  optional: false
+  type: boolean
+- configurable: true
+  default: false
+  description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+  label: Enable as Repository Service
+  name: catalog_services_1_repository_service
+  optional: false
+  type: boolean
+- configurable: true
+  default: ECS Namespace
+  description: The name that will show in the PCF Apps Manager Marketplace
+  label: Display Name
+  name: catalog_services_1_display_name
+  optional: false
+  type: string
+- configurable: true
+  default: https://avatars.githubusercontent.com/u/12926680
+  description: The image that will show in the PCF Apps Manager Marketplace
+  label: Image URL
+  name: catalog_services_1_image_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: Dell EMC Elastic Cloud Storage (ECS) private object storage Namespace
+  description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+  label: Long Description
+  name: catalog_services_1_long_description
+  optional: false
+  type: text
+- configurable: true
+  default: Dell EMC
+  description: Provider name that will show in the PCF Apps Manager Marketplace
+  label: Provider Display Name
+  name: catalog_services_1_provider_display_name
+  optional: false
+  type: string
+- configurable: true
+  default: https://community.emc.com/docs/DOC-45012
+  description: The documentation link that will show in the PCF Apps Manager Marketplace
+  label: Documentation URL
+  name: catalog_services_1_documentation_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+  description: The support link that will show in the PCF Apps Manager Marketplace
+  label: Support URL
+  name: catalog_services_1_support_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: Namespace
+  description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
+  label: Type of Service
+  name: catalog_service_settings1
+  option_templates:
+  - name: bucket_option
+    named_manifests:
+    - manifest: "head_type: (( .properties.catalog_service_settings1.bucket_option.head_type.value ))\r\nfile_accessible: (( .properties.catalog_service_settings1.bucket_option.file_accessible.value ))\r\ndefault_retention: (( .properties.catalog_service_settings1.bucket_option.default_retention.value ))\r\nencrypted: (( .properties.catalog_service_settings1.bucket_option.encrypted.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      default: s3
+      description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+      label: Object Head Type
+      name: head_type
+      options:
+      - label: S3
+        name: s3
+      type: dropdown_select
+    - configurable: true
+      default: false
+      description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+      label: Enable File Access
+      name: file_accessible
+      type: boolean
+    - configurable: true
+      description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      label: Default Retention (Seconds)
+      name: default_retention
+      optional: true
+      type: integer
+    - configurable: true
+      default: false
+      description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      label: Enable Encryption
+      name: encrypted
+      type: boolean
+    select_value: Bucket
+  - name: namespace_option
+    named_manifests:
+    - manifest: "compliance_enabled: (( .properties.catalog_service_settings1.namespace_option.compliance_enabled.value ))\r\ndefault_bucket_quota: (( .properties.catalog_service_settings1.namespace_option.default_bucket_quota.value ))\r\nencrypted: (( .properties.catalog_service_settings1.namespace_option.encrypted.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      default: false
+      description: Strongly enforce object retention for compliance. This only applies to namespace services
+      label: Enable Compliance
+      name: compliance_enabled
+      type: boolean
+    - configurable: true
+      description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+      label: Default Bucket Quota (GB)
+      name: default_bucket_quota
+      optional: true
+      type: integer
+    - configurable: true
+      default: false
+      description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      label: Enable Encryption
+      name: encrypted
+      type: boolean
+    select_value: Namespace
+  optional: false
+  type: selector
+- configurable: true
+  default:
+  - bullet_1: Shared Object Storage
+    bullet_2: 5 GB Storage Limit
+    bullet_3: S3 Protocol Access
+    cost_unit: MONTHLY
+    cost_usd: 0.0
+    description: 5 GB free trial
+    free: true
+    name: 5gb
+    quota_limit: 5
+    quota_warn: 4
+  - bullet_1: Shared Object Storage
+    bullet_2: Unlimited Storage
+    bullet_3: S3 Protocol Access
+    cost_unit: PER_GB_PER_MONTH
+    cost_usd: 0.03
+    description: Usage based billing
+    name: unlimited
+    repository_plan: true
+  label: Customize Plans for this Service
+  name: catalog_plan_collection1
+  optional: false
+  property_blueprints:
+  - configurable: true
+    description: Name of this service plan to show in Cloud Foundry marketplace
+    label: Name
+    name: name
+    type: string
+  - configurable: true
+    description: Description of this service plan to show in Cloud Foundry marketplace
+    label: Description
+    name: description
+    type: string
+  - configurable: true
+    description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+    label: Enable as Repository Plan
+    name: repository_plan
+    type: boolean
+  - configurable: true
+    description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    label: Cost in US Dollars
+    name: cost_usd
+    type: string
+  - configurable: true
+    description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+    label: Cost Unit
+    name: cost_unit
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 1
+    name: bullet_1
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 2
+    name: bullet_2
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 3
+    name: bullet_3
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 4
+    name: bullet_4
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 5
+    name: bullet_5
+    optional: true
+    type: string
+  - configurable: true
+    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+    label: Quota Limit (GB)
+    name: quota_limit
+    optional: true
+    type: integer
+  - configurable: true
+    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+    label: Quota Warning (GB)
+    name: quota_warn
+    optional: true
+    type: integer
+  - configurable: true
+    description: Whether this service is free or paid
+    label: Free of Charge
+    name: free
+    type: boolean
+  - configurable: true
+    default: true
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    label: Enable Access During Outage
+    name: access_during_outage
+    type: boolean
+  - configurable: true
+    description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    label: Default Retention (Seconds)
+    name: default_retention
+    optional: true
+    type: integer
+  type: collection
+- configurable: true
+  default: false
+  description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+  label: Enable Catalog Service 3
+  name: catalog_services_2_active
+  optional: false
+  type: boolean
+- configurable: true
+  default: ecs-file-bucket
+  description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+  label: Name
+  name: catalog_services_2_name
+  optional: false
+  type: string
+- configurable: true
+  default: Dell EMC ECS private object storage bucket with file support
+  description: Full description of the service appearing in the marketplace
+  label: Description
+  name: catalog_services_2_description
+  optional: false
+  type: string
+- configurable: true
+  default: s3,bucket,nfs,hdfs
+  description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+  label: Tags
+  name: catalog_services_2_tags
+  optional: false
+  type: string_list
+- configurable: true
+  default: true
+  description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+  label: Bindable
+  name: catalog_services_2_bindable
+  optional: false
+  type: boolean
+- configurable: true
+  default: true
+  description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+  label: Enable as Repository Service
+  name: catalog_services_2_repository_service
+  optional: false
+  type: boolean
+- configurable: true
+  default: ECS File-Enabled Bucket
+  description: The name that will show in the PCF Apps Manager Marketplace
+  label: Display Name
+  name: catalog_services_2_display_name
+  optional: false
+  type: string
+- configurable: true
+  default: https://avatars.githubusercontent.com/u/12926680
+  description: The image that will show in the PCF Apps Manager Marketplace
+  label: Image URL
+  name: catalog_services_2_image_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: Dell EMC Elastic Cloud Storage (ECS) object storage bucket with support for file protocols. Supports S3, NFS and HDFS access.
+  description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+  label: Long Description
+  name: catalog_services_2_long_description
+  optional: false
+  type: text
+- configurable: true
+  default: Dell EMC
+  description: Provider name that will show in the PCF Apps Manager Marketplace
+  label: Provider Display Name
+  name: catalog_services_2_provider_display_name
+  optional: false
+  type: string
+- configurable: true
+  default: https://community.emc.com/docs/DOC-45012
+  description: The documentation link that will show in the PCF Apps Manager Marketplace
+  label: Documentation URL
+  name: catalog_services_2_documentation_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+  description: The support link that will show in the PCF Apps Manager Marketplace
+  label: Support URL
+  name: catalog_services_2_support_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: Bucket
+  description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
+  label: Type of Service
+  name: catalog_service_settings2
+  option_templates:
+  - name: bucket_option
+    named_manifests:
+    - manifest: "head_type: (( .properties.catalog_service_settings2.bucket_option.head_type.value ))\r\nfile_accessible: (( .properties.catalog_service_settings2.bucket_option.file_accessible.value ))\r\ndefault_retention: (( .properties.catalog_service_settings2.bucket_option.default_retention.value ))\r\nencrypted: (( .properties.catalog_service_settings2.bucket_option.encrypted.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      default: s3
+      description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+      label: Object Head Type
+      name: head_type
+      options:
+      - label: S3
+        name: s3
+      type: dropdown_select
+    - configurable: true
+      default: true
+      description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+      label: Enable File Access
+      name: file_accessible
+      type: boolean
+    - configurable: true
+      description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      label: Default Retention (Seconds)
+      name: default_retention
+      optional: true
+      type: integer
+    - configurable: true
+      default: false
+      description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      label: Enable Encryption
+      name: encrypted
+      type: boolean
+    select_value: Bucket
+  - name: namespace_option
+    named_manifests:
+    - manifest: "compliance_enabled: (( .properties.catalog_service_settings2.namespace_option.compliance_enabled.value ))\r\ndefault_bucket_quota: (( .properties.catalog_service_settings2.namespace_option.default_bucket_quota.value ))\r\nencrypted: (( .properties.catalog_service_settings2.namespace_option.encrypted.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      default: false
+      description: Strongly enforce object retention for compliance. This only applies to namespace services
+      label: Enable Compliance
+      name: compliance_enabled
+      type: boolean
+    - configurable: true
+      description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+      label: Default Bucket Quota (GB)
+      name: default_bucket_quota
+      optional: true
+      type: integer
+    - configurable: true
+      default: false
+      description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      label: Enable Encryption
+      name: encrypted
+      type: boolean
+    select_value: Namespace
+  optional: false
+  type: selector
+- configurable: true
+  default:
+  - bullet_1: Shared Object Storage
+    bullet_2: 5 GB Storage Limit
+    bullet_3: S3 Protocol Access
+    cost_unit: MONTHLY
+    cost_usd: 0.0
+    description: 5 GB free trial
+    free: true
+    name: 5gb
+    quota_limit: 5
+    quota_warn: 4
+  - bullet_1: Shared Object Storage
+    bullet_2: Unlimited Storage
+    bullet_3: S3 Protocol Access
+    cost_unit: PER_GB_PER_MONTH
+    cost_usd: 0.03
+    description: Usage based billing
+    name: unlimited
+    repository_plan: true
+  label: Customize Plans for this Service
+  name: catalog_plan_collection2
+  optional: false
+  property_blueprints:
+  - configurable: true
+    description: Name of this service plan to show in Cloud Foundry marketplace
+    label: Name
+    name: name
+    type: string
+  - configurable: true
+    description: Description of this service plan to show in Cloud Foundry marketplace
+    label: Description
+    name: description
+    type: string
+  - configurable: true
+    description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+    label: Enable as Repository Plan
+    name: repository_plan
+    type: boolean
+  - configurable: true
+    description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    label: Cost in US Dollars
+    name: cost_usd
+    type: string
+  - configurable: true
+    description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+    label: Cost Unit
+    name: cost_unit
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 1
+    name: bullet_1
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 2
+    name: bullet_2
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 3
+    name: bullet_3
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 4
+    name: bullet_4
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 5
+    name: bullet_5
+    optional: true
+    type: string
+  - configurable: true
+    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+    label: Quota Limit (GB)
+    name: quota_limit
+    optional: true
+    type: integer
+  - configurable: true
+    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+    label: Quota Warning (GB)
+    name: quota_warn
+    optional: true
+    type: integer
+  - configurable: true
+    description: Whether this service is free or paid
+    label: Free of Charge
+    name: free
+    type: boolean
+  - configurable: true
+    default: true
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    label: Enable Access During Outage
+    name: access_during_outage
+    type: boolean
+  - configurable: true
+    description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    label: Default Retention (Seconds)
+    name: default_retention
+    optional: true
+    type: integer
+  type: collection
+- configurable: true
+  default: false
+  description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+  label: Enable Catalog Service 4
+  name: catalog_services_3_active
+  optional: false
+  type: boolean
+- configurable: true
+  default: ecs-bucket
+  description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+  label: Name
+  name: catalog_services_3_name
+  optional: false
+  type: string
+- configurable: true
+  default: Dell EMC ECS private object storage bucket
+  description: Full description of the service appearing in the marketplace
+  label: Description
+  name: catalog_services_3_description
+  optional: false
+  type: string
+- configurable: true
+  default: s3,bucket
+  description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+  label: Tags
+  name: catalog_services_3_tags
+  optional: false
+  type: string_list
+- configurable: true
+  default: true
+  description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+  label: Bindable
+  name: catalog_services_3_bindable
+  optional: false
+  type: boolean
+- configurable: true
+  default: true
+  description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+  label: Enable as Repository Service
+  name: catalog_services_3_repository_service
+  optional: false
+  type: boolean
+- configurable: true
+  default: ECS Bucket
+  description: The name that will show in the PCF Apps Manager Marketplace
+  label: Display Name
+  name: catalog_services_3_display_name
+  optional: false
+  type: string
+- configurable: true
+  default: https://avatars.githubusercontent.com/u/12926680
+  description: The image that will show in the PCF Apps Manager Marketplace
+  label: Image URL
+  name: catalog_services_3_image_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: Dell EMC Elastic Cloud Storage (ECS) private object storage Bucket
+  description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+  label: Long Description
+  name: catalog_services_3_long_description
+  optional: false
+  type: text
+- configurable: true
+  default: Dell EMC
+  description: Provider name that will show in the PCF Apps Manager Marketplace
+  label: Provider Display Name
+  name: catalog_services_3_provider_display_name
+  optional: false
+  type: string
+- configurable: true
+  default: https://community.emc.com/docs/DOC-45012
+  description: The documentation link that will show in the PCF Apps Manager Marketplace
+  label: Documentation URL
+  name: catalog_services_3_documentation_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+  description: The support link that will show in the PCF Apps Manager Marketplace
+  label: Support URL
+  name: catalog_services_3_support_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: Bucket
+  description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
+  label: Type of Service
+  name: catalog_service_settings3
+  option_templates:
+  - name: bucket_option
+    named_manifests:
+    - manifest: "head_type: (( .properties.catalog_service_settings3.bucket_option.head_type.value ))\r\nfile_accessible: (( .properties.catalog_service_settings3.bucket_option.file_accessible.value ))\r\ndefault_retention: (( .properties.catalog_service_settings3.bucket_option.default_retention.value ))\r\nencrypted: (( .properties.catalog_service_settings3.bucket_option.encrypted.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      default: s3
+      description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+      label: Object Head Type
+      name: head_type
+      options:
+      - label: S3
+        name: s3
+      type: dropdown_select
+    - configurable: true
+      default: false
+      description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+      label: Enable File Access
+      name: file_accessible
+      type: boolean
+    - configurable: true
+      description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      label: Default Retention (Seconds)
+      name: default_retention
+      optional: true
+      type: integer
+    - configurable: true
+      default: false
+      description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      label: Enable Encryption
+      name: encrypted
+      type: boolean
+    select_value: Bucket
+  - name: namespace_option
+    named_manifests:
+    - manifest: "compliance_enabled: (( .properties.catalog_service_settings3.namespace_option.compliance_enabled.value ))\r\ndefault_bucket_quota: (( .properties.catalog_service_settings3.namespace_option.default_bucket_quota.value ))\r\nencrypted: (( .properties.catalog_service_settings3.namespace_option.encrypted.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      default: false
+      description: Strongly enforce object retention for compliance. This only applies to namespace services
+      label: Enable Compliance
+      name: compliance_enabled
+      type: boolean
+    - configurable: true
+      description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+      label: Default Bucket Quota (GB)
+      name: default_bucket_quota
+      optional: true
+      type: integer
+    - configurable: true
+      default: false
+      description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      label: Enable Encryption
+      name: encrypted
+      type: boolean
+    select_value: Namespace
+  optional: false
+  type: selector
+- configurable: true
+  default:
+  - bullet_1: Shared Object Storage
+    bullet_2: 5 GB Storage Limit
+    bullet_3: S3 Protocol Access
+    cost_unit: MONTHLY
+    cost_usd: 0.0
+    description: 5 GB free trial
+    free: true
+    name: 5gb
+    quota_limit: 5
+    quota_warn: 4
+  - bullet_1: Shared Object Storage
+    bullet_2: Unlimited Storage
+    bullet_3: S3 Protocol Access
+    cost_unit: PER_GB_PER_MONTH
+    cost_usd: 0.03
+    description: Usage based billing
+    name: unlimited
+    repository_plan: true
+  label: Customize Plans for this Service
+  name: catalog_plan_collection3
+  optional: false
+  property_blueprints:
+  - configurable: true
+    description: Name of this service plan to show in Cloud Foundry marketplace
+    label: Name
+    name: name
+    type: string
+  - configurable: true
+    description: Description of this service plan to show in Cloud Foundry marketplace
+    label: Description
+    name: description
+    type: string
+  - configurable: true
+    description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+    label: Enable as Repository Plan
+    name: repository_plan
+    type: boolean
+  - configurable: true
+    description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    label: Cost in US Dollars
+    name: cost_usd
+    type: string
+  - configurable: true
+    description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+    label: Cost Unit
+    name: cost_unit
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 1
+    name: bullet_1
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 2
+    name: bullet_2
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 3
+    name: bullet_3
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 4
+    name: bullet_4
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 5
+    name: bullet_5
+    optional: true
+    type: string
+  - configurable: true
+    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+    label: Quota Limit (GB)
+    name: quota_limit
+    optional: true
+    type: integer
+  - configurable: true
+    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+    label: Quota Warning (GB)
+    name: quota_warn
+    optional: true
+    type: integer
+  - configurable: true
+    description: Whether this service is free or paid
+    label: Free of Charge
+    name: free
+    type: boolean
+  - configurable: true
+    default: true
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    label: Enable Access During Outage
+    name: access_during_outage
+    type: boolean
+  - configurable: true
+    description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    label: Default Retention (Seconds)
+    name: default_retention
+    optional: true
+    type: integer
+  type: collection
+- configurable: true
+  default: false
+  description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+  label: Enable Catalog Service 5
+  name: catalog_services_4_active
+  optional: false
+  type: boolean
+- configurable: true
+  default: ecs-bucket
+  description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+  label: Name
+  name: catalog_services_4_name
+  optional: false
+  type: string
+- configurable: true
+  default: Dell EMC ECS private object storage bucket
+  description: Full description of the service appearing in the marketplace
+  label: Description
+  name: catalog_services_4_description
+  optional: false
+  type: string
+- configurable: true
+  default: s3,bucket
+  description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+  label: Tags
+  name: catalog_services_4_tags
+  optional: false
+  type: string_list
+- configurable: true
+  default: true
+  description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+  label: Bindable
+  name: catalog_services_4_bindable
+  optional: false
+  type: boolean
+- configurable: true
+  default: true
+  description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+  label: Enable as Repository Service
+  name: catalog_services_4_repository_service
+  optional: false
+  type: boolean
+- configurable: true
+  default: ECS Bucket
+  description: The name that will show in the PCF Apps Manager Marketplace
+  label: Display Name
+  name: catalog_services_4_display_name
+  optional: false
+  type: string
+- configurable: true
+  default: https://avatars.githubusercontent.com/u/12926680
+  description: The image that will show in the PCF Apps Manager Marketplace
+  label: Image URL
+  name: catalog_services_4_image_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: Dell EMC Elastic Cloud Storage (ECS) private object storage Bucket
+  description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+  label: Long Description
+  name: catalog_services_4_long_description
+  optional: false
+  type: text
+- configurable: true
+  default: Dell EMC
+  description: Provider name that will show in the PCF Apps Manager Marketplace
+  label: Provider Display Name
+  name: catalog_services_4_provider_display_name
+  optional: false
+  type: string
+- configurable: true
+  default: https://community.emc.com/docs/DOC-45012
+  description: The documentation link that will show in the PCF Apps Manager Marketplace
+  label: Documentation URL
+  name: catalog_services_4_documentation_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+  description: The support link that will show in the PCF Apps Manager Marketplace
+  label: Support URL
+  name: catalog_services_4_support_url
+  optional: false
+  type: http_url
+- configurable: true
+  default: Bucket
+  description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
+  label: Type of Service
+  name: catalog_service_settings4
+  option_templates:
+  - name: bucket_option
+    named_manifests:
+    - manifest: "head_type: (( .properties.catalog_service_settings4.bucket_option.head_type.value ))\r\nfile_accessible: (( .properties.catalog_service_settings4.bucket_option.file_accessible.value ))\r\ndefault_retention: (( .properties.catalog_service_settings4.bucket_option.default_retention.value ))\r\nencrypted: (( .properties.catalog_service_settings4.bucket_option.encrypted.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      default: s3
+      description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+      label: Object Head Type
+      name: head_type
+      options:
+      - label: S3
+        name: s3
+      type: dropdown_select
+    - configurable: true
+      default: false
+      description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+      label: Enable File Access
+      name: file_accessible
+      type: boolean
+    - configurable: true
+      description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      label: Default Retention (Seconds)
+      name: default_retention
+      optional: true
+      type: integer
+    - configurable: true
+      default: false
+      description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      label: Enable Encryption
+      name: encrypted
+      type: boolean
+    select_value: Bucket
+  - name: namespace_option
+    named_manifests:
+    - manifest: "compliance_enabled: (( .properties.catalog_service_settings4.namespace_option.compliance_enabled.value ))\r\ndefault_bucket_quota: (( .properties.catalog_service_settings4.namespace_option.default_bucket_quota.value ))\r\nencrypted: (( .properties.catalog_service_settings4.namespace_option.encrypted.value ))\r\n"
+      name: manifest_snippet
+    property_blueprints:
+    - configurable: true
+      default: false
+      description: Strongly enforce object retention for compliance. This only applies to namespace services
+      label: Enable Compliance
+      name: compliance_enabled
+      type: boolean
+    - configurable: true
+      description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+      label: Default Bucket Quota (GB)
+      name: default_bucket_quota
+      optional: true
+      type: integer
+    - configurable: true
+      default: false
+      description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      label: Enable Encryption
+      name: encrypted
+      type: boolean
+    select_value: Namespace
+  optional: false
+  type: selector
+- configurable: true
+  default:
+  - bullet_1: Shared Object Storage
+    bullet_2: 5 GB Storage Limit
+    bullet_3: S3 Protocol Access
+    cost_unit: MONTHLY
+    cost_usd: 0.0
+    description: 5 GB free trial
+    free: true
+    name: 5gb
+    quota_limit: 5
+    quota_warn: 4
+  - bullet_1: Shared Object Storage
+    bullet_2: Unlimited Storage
+    bullet_3: S3 Protocol Access
+    cost_unit: PER_GB_PER_MONTH
+    cost_usd: 0.03
+    description: Usage based billing
+    name: unlimited
+    repository_plan: true
+  label: Customize Plans for this Service
+  name: catalog_plan_collection4
+  optional: false
+  property_blueprints:
+  - configurable: true
+    description: Name of this service plan to show in Cloud Foundry marketplace
+    label: Name
+    name: name
+    type: string
+  - configurable: true
+    description: Description of this service plan to show in Cloud Foundry marketplace
+    label: Description
+    name: description
+    type: string
+  - configurable: true
+    description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+    label: Enable as Repository Plan
+    name: repository_plan
+    type: boolean
+  - configurable: true
+    description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    label: Cost in US Dollars
+    name: cost_usd
+    type: string
+  - configurable: true
+    description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+    label: Cost Unit
+    name: cost_unit
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 1
+    name: bullet_1
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 2
+    name: bullet_2
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 3
+    name: bullet_3
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 4
+    name: bullet_4
+    optional: true
+    type: string
+  - configurable: true
+    description: Bullet point to show up about the plan in the PCF Marketplace.
+    label: Bullet 5
+    name: bullet_5
+    optional: true
+    type: string
+  - configurable: true
+    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+    label: Quota Limit (GB)
+    name: quota_limit
+    optional: true
+    type: integer
+  - configurable: true
+    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+    label: Quota Warning (GB)
+    name: quota_warn
+    optional: true
+    type: integer
+  - configurable: true
+    description: Whether this service is free or paid
+    label: Free of Charge
+    name: free
+    type: boolean
+  - configurable: true
+    default: true
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    label: Enable Access During Outage
+    name: access_during_outage
+    type: boolean
+  - configurable: true
+    description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    label: Default Retention (Seconds)
+    name: default_retention
+    optional: true
+    type: integer
+  type: collection
+
+
+form_types: 
+- description: Service Broker ECS Connection Details
+  label: Dell EMC ECS Connectivity
+  name: ecs_connection
+  property_inputs:
+  - description: Enter the URI/endpoint for the ECS HTTPS management API. This is typically accessed from port `4443`, but may be on a different port if accessed through a load balancer
+    label: ECS Management Endpoint
+    reference: .properties.broker_management_endpoint
+  - description: Enter the name of the ECS replication group to be used for created buckets. This can be found in the ECS management UI
+    label: Replication Group
+    reference: .properties.broker_replication_group
+  - description: Enter the name of the ECS namespace to be used for created buckets and users. This can be found in the ECS management UI
+    label: Namespace
+    reference: .properties.broker_namespace
+  - description: Enter the name of the ECS Management API admin user. This should be a namespace admin or system administrator management user on the ECS
+    label: ECS Admin Username
+    reference: .properties.broker_username
+  - description: Enter the ECS Management API password
+    label: ECS Admin Password
+    reference: .properties.broker_password
+  - description: (Optional) Enter the name of the ECS configured base URL, to discover the object endpoint. If not provided, the broker will attempt to discover a default base URL. Alternatively, the URI/endpoint can be specified using the 'Object Endpoint' parameter
+    label: ECS Base URL
+    reference: .properties.broker_base_url
+  - description: If the ECS does not have a properly signed certificate from a trust authority (a self-signed certificate, for example), then customers will need to provide the SSL certificate.
+    label: Is the ECS SSL certificate is signed by a trust authority?
+    reference: .properties.broker_certificate_selector
+    selector_property_inputs:
+    - label: 'No'
+      property_inputs:
+      - description: SSL certificate to enable broker to communicate with ECS API Managment. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source
+        label: ECS Management Certificate
+        reference: .properties.broker_certificate_selector.untrusted_ssl.certificate
+      reference: .properties.broker_certificate_selector.untrusted_ssl
+    - label: 'Yes'
+      property_inputs: null
+      reference: .properties.broker_certificate_selector.trusted_ssl
+  - description: (Optional) Manually specify the URI/endpoint of the ECS S3 API, rather than discover from the ECS configured 'base URL'. This is typically accessed form port 9020 (HTTP) or port 9021 (HTTPS), but may be on a different port if accessed through a load balancer
+    label: ECS Object Endpoint
+    reference: .properties.broker_object_endpoint
+- description: Service Broker Webservice Settings
+  label: Service Broker Settings
+  name: broker_service_details
+  property_inputs:
+  - description: (Optional) Enter a string used to prefix all broker created buckets and users. Defaults to 'ecs-cf-broker-'
+    label: Broker Prefix
+    reference: .properties.broker_prefix
+  - description: (Optional) Enter the URI/endpoint for the ECS S3 API that should be used for storing broker metadata.  Defaults to the object endpoint or base URL
+    label: Repository Endpoint
+    reference: .properties.broker_repository_endpoint
+  - description: (Optional) Enter the name of the user that should be created/used for managing broker metadata. Defaults to '{prefix}-user'
+    label: Repository User
+    reference: .properties.broker_repository_user
+  - description: (Optional) Enter the name of the bucket that should be created/used for managing broker metadata. Defaults to {prefix}-repository
+    label: Repository Bucket
+    reference: .properties.broker_repository_bucket
+- description: Configure Catalog Service 1
+  label: Catalog Service 1
+  name: catalog_services_1
+  property_inputs:
+  - description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+    label: Enable Catalog Service 1
+    reference: .properties.catalog_services_0_active
+  - description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+    label: Name
+    reference: .properties.catalog_services_0_name
+  - description: Full description of the service appearing in the marketplace
+    label: Description
+    reference: .properties.catalog_services_0_description
+  - description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+    label: Tags
+    reference: .properties.catalog_services_0_tags
+  - description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+    label: Bindable
+    reference: .properties.catalog_services_0_bindable
+  - description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+    label: Enable as Repository Service
+    reference: .properties.catalog_services_0_repository_service
+  - description: The name that will show in the PCF Apps Manager Marketplace
+    label: Display Name
+    reference: .properties.catalog_services_0_display_name
+  - description: The image that will show in the PCF Apps Manager Marketplace
+    label: Image URL
+    reference: .properties.catalog_services_0_image_url
+  - description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+    label: Long Description
+    reference: .properties.catalog_services_0_long_description
+  - description: Provider name that will show in the PCF Apps Manager Marketplace
+    label: Provider Display Name
+    reference: .properties.catalog_services_0_provider_display_name
+  - description: The documentation link that will show in the PCF Apps Manager Marketplace
+    label: Documentation URL
+    reference: .properties.catalog_services_0_documentation_url
+  - description: The support link that will show in the PCF Apps Manager Marketplace
+    label: Support URL
+    reference: .properties.catalog_services_0_support_url
+  - description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tenant 'area' where multiple buckets can be provisioned
+    label: Type of Service
+    reference: .properties.catalog_service_settings0
+    selector_property_inputs:
+    - label: Bucket
+      property_inputs:
+      - description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+        label: Object Head Type
+        reference: .properties.catalog_service_settings0.bucket_option.head_type
+      - description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+        label: Enable File Access
+        reference: .properties.catalog_service_settings0.bucket_option.file_accessible
+      - description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+        label: Default Retention (Seconds)
+        reference: .properties.catalog_service_settings0.bucket_option.default_retention
+      - description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+        label: Enable Encryption
+        reference: .properties.catalog_service_settings0.bucket_option.encrypted
+      reference: .properties.catalog_service_settings0.bucket_option
+    - label: Namespace
+      property_inputs:
+      - description: Strongly enforce object retention for compliance. This only applies to namespace services
+        label: Enable Compliance
+        reference: .properties.catalog_service_settings0.namespace_option.compliance_enabled
+      - description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+        label: Default Bucket Quota (GB)
+        reference: .properties.catalog_service_settings0.namespace_option.default_bucket_quota
+      - description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+        label: Enable Encryption
+        reference: .properties.catalog_service_settings0.namespace_option.encrypted
+      reference: .properties.catalog_service_settings0.namespace_option
+  - description: Customize Plans for this Service
+    label: Customize Plans for this Service
+    property_inputs:
+    - description: Name of this service plan to show in Cloud Foundry marketplace
+      label: Name
+      reference: name
+    - description: Description of this service plan to show in Cloud Foundry marketplace
+      label: Description
+      reference: description
+    - description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+      label: Enable as Repository Plan
+      reference: repository_plan
+    - description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+      label: Cost in US Dollars
+      reference: cost_usd
+    - description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+      label: Cost Unit
+      reference: cost_unit
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 1
+      reference: bullet_1
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 2
+      reference: bullet_2
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 3
+      reference: bullet_3
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 4
+      reference: bullet_4
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 5
+      reference: bullet_5
+    - description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+      label: Quota Limit (GB)
+      reference: quota_limit
+    - description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+      label: Quota Warning (GB)
+      reference: quota_warn
+    - description: Whether this service is free or paid
+      label: Free of Charge
+      reference: free
+    - description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+      label: Enable Access During Outage
+      reference: access_during_outage
+    - description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+      label: Default Retention (Seconds)
+      reference: default_retention
+    reference: .properties.catalog_plan_collection0
+- description: Configure Catalog Service 2
+  label: Catalog Service 2
+  name: catalog_services_2
+  property_inputs:
+  - description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+    label: Enable Catalog Service 2
+    reference: .properties.catalog_services_1_active
+  - description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+    label: Name
+    reference: .properties.catalog_services_1_name
+  - description: Full description of the service appearing in the marketplace
+    label: Description
+    reference: .properties.catalog_services_1_description
+  - description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+    label: Tags
+    reference: .properties.catalog_services_1_tags
+  - description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+    label: Bindable
+    reference: .properties.catalog_services_1_bindable
+  - description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+    label: Enable as Repository Service
+    reference: .properties.catalog_services_1_repository_service
+  - description: The name that will show in the PCF Apps Manager Marketplace
+    label: Display Name
+    reference: .properties.catalog_services_1_display_name
+  - description: The image that will show in the PCF Apps Manager Marketplace
+    label: Image URL
+    reference: .properties.catalog_services_1_image_url
+  - description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+    label: Long Description
+    reference: .properties.catalog_services_1_long_description
+  - description: Provider name that will show in the PCF Apps Manager Marketplace
+    label: Provider Display Name
+    reference: .properties.catalog_services_1_provider_display_name
+  - description: The documentation link that will show in the PCF Apps Manager Marketplace
+    label: Documentation URL
+    reference: .properties.catalog_services_1_documentation_url
+  - description: The support link that will show in the PCF Apps Manager Marketplace
+    label: Support URL
+    reference: .properties.catalog_services_1_support_url
+  - description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
+    label: Type of Service
+    reference: .properties.catalog_service_settings1
+    selector_property_inputs:
+    - label: Bucket
+      property_inputs:
+      - description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+        label: Object Head Type
+        reference: .properties.catalog_service_settings1.bucket_option.head_type
+      - description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+        label: Enable File Access
+        reference: .properties.catalog_service_settings1.bucket_option.file_accessible
+      - description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+        label: Default Retention (Seconds)
+        reference: .properties.catalog_service_settings1.bucket_option.default_retention
+      - description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+        label: Enable Encryption
+        reference: .properties.catalog_service_settings1.bucket_option.encrypted
+      reference: .properties.catalog_service_settings1.bucket_option
+    - label: Namespace
+      property_inputs:
+      - description: Strongly enforce object retention for compliance. This only applies to namespace services
+        label: Enable Compliance
+        reference: .properties.catalog_service_settings1.namespace_option.compliance_enabled
+      - description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+        label: Default Bucket Quota (GB)
+        reference: .properties.catalog_service_settings1.namespace_option.default_bucket_quota
+      - description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+        label: Enable Encryption
+        reference: .properties.catalog_service_settings1.namespace_option.encrypted
+      reference: .properties.catalog_service_settings1.namespace_option
+  - description: Customize Plans for this Service
+    label: Customize Plans for this Service
+    property_inputs:
+    - description: Name of this service plan to show in Cloud Foundry marketplace
+      label: Name
+      reference: name
+    - description: Description of this service plan to show in Cloud Foundry marketplace
+      label: Description
+      reference: description
+    - description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+      label: Enable as Repository Plan
+      reference: repository_plan
+    - description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+      label: Cost in US Dollars
+      reference: cost_usd
+    - description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+      label: Cost Unit
+      reference: cost_unit
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 1
+      reference: bullet_1
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 2
+      reference: bullet_2
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 3
+      reference: bullet_3
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 4
+      reference: bullet_4
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 5
+      reference: bullet_5
+    - description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+      label: Quota Limit (GB)
+      reference: quota_limit
+    - description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+      label: Quota Warning (GB)
+      reference: quota_warn
+    - description: Whether this service is free or paid
+      label: Free of Charge
+      reference: free
+    - description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+      label: Enable Access During Outage
+      reference: access_during_outage
+    - description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+      label: Default Retention (Seconds)
+      reference: default_retention
+    reference: .properties.catalog_plan_collection1
+- description: Configure Catalog Service 3
+  label: Catalog Service 3
+  name: catalog_services_3
+  property_inputs:
+  - description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+    label: Enable Catalog Service 3
+    reference: .properties.catalog_services_2_active
+  - description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+    label: Name
+    reference: .properties.catalog_services_2_name
+  - description: Full description of the service appearing in the marketplace
+    label: Description
+    reference: .properties.catalog_services_2_description
+  - description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+    label: Tags
+    reference: .properties.catalog_services_2_tags
+  - description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+    label: Bindable
+    reference: .properties.catalog_services_2_bindable
+  - description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+    label: Enable as Repository Service
+    reference: .properties.catalog_services_2_repository_service
+  - description: The name that will show in the PCF Apps Manager Marketplace
+    label: Display Name
+    reference: .properties.catalog_services_2_display_name
+  - description: The image that will show in the PCF Apps Manager Marketplace
+    label: Image URL
+    reference: .properties.catalog_services_2_image_url
+  - description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+    label: Long Description
+    reference: .properties.catalog_services_2_long_description
+  - description: Provider name that will show in the PCF Apps Manager Marketplace
+    label: Provider Display Name
+    reference: .properties.catalog_services_2_provider_display_name
+  - description: The documentation link that will show in the PCF Apps Manager Marketplace
+    label: Documentation URL
+    reference: .properties.catalog_services_2_documentation_url
+  - description: The support link that will show in the PCF Apps Manager Marketplace
+    label: Support URL
+    reference: .properties.catalog_services_2_support_url
+  - description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
+    label: Type of Service
+    reference: .properties.catalog_service_settings2
+    selector_property_inputs:
+    - label: Bucket
+      property_inputs:
+      - description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+        label: Object Head Type
+        reference: .properties.catalog_service_settings2.bucket_option.head_type
+      - description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+        label: Enable File Access
+        reference: .properties.catalog_service_settings2.bucket_option.file_accessible
+      - description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+        label: Default Retention (Seconds)
+        reference: .properties.catalog_service_settings2.bucket_option.default_retention
+      - description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+        label: Enable Encryption
+        reference: .properties.catalog_service_settings2.bucket_option.encrypted
+      reference: .properties.catalog_service_settings2.bucket_option
+    - label: Namespace
+      property_inputs:
+      - description: Strongly enforce object retention for compliance. This only applies to namespace services
+        label: Enable Compliance
+        reference: .properties.catalog_service_settings2.namespace_option.compliance_enabled
+      - description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+        label: Default Bucket Quota (GB)
+        reference: .properties.catalog_service_settings2.namespace_option.default_bucket_quota
+      - description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+        label: Enable Encryption
+        reference: .properties.catalog_service_settings2.namespace_option.encrypted
+      reference: .properties.catalog_service_settings2.namespace_option
+  - description: Customize Plans for this Service
+    label: Customize Plans for this Service
+    property_inputs:
+    - description: Name of this service plan to show in Cloud Foundry marketplace
+      label: Name
+      reference: name
+    - description: Description of this service plan to show in Cloud Foundry marketplace
+      label: Description
+      reference: description
+    - description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+      label: Enable as Repository Plan
+      reference: repository_plan
+    - description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+      label: Cost in US Dollars
+      reference: cost_usd
+    - description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+      label: Cost Unit
+      reference: cost_unit
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 1
+      reference: bullet_1
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 2
+      reference: bullet_2
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 3
+      reference: bullet_3
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 4
+      reference: bullet_4
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 5
+      reference: bullet_5
+    - description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+      label: Quota Limit (GB)
+      reference: quota_limit
+    - description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+      label: Quota Warning (GB)
+      reference: quota_warn
+    - description: Whether this service is free or paid
+      label: Free of Charge
+      reference: free
+    - description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+      label: Enable Access During Outage
+      reference: access_during_outage
+    - description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+      label: Default Retention (Seconds)
+      reference: default_retention
+    reference: .properties.catalog_plan_collection2
+- description: Configure Catalog Service 4
+  label: Catalog Service 4
+  name: catalog_services_4
+  property_inputs:
+  - description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+    label: Enable Catalog Service 4
+    reference: .properties.catalog_services_3_active
+  - description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+    label: Name
+    reference: .properties.catalog_services_3_name
+  - description: Full description of the service appearing in the marketplace
+    label: Description
+    reference: .properties.catalog_services_3_description
+  - description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+    label: Tags
+    reference: .properties.catalog_services_3_tags
+  - description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+    label: Bindable
+    reference: .properties.catalog_services_3_bindable
+  - description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+    label: Enable as Repository Service
+    reference: .properties.catalog_services_3_repository_service
+  - description: The name that will show in the PCF Apps Manager Marketplace
+    label: Display Name
+    reference: .properties.catalog_services_3_display_name
+  - description: The image that will show in the PCF Apps Manager Marketplace
+    label: Image URL
+    reference: .properties.catalog_services_3_image_url
+  - description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+    label: Long Description
+    reference: .properties.catalog_services_3_long_description
+  - description: Provider name that will show in the PCF Apps Manager Marketplace
+    label: Provider Display Name
+    reference: .properties.catalog_services_3_provider_display_name
+  - description: The documentation link that will show in the PCF Apps Manager Marketplace
+    label: Documentation URL
+    reference: .properties.catalog_services_3_documentation_url
+  - description: The support link that will show in the PCF Apps Manager Marketplace
+    label: Support URL
+    reference: .properties.catalog_services_3_support_url
+  - description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
+    label: Type of Service
+    reference: .properties.catalog_service_settings3
+    selector_property_inputs:
+    - label: Bucket
+      property_inputs:
+      - description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+        label: Object Head Type
+        reference: .properties.catalog_service_settings3.bucket_option.head_type
+      - description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+        label: Enable File Access
+        reference: .properties.catalog_service_settings3.bucket_option.file_accessible
+      - description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+        label: Default Retention (Seconds)
+        reference: .properties.catalog_service_settings3.bucket_option.default_retention
+      - description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+        label: Enable Encryption
+        reference: .properties.catalog_service_settings3.bucket_option.encrypted
+      reference: .properties.catalog_service_settings3.bucket_option
+    - label: Namespace
+      property_inputs:
+      - description: Strongly enforce object retention for compliance. This only applies to namespace services
+        label: Enable Compliance
+        reference: .properties.catalog_service_settings3.namespace_option.compliance_enabled
+      - description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+        label: Default Bucket Quota (GB)
+        reference: .properties.catalog_service_settings3.namespace_option.default_bucket_quota
+      - description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+        label: Enable Encryption
+        reference: .properties.catalog_service_settings3.namespace_option.encrypted
+      reference: .properties.catalog_service_settings3.namespace_option
+  - description: Customize Plans for this Service
+    label: Customize Plans for this Service
+    property_inputs:
+    - description: Name of this service plan to show in Cloud Foundry marketplace
+      label: Name
+      reference: name
+    - description: Description of this service plan to show in Cloud Foundry marketplace
+      label: Description
+      reference: description
+    - description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+      label: Enable as Repository Plan
+      reference: repository_plan
+    - description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+      label: Cost in US Dollars
+      reference: cost_usd
+    - description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+      label: Cost Unit
+      reference: cost_unit
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 1
+      reference: bullet_1
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 2
+      reference: bullet_2
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 3
+      reference: bullet_3
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 4
+      reference: bullet_4
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 5
+      reference: bullet_5
+    - description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+      label: Quota Limit (GB)
+      reference: quota_limit
+    - description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+      label: Quota Warning (GB)
+      reference: quota_warn
+    - description: Whether this service is free or paid
+      label: Free of Charge
+      reference: free
+    - description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+      label: Enable Access During Outage
+      reference: access_during_outage
+    - description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+      label: Default Retention (Seconds)
+      reference: default_retention
+    reference: .properties.catalog_plan_collection3
+- description: Configure Catalog Service 5
+  label: Catalog Service 5
+  name: catalog_services_5
+  property_inputs:
+  - description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+    label: Enable Catalog Service 5
+    reference: .properties.catalog_services_4_active
+  - description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+    label: Name
+    reference: .properties.catalog_services_4_name
+  - description: Full description of the service appearing in the marketplace
+    label: Description
+    reference: .properties.catalog_services_4_description
+  - description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+    label: Tags
+    reference: .properties.catalog_services_4_tags
+  - description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+    label: Bindable
+    reference: .properties.catalog_services_4_bindable
+  - description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+    label: Enable as Repository Service
+    reference: .properties.catalog_services_4_repository_service
+  - description: The name that will show in the PCF Apps Manager Marketplace
+    label: Display Name
+    reference: .properties.catalog_services_4_display_name
+  - description: The image that will show in the PCF Apps Manager Marketplace
+    label: Image URL
+    reference: .properties.catalog_services_4_image_url
+  - description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+    label: Long Description
+    reference: .properties.catalog_services_4_long_description
+  - description: Provider name that will show in the PCF Apps Manager Marketplace
+    label: Provider Display Name
+    reference: .properties.catalog_services_4_provider_display_name
+  - description: The documentation link that will show in the PCF Apps Manager Marketplace
+    label: Documentation URL
+    reference: .properties.catalog_services_4_documentation_url
+  - description: The support link that will show in the PCF Apps Manager Marketplace
+    label: Support URL
+    reference: .properties.catalog_services_4_support_url
+  - description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
+    label: Type of Service
+    reference: .properties.catalog_service_settings4
+    selector_property_inputs:
+    - label: Bucket
+      property_inputs:
+      - description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+        label: Object Head Type
+        reference: .properties.catalog_service_settings4.bucket_option.head_type
+      - description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+        label: Enable File Access
+        reference: .properties.catalog_service_settings4.bucket_option.file_accessible
+      - description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+        label: Default Retention (Seconds)
+        reference: .properties.catalog_service_settings4.bucket_option.default_retention
+      - description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+        label: Enable Encryption
+        reference: .properties.catalog_service_settings4.bucket_option.encrypted
+      reference: .properties.catalog_service_settings4.bucket_option
+    - label: Namespace
+      property_inputs:
+      - description: Strongly enforce object retention for compliance. This only applies to namespace services
+        label: Enable Compliance
+        reference: .properties.catalog_service_settings4.namespace_option.compliance_enabled
+      - description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+        label: Default Bucket Quota (GB)
+        reference: .properties.catalog_service_settings4.namespace_option.default_bucket_quota
+      - description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+        label: Enable Encryption
+        reference: .properties.catalog_service_settings4.namespace_option.encrypted
+      reference: .properties.catalog_service_settings4.namespace_option
+  - description: Customize Plans for this Service
+    label: Customize Plans for this Service
+    property_inputs:
+    - description: Name of this service plan to show in Cloud Foundry marketplace
+      label: Name
+      reference: name
+    - description: Description of this service plan to show in Cloud Foundry marketplace
+      label: Description
+      reference: description
+    - description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+      label: Enable as Repository Plan
+      reference: repository_plan
+    - description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+      label: Cost in US Dollars
+      reference: cost_usd
+    - description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+      label: Cost Unit
+      reference: cost_unit
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 1
+      reference: bullet_1
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 2
+      reference: bullet_2
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 3
+      reference: bullet_3
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 4
+      reference: bullet_4
+    - description: Bullet point to show up about the plan in the PCF Marketplace.
+      label: Bullet 5
+      reference: bullet_5
+    - description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+      label: Quota Limit (GB)
+      reference: quota_limit
+    - description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+      label: Quota Warning (GB)
+      reference: quota_warn
+    - description: Whether this service is free or paid
+      label: Free of Charge
+      reference: free
+    - description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+      label: Enable Access During Outage
+      reference: access_during_outage
+    - description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+      label: Default Retention (Seconds)
+      reference: default_retention
+    reference: .properties.catalog_plan_collection4
+- description: Determine availability of services
+  label: Service Access
+  name: service_access
+  property_inputs:
+  - description: Enable global access to plans in the marketplace
+    label: Enable global access to plans of service ECS Broker Application
+    reference: .properties.ecs_broker_enable_global_access_to_plans
+
+
+job_types: 
+- dynamic_ip: 1
+  errand: true
+  instance_definition:
+    configurable: false
+    default: 1
+    name: instances
+    type: integer
+  manifest: |
+    allow_paid_service_plans: (( .properties.allow_paid_service_plans.value ))
+    app_domains:
+    - (( ..cf.cloud_controller.apps_domain.value ))
+    apply_open_security_group: (( .properties.apply_open_security_group.value ))
+    broker_base_url: (( .properties.broker_base_url.value ))
+    broker_certificate_selector:
+      selected_option: (( .properties.broker_certificate_selector.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.broker_certificate_selector.value ))
+    broker_management_endpoint: (( .properties.broker_management_endpoint.value ))
+    broker_namespace: (( .properties.broker_namespace.value ))
+    broker_object_endpoint: (( .properties.broker_object_endpoint.value ))
+    broker_password: (( .properties.broker_password.value ))
+    broker_prefix: (( .properties.broker_prefix.value ))
+    broker_replication_group: (( .properties.broker_replication_group.value ))
+    broker_repository_bucket: (( .properties.broker_repository_bucket.value ))
+    broker_repository_endpoint: (( .properties.broker_repository_endpoint.value ))
+    broker_repository_user: (( .properties.broker_repository_user.value ))
+    broker_username: (( .properties.broker_username.value ))
+    catalog_plan_collection0: (( .properties.catalog_plan_collection0.value ))
+    catalog_plan_collection1: (( .properties.catalog_plan_collection1.value ))
+    catalog_plan_collection2: (( .properties.catalog_plan_collection2.value ))
+    catalog_plan_collection3: (( .properties.catalog_plan_collection3.value ))
+    catalog_plan_collection4: (( .properties.catalog_plan_collection4.value ))
+    catalog_service_settings0:
+      selected_option: (( .properties.catalog_service_settings0.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.catalog_service_settings0.value ))
+    catalog_service_settings1:
+      selected_option: (( .properties.catalog_service_settings1.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.catalog_service_settings1.value ))
+    catalog_service_settings2:
+      selected_option: (( .properties.catalog_service_settings2.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.catalog_service_settings2.value ))
+    catalog_service_settings3:
+      selected_option: (( .properties.catalog_service_settings3.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.catalog_service_settings3.value ))
+    catalog_service_settings4:
+      selected_option: (( .properties.catalog_service_settings4.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.catalog_service_settings4.value ))
+    catalog_services_0_active: (( .properties.catalog_services_0_active.value ))
+    catalog_services_0_bindable: (( .properties.catalog_services_0_bindable.value ))
+    catalog_services_0_description: (( .properties.catalog_services_0_description.value ))
+    catalog_services_0_display_name: (( .properties.catalog_services_0_display_name.value ))
+    catalog_services_0_documentation_url: (( .properties.catalog_services_0_documentation_url.value ))
+    catalog_services_0_guid: (( .properties.catalog_services_0_guid.value ))
+    catalog_services_0_image_url: (( .properties.catalog_services_0_image_url.value ))
+    catalog_services_0_long_description: (( .properties.catalog_services_0_long_description.value ))
+    catalog_services_0_name: (( .properties.catalog_services_0_name.value ))
+    catalog_services_0_provider_display_name: (( .properties.catalog_services_0_provider_display_name.value ))
+    catalog_services_0_repository_service: (( .properties.catalog_services_0_repository_service.value ))
+    catalog_services_0_support_url: (( .properties.catalog_services_0_support_url.value ))
+    catalog_services_0_tags: (( .properties.catalog_services_0_tags.value ))
+    catalog_services_1_active: (( .properties.catalog_services_1_active.value ))
+    catalog_services_1_bindable: (( .properties.catalog_services_1_bindable.value ))
+    catalog_services_1_description: (( .properties.catalog_services_1_description.value ))
+    catalog_services_1_display_name: (( .properties.catalog_services_1_display_name.value ))
+    catalog_services_1_documentation_url: (( .properties.catalog_services_1_documentation_url.value ))
+    catalog_services_1_guid: (( .properties.catalog_services_1_guid.value ))
+    catalog_services_1_image_url: (( .properties.catalog_services_1_image_url.value ))
+    catalog_services_1_long_description: (( .properties.catalog_services_1_long_description.value ))
+    catalog_services_1_name: (( .properties.catalog_services_1_name.value ))
+    catalog_services_1_provider_display_name: (( .properties.catalog_services_1_provider_display_name.value ))
+    catalog_services_1_repository_service: (( .properties.catalog_services_1_repository_service.value ))
+    catalog_services_1_support_url: (( .properties.catalog_services_1_support_url.value ))
+    catalog_services_1_tags: (( .properties.catalog_services_1_tags.value ))
+    catalog_services_2_active: (( .properties.catalog_services_2_active.value ))
+    catalog_services_2_bindable: (( .properties.catalog_services_2_bindable.value ))
+    catalog_services_2_description: (( .properties.catalog_services_2_description.value ))
+    catalog_services_2_display_name: (( .properties.catalog_services_2_display_name.value ))
+    catalog_services_2_documentation_url: (( .properties.catalog_services_2_documentation_url.value ))
+    catalog_services_2_guid: (( .properties.catalog_services_2_guid.value ))
+    catalog_services_2_image_url: (( .properties.catalog_services_2_image_url.value ))
+    catalog_services_2_long_description: (( .properties.catalog_services_2_long_description.value ))
+    catalog_services_2_name: (( .properties.catalog_services_2_name.value ))
+    catalog_services_2_provider_display_name: (( .properties.catalog_services_2_provider_display_name.value ))
+    catalog_services_2_repository_service: (( .properties.catalog_services_2_repository_service.value ))
+    catalog_services_2_support_url: (( .properties.catalog_services_2_support_url.value ))
+    catalog_services_2_tags: (( .properties.catalog_services_2_tags.value ))
+    catalog_services_3_active: (( .properties.catalog_services_3_active.value ))
+    catalog_services_3_bindable: (( .properties.catalog_services_3_bindable.value ))
+    catalog_services_3_description: (( .properties.catalog_services_3_description.value ))
+    catalog_services_3_display_name: (( .properties.catalog_services_3_display_name.value ))
+    catalog_services_3_documentation_url: (( .properties.catalog_services_3_documentation_url.value ))
+    catalog_services_3_guid: (( .properties.catalog_services_3_guid.value ))
+    catalog_services_3_image_url: (( .properties.catalog_services_3_image_url.value ))
+    catalog_services_3_long_description: (( .properties.catalog_services_3_long_description.value ))
+    catalog_services_3_name: (( .properties.catalog_services_3_name.value ))
+    catalog_services_3_provider_display_name: (( .properties.catalog_services_3_provider_display_name.value ))
+    catalog_services_3_repository_service: (( .properties.catalog_services_3_repository_service.value ))
+    catalog_services_3_support_url: (( .properties.catalog_services_3_support_url.value ))
+    catalog_services_3_tags: (( .properties.catalog_services_3_tags.value ))
+    catalog_services_4_active: (( .properties.catalog_services_4_active.value ))
+    catalog_services_4_bindable: (( .properties.catalog_services_4_bindable.value ))
+    catalog_services_4_description: (( .properties.catalog_services_4_description.value ))
+    catalog_services_4_display_name: (( .properties.catalog_services_4_display_name.value ))
+    catalog_services_4_documentation_url: (( .properties.catalog_services_4_documentation_url.value ))
+    catalog_services_4_guid: (( .properties.catalog_services_4_guid.value ))
+    catalog_services_4_image_url: (( .properties.catalog_services_4_image_url.value ))
+    catalog_services_4_long_description: (( .properties.catalog_services_4_long_description.value ))
+    catalog_services_4_name: (( .properties.catalog_services_4_name.value ))
+    catalog_services_4_provider_display_name: (( .properties.catalog_services_4_provider_display_name.value ))
+    catalog_services_4_repository_service: (( .properties.catalog_services_4_repository_service.value ))
+    catalog_services_4_support_url: (( .properties.catalog_services_4_support_url.value ))
+    catalog_services_4_tags: (( .properties.catalog_services_4_tags.value ))
+    cf:
+      admin_password: (( ..cf.uaa.system_services_credentials.password ))
+      admin_user: (( ..cf.uaa.system_services_credentials.identity ))
+    domain: (( ..cf.cloud_controller.system_domain.value ))
+    ecs_broker:
+      app_manifest:
+        buildpack: java_buildpack_offline
+        env:
+          CATALOG_SERVICES[0]_ACTIVE: (( .properties.catalog_services_0_active.value ))
+          CATALOG_SERVICES[0]_BINDABLE: (( .properties.catalog_services_0_bindable.value ))
+          CATALOG_SERVICES[0]_DESCRIPTION: (( .properties.catalog_services_0_description.value ))
+          CATALOG_SERVICES[0]_ID: (( .properties.catalog_services_0_guid.value ))
+          CATALOG_SERVICES[0]_METADATA[displayName]: (( .properties.catalog_services_0_display_name.value ))
+          CATALOG_SERVICES[0]_METADATA[documentationUrl]: (( .properties.catalog_services_0_documentation_url.value ))
+          CATALOG_SERVICES[0]_METADATA[imageUrl]: (( .properties.catalog_services_0_image_url.value ))
+          CATALOG_SERVICES[0]_METADATA[longDescription]: (( .properties.catalog_services_0_long_description.value ))
+          CATALOG_SERVICES[0]_METADATA[providerDisplayName]: (( .properties.catalog_services_0_provider_display_name.value ))
+          CATALOG_SERVICES[0]_METADATA[supportUrl]: (( .properties.catalog_services_0_support_url.value ))
+          CATALOG_SERVICES[0]_NAME: (( .properties.catalog_services_0_name.value ))
+          CATALOG_SERVICES[0]_REPOSITORY_SERVICE: (( .properties.catalog_services_0_repository_service.value ))
+          CATALOG_SERVICES[0]_TAGS: (( .properties.catalog_services_0_tags.value ))
+          CATALOG_SERVICES[1]_ACTIVE: (( .properties.catalog_services_1_active.value ))
+          CATALOG_SERVICES[1]_BINDABLE: (( .properties.catalog_services_1_bindable.value ))
+          CATALOG_SERVICES[1]_DESCRIPTION: (( .properties.catalog_services_1_description.value ))
+          CATALOG_SERVICES[1]_ID: (( .properties.catalog_services_1_guid.value ))
+          CATALOG_SERVICES[1]_METADATA[displayName]: (( .properties.catalog_services_1_display_name.value ))
+          CATALOG_SERVICES[1]_METADATA[documentationUrl]: (( .properties.catalog_services_1_documentation_url.value ))
+          CATALOG_SERVICES[1]_METADATA[imageUrl]: (( .properties.catalog_services_1_image_url.value ))
+          CATALOG_SERVICES[1]_METADATA[longDescription]: (( .properties.catalog_services_1_long_description.value ))
+          CATALOG_SERVICES[1]_METADATA[providerDisplayName]: (( .properties.catalog_services_1_provider_display_name.value ))
+          CATALOG_SERVICES[1]_METADATA[supportUrl]: (( .properties.catalog_services_1_support_url.value ))
+          CATALOG_SERVICES[1]_NAME: (( .properties.catalog_services_1_name.value ))
+          CATALOG_SERVICES[1]_REPOSITORY_SERVICE: (( .properties.catalog_services_1_repository_service.value ))
+          CATALOG_SERVICES[1]_TAGS: (( .properties.catalog_services_1_tags.value ))
+          CATALOG_SERVICES[2]_ACTIVE: (( .properties.catalog_services_2_active.value ))
+          CATALOG_SERVICES[2]_BINDABLE: (( .properties.catalog_services_2_bindable.value ))
+          CATALOG_SERVICES[2]_DESCRIPTION: (( .properties.catalog_services_2_description.value ))
+          CATALOG_SERVICES[2]_ID: (( .properties.catalog_services_2_guid.value ))
+          CATALOG_SERVICES[2]_METADATA[displayName]: (( .properties.catalog_services_2_display_name.value ))
+          CATALOG_SERVICES[2]_METADATA[documentationUrl]: (( .properties.catalog_services_2_documentation_url.value ))
+          CATALOG_SERVICES[2]_METADATA[imageUrl]: (( .properties.catalog_services_2_image_url.value ))
+          CATALOG_SERVICES[2]_METADATA[longDescription]: (( .properties.catalog_services_2_long_description.value ))
+          CATALOG_SERVICES[2]_METADATA[providerDisplayName]: (( .properties.catalog_services_2_provider_display_name.value ))
+          CATALOG_SERVICES[2]_METADATA[supportUrl]: (( .properties.catalog_services_2_support_url.value ))
+          CATALOG_SERVICES[2]_NAME: (( .properties.catalog_services_2_name.value ))
+          CATALOG_SERVICES[2]_REPOSITORY_SERVICE: (( .properties.catalog_services_2_repository_service.value ))
+          CATALOG_SERVICES[2]_TAGS: (( .properties.catalog_services_2_tags.value ))
+          CATALOG_SERVICES[3]_ACTIVE: (( .properties.catalog_services_3_active.value ))
+          CATALOG_SERVICES[3]_BINDABLE: (( .properties.catalog_services_3_bindable.value ))
+          CATALOG_SERVICES[3]_DESCRIPTION: (( .properties.catalog_services_3_description.value ))
+          CATALOG_SERVICES[3]_ID: (( .properties.catalog_services_3_guid.value ))
+          CATALOG_SERVICES[3]_METADATA[displayName]: (( .properties.catalog_services_3_display_name.value ))
+          CATALOG_SERVICES[3]_METADATA[documentationUrl]: (( .properties.catalog_services_3_documentation_url.value ))
+          CATALOG_SERVICES[3]_METADATA[imageUrl]: (( .properties.catalog_services_3_image_url.value ))
+          CATALOG_SERVICES[3]_METADATA[longDescription]: (( .properties.catalog_services_3_long_description.value ))
+          CATALOG_SERVICES[3]_METADATA[providerDisplayName]: (( .properties.catalog_services_3_provider_display_name.value ))
+          CATALOG_SERVICES[3]_METADATA[supportUrl]: (( .properties.catalog_services_3_support_url.value ))
+          CATALOG_SERVICES[3]_NAME: (( .properties.catalog_services_3_name.value ))
+          CATALOG_SERVICES[3]_REPOSITORY_SERVICE: (( .properties.catalog_services_3_repository_service.value ))
+          CATALOG_SERVICES[3]_TAGS: (( .properties.catalog_services_3_tags.value ))
+          CATALOG_SERVICES[4]_ACTIVE: (( .properties.catalog_services_4_active.value ))
+          CATALOG_SERVICES[4]_BINDABLE: (( .properties.catalog_services_4_bindable.value ))
+          CATALOG_SERVICES[4]_DESCRIPTION: (( .properties.catalog_services_4_description.value ))
+          CATALOG_SERVICES[4]_ID: (( .properties.catalog_services_4_guid.value ))
+          CATALOG_SERVICES[4]_METADATA[displayName]: (( .properties.catalog_services_4_display_name.value ))
+          CATALOG_SERVICES[4]_METADATA[documentationUrl]: (( .properties.catalog_services_4_documentation_url.value ))
+          CATALOG_SERVICES[4]_METADATA[imageUrl]: (( .properties.catalog_services_4_image_url.value ))
+          CATALOG_SERVICES[4]_METADATA[longDescription]: (( .properties.catalog_services_4_long_description.value ))
+          CATALOG_SERVICES[4]_METADATA[providerDisplayName]: (( .properties.catalog_services_4_provider_display_name.value ))
+          CATALOG_SERVICES[4]_METADATA[supportUrl]: (( .properties.catalog_services_4_support_url.value ))
+          CATALOG_SERVICES[4]_NAME: (( .properties.catalog_services_4_name.value ))
+          CATALOG_SERVICES[4]_REPOSITORY_SERVICE: (( .properties.catalog_services_4_repository_service.value ))
+          CATALOG_SERVICES[4]_TAGS: (( .properties.catalog_services_4_tags.value ))
+        memory: 1G
+        path: ecs-cf-service-broker-1.2.0-RELEASE.jar
+      auto_services: []
+      enable_global_access_to_plans: (( .properties.ecs_broker_enable_global_access_to_plans.value ))
+      name: ecs_broker
+      password: (( .deploy-all.app_credentials.password ))
+      user: (( .deploy-all.app_credentials.identity ))
+    opsman_ca: (( $ops_manager.ca_certificate ))
+    org: (( .properties.org.value ))
+    security:
+      password: (( .deploy-all.app_credentials.password ))
+      user: (( .deploy-all.app_credentials.identity ))
+    space: (( .properties.space.value ))
+    ssl:
+      skip_cert_verify: (( ..cf.ha_proxy.skip_cert_verify.value ))
+    uaa:
+      admin_client: (( ..cf.uaa.admin_client_credentials.identity ))
+      admin_client_secret: (( ..cf.uaa.admin_client_credentials.password ))
+  max_in_flight: 1
+  name: deploy-all
+  property_blueprints:
+  - default:
+      identity: vcap
+    name: vm_credentials
+    type: salted_credentials
+  - name: app_credentials
+    type: salted_credentials
+  resource_definitions:
+  - configurable: true
+    default: 1024
+    name: ram
+    type: integer
+  - configurable: true
+    default: 4096
+    name: ephemeral_disk
+    type: integer
+  - configurable: false
+    constraints:
+      min: 0
+    default: 0
+    name: persistent_disk
+    type: integer
+  - configurable: true
+    default: 1
+    name: cpu
+    type: integer
+  resource_label: deploy-all
+  single_az_only: true
+  static_ip: 0
+  templates:
+  - name: deploy-all
+    release: ecs-service-broker
+- dynamic_ip: 1
+  errand: true
+  instance_definition:
+    configurable: false
+    default: 1
+    name: instances
+    type: integer
+  manifest: |
+    allow_paid_service_plans: (( .properties.allow_paid_service_plans.value ))
+    app_domains:
+    - (( ..cf.cloud_controller.apps_domain.value ))
+    apply_open_security_group: (( .properties.apply_open_security_group.value ))
+    broker_base_url: (( .properties.broker_base_url.value ))
+    broker_certificate_selector:
+      selected_option: (( .properties.broker_certificate_selector.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.broker_certificate_selector.value ))
+    broker_management_endpoint: (( .properties.broker_management_endpoint.value ))
+    broker_namespace: (( .properties.broker_namespace.value ))
+    broker_object_endpoint: (( .properties.broker_object_endpoint.value ))
+    broker_password: (( .properties.broker_password.value ))
+    broker_prefix: (( .properties.broker_prefix.value ))
+    broker_replication_group: (( .properties.broker_replication_group.value ))
+    broker_repository_bucket: (( .properties.broker_repository_bucket.value ))
+    broker_repository_endpoint: (( .properties.broker_repository_endpoint.value ))
+    broker_repository_user: (( .properties.broker_repository_user.value ))
+    broker_username: (( .properties.broker_username.value ))
+    catalog_plan_collection0: (( .properties.catalog_plan_collection0.value ))
+    catalog_plan_collection1: (( .properties.catalog_plan_collection1.value ))
+    catalog_plan_collection2: (( .properties.catalog_plan_collection2.value ))
+    catalog_plan_collection3: (( .properties.catalog_plan_collection3.value ))
+    catalog_plan_collection4: (( .properties.catalog_plan_collection4.value ))
+    catalog_service_settings0:
+      selected_option: (( .properties.catalog_service_settings0.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.catalog_service_settings0.value ))
+    catalog_service_settings1:
+      selected_option: (( .properties.catalog_service_settings1.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.catalog_service_settings1.value ))
+    catalog_service_settings2:
+      selected_option: (( .properties.catalog_service_settings2.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.catalog_service_settings2.value ))
+    catalog_service_settings3:
+      selected_option: (( .properties.catalog_service_settings3.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.catalog_service_settings3.value ))
+    catalog_service_settings4:
+      selected_option: (( .properties.catalog_service_settings4.selected_option.parsed_manifest(manifest_snippet) ))
+      value: (( .properties.catalog_service_settings4.value ))
+    catalog_services_0_active: (( .properties.catalog_services_0_active.value ))
+    catalog_services_0_bindable: (( .properties.catalog_services_0_bindable.value ))
+    catalog_services_0_description: (( .properties.catalog_services_0_description.value ))
+    catalog_services_0_display_name: (( .properties.catalog_services_0_display_name.value ))
+    catalog_services_0_documentation_url: (( .properties.catalog_services_0_documentation_url.value ))
+    catalog_services_0_guid: (( .properties.catalog_services_0_guid.value ))
+    catalog_services_0_image_url: (( .properties.catalog_services_0_image_url.value ))
+    catalog_services_0_long_description: (( .properties.catalog_services_0_long_description.value ))
+    catalog_services_0_name: (( .properties.catalog_services_0_name.value ))
+    catalog_services_0_provider_display_name: (( .properties.catalog_services_0_provider_display_name.value ))
+    catalog_services_0_repository_service: (( .properties.catalog_services_0_repository_service.value ))
+    catalog_services_0_support_url: (( .properties.catalog_services_0_support_url.value ))
+    catalog_services_0_tags: (( .properties.catalog_services_0_tags.value ))
+    catalog_services_1_active: (( .properties.catalog_services_1_active.value ))
+    catalog_services_1_bindable: (( .properties.catalog_services_1_bindable.value ))
+    catalog_services_1_description: (( .properties.catalog_services_1_description.value ))
+    catalog_services_1_display_name: (( .properties.catalog_services_1_display_name.value ))
+    catalog_services_1_documentation_url: (( .properties.catalog_services_1_documentation_url.value ))
+    catalog_services_1_guid: (( .properties.catalog_services_1_guid.value ))
+    catalog_services_1_image_url: (( .properties.catalog_services_1_image_url.value ))
+    catalog_services_1_long_description: (( .properties.catalog_services_1_long_description.value ))
+    catalog_services_1_name: (( .properties.catalog_services_1_name.value ))
+    catalog_services_1_provider_display_name: (( .properties.catalog_services_1_provider_display_name.value ))
+    catalog_services_1_repository_service: (( .properties.catalog_services_1_repository_service.value ))
+    catalog_services_1_support_url: (( .properties.catalog_services_1_support_url.value ))
+    catalog_services_1_tags: (( .properties.catalog_services_1_tags.value ))
+    catalog_services_2_active: (( .properties.catalog_services_2_active.value ))
+    catalog_services_2_bindable: (( .properties.catalog_services_2_bindable.value ))
+    catalog_services_2_description: (( .properties.catalog_services_2_description.value ))
+    catalog_services_2_display_name: (( .properties.catalog_services_2_display_name.value ))
+    catalog_services_2_documentation_url: (( .properties.catalog_services_2_documentation_url.value ))
+    catalog_services_2_guid: (( .properties.catalog_services_2_guid.value ))
+    catalog_services_2_image_url: (( .properties.catalog_services_2_image_url.value ))
+    catalog_services_2_long_description: (( .properties.catalog_services_2_long_description.value ))
+    catalog_services_2_name: (( .properties.catalog_services_2_name.value ))
+    catalog_services_2_provider_display_name: (( .properties.catalog_services_2_provider_display_name.value ))
+    catalog_services_2_repository_service: (( .properties.catalog_services_2_repository_service.value ))
+    catalog_services_2_support_url: (( .properties.catalog_services_2_support_url.value ))
+    catalog_services_2_tags: (( .properties.catalog_services_2_tags.value ))
+    catalog_services_3_active: (( .properties.catalog_services_3_active.value ))
+    catalog_services_3_bindable: (( .properties.catalog_services_3_bindable.value ))
+    catalog_services_3_description: (( .properties.catalog_services_3_description.value ))
+    catalog_services_3_display_name: (( .properties.catalog_services_3_display_name.value ))
+    catalog_services_3_documentation_url: (( .properties.catalog_services_3_documentation_url.value ))
+    catalog_services_3_guid: (( .properties.catalog_services_3_guid.value ))
+    catalog_services_3_image_url: (( .properties.catalog_services_3_image_url.value ))
+    catalog_services_3_long_description: (( .properties.catalog_services_3_long_description.value ))
+    catalog_services_3_name: (( .properties.catalog_services_3_name.value ))
+    catalog_services_3_provider_display_name: (( .properties.catalog_services_3_provider_display_name.value ))
+    catalog_services_3_repository_service: (( .properties.catalog_services_3_repository_service.value ))
+    catalog_services_3_support_url: (( .properties.catalog_services_3_support_url.value ))
+    catalog_services_3_tags: (( .properties.catalog_services_3_tags.value ))
+    catalog_services_4_active: (( .properties.catalog_services_4_active.value ))
+    catalog_services_4_bindable: (( .properties.catalog_services_4_bindable.value ))
+    catalog_services_4_description: (( .properties.catalog_services_4_description.value ))
+    catalog_services_4_display_name: (( .properties.catalog_services_4_display_name.value ))
+    catalog_services_4_documentation_url: (( .properties.catalog_services_4_documentation_url.value ))
+    catalog_services_4_guid: (( .properties.catalog_services_4_guid.value ))
+    catalog_services_4_image_url: (( .properties.catalog_services_4_image_url.value ))
+    catalog_services_4_long_description: (( .properties.catalog_services_4_long_description.value ))
+    catalog_services_4_name: (( .properties.catalog_services_4_name.value ))
+    catalog_services_4_provider_display_name: (( .properties.catalog_services_4_provider_display_name.value ))
+    catalog_services_4_repository_service: (( .properties.catalog_services_4_repository_service.value ))
+    catalog_services_4_support_url: (( .properties.catalog_services_4_support_url.value ))
+    catalog_services_4_tags: (( .properties.catalog_services_4_tags.value ))
+    cf:
+      admin_password: (( ..cf.uaa.system_services_credentials.password ))
+      admin_user: (( ..cf.uaa.system_services_credentials.identity ))
+    domain: (( ..cf.cloud_controller.system_domain.value ))
+    ecs_broker:
+      app_manifest:
+        buildpack: java_buildpack_offline
+        env:
+          CATALOG_SERVICES[0]_ACTIVE: (( .properties.catalog_services_0_active.value ))
+          CATALOG_SERVICES[0]_BINDABLE: (( .properties.catalog_services_0_bindable.value ))
+          CATALOG_SERVICES[0]_DESCRIPTION: (( .properties.catalog_services_0_description.value ))
+          CATALOG_SERVICES[0]_ID: (( .properties.catalog_services_0_guid.value ))
+          CATALOG_SERVICES[0]_METADATA[displayName]: (( .properties.catalog_services_0_display_name.value ))
+          CATALOG_SERVICES[0]_METADATA[documentationUrl]: (( .properties.catalog_services_0_documentation_url.value ))
+          CATALOG_SERVICES[0]_METADATA[imageUrl]: (( .properties.catalog_services_0_image_url.value ))
+          CATALOG_SERVICES[0]_METADATA[longDescription]: (( .properties.catalog_services_0_long_description.value ))
+          CATALOG_SERVICES[0]_METADATA[providerDisplayName]: (( .properties.catalog_services_0_provider_display_name.value ))
+          CATALOG_SERVICES[0]_METADATA[supportUrl]: (( .properties.catalog_services_0_support_url.value ))
+          CATALOG_SERVICES[0]_NAME: (( .properties.catalog_services_0_name.value ))
+          CATALOG_SERVICES[0]_REPOSITORY_SERVICE: (( .properties.catalog_services_0_repository_service.value ))
+          CATALOG_SERVICES[0]_TAGS: (( .properties.catalog_services_0_tags.value ))
+          CATALOG_SERVICES[1]_ACTIVE: (( .properties.catalog_services_1_active.value ))
+          CATALOG_SERVICES[1]_BINDABLE: (( .properties.catalog_services_1_bindable.value ))
+          CATALOG_SERVICES[1]_DESCRIPTION: (( .properties.catalog_services_1_description.value ))
+          CATALOG_SERVICES[1]_ID: (( .properties.catalog_services_1_guid.value ))
+          CATALOG_SERVICES[1]_METADATA[displayName]: (( .properties.catalog_services_1_display_name.value ))
+          CATALOG_SERVICES[1]_METADATA[documentationUrl]: (( .properties.catalog_services_1_documentation_url.value ))
+          CATALOG_SERVICES[1]_METADATA[imageUrl]: (( .properties.catalog_services_1_image_url.value ))
+          CATALOG_SERVICES[1]_METADATA[longDescription]: (( .properties.catalog_services_1_long_description.value ))
+          CATALOG_SERVICES[1]_METADATA[providerDisplayName]: (( .properties.catalog_services_1_provider_display_name.value ))
+          CATALOG_SERVICES[1]_METADATA[supportUrl]: (( .properties.catalog_services_1_support_url.value ))
+          CATALOG_SERVICES[1]_NAME: (( .properties.catalog_services_1_name.value ))
+          CATALOG_SERVICES[1]_REPOSITORY_SERVICE: (( .properties.catalog_services_1_repository_service.value ))
+          CATALOG_SERVICES[1]_TAGS: (( .properties.catalog_services_1_tags.value ))
+          CATALOG_SERVICES[2]_ACTIVE: (( .properties.catalog_services_2_active.value ))
+          CATALOG_SERVICES[2]_BINDABLE: (( .properties.catalog_services_2_bindable.value ))
+          CATALOG_SERVICES[2]_DESCRIPTION: (( .properties.catalog_services_2_description.value ))
+          CATALOG_SERVICES[2]_ID: (( .properties.catalog_services_2_guid.value ))
+          CATALOG_SERVICES[2]_METADATA[displayName]: (( .properties.catalog_services_2_display_name.value ))
+          CATALOG_SERVICES[2]_METADATA[documentationUrl]: (( .properties.catalog_services_2_documentation_url.value ))
+          CATALOG_SERVICES[2]_METADATA[imageUrl]: (( .properties.catalog_services_2_image_url.value ))
+          CATALOG_SERVICES[2]_METADATA[longDescription]: (( .properties.catalog_services_2_long_description.value ))
+          CATALOG_SERVICES[2]_METADATA[providerDisplayName]: (( .properties.catalog_services_2_provider_display_name.value ))
+          CATALOG_SERVICES[2]_METADATA[supportUrl]: (( .properties.catalog_services_2_support_url.value ))
+          CATALOG_SERVICES[2]_NAME: (( .properties.catalog_services_2_name.value ))
+          CATALOG_SERVICES[2]_REPOSITORY_SERVICE: (( .properties.catalog_services_2_repository_service.value ))
+          CATALOG_SERVICES[2]_TAGS: (( .properties.catalog_services_2_tags.value ))
+          CATALOG_SERVICES[3]_ACTIVE: (( .properties.catalog_services_3_active.value ))
+          CATALOG_SERVICES[3]_BINDABLE: (( .properties.catalog_services_3_bindable.value ))
+          CATALOG_SERVICES[3]_DESCRIPTION: (( .properties.catalog_services_3_description.value ))
+          CATALOG_SERVICES[3]_ID: (( .properties.catalog_services_3_guid.value ))
+          CATALOG_SERVICES[3]_METADATA[displayName]: (( .properties.catalog_services_3_display_name.value ))
+          CATALOG_SERVICES[3]_METADATA[documentationUrl]: (( .properties.catalog_services_3_documentation_url.value ))
+          CATALOG_SERVICES[3]_METADATA[imageUrl]: (( .properties.catalog_services_3_image_url.value ))
+          CATALOG_SERVICES[3]_METADATA[longDescription]: (( .properties.catalog_services_3_long_description.value ))
+          CATALOG_SERVICES[3]_METADATA[providerDisplayName]: (( .properties.catalog_services_3_provider_display_name.value ))
+          CATALOG_SERVICES[3]_METADATA[supportUrl]: (( .properties.catalog_services_3_support_url.value ))
+          CATALOG_SERVICES[3]_NAME: (( .properties.catalog_services_3_name.value ))
+          CATALOG_SERVICES[3]_REPOSITORY_SERVICE: (( .properties.catalog_services_3_repository_service.value ))
+          CATALOG_SERVICES[3]_TAGS: (( .properties.catalog_services_3_tags.value ))
+          CATALOG_SERVICES[4]_ACTIVE: (( .properties.catalog_services_4_active.value ))
+          CATALOG_SERVICES[4]_BINDABLE: (( .properties.catalog_services_4_bindable.value ))
+          CATALOG_SERVICES[4]_DESCRIPTION: (( .properties.catalog_services_4_description.value ))
+          CATALOG_SERVICES[4]_ID: (( .properties.catalog_services_4_guid.value ))
+          CATALOG_SERVICES[4]_METADATA[displayName]: (( .properties.catalog_services_4_display_name.value ))
+          CATALOG_SERVICES[4]_METADATA[documentationUrl]: (( .properties.catalog_services_4_documentation_url.value ))
+          CATALOG_SERVICES[4]_METADATA[imageUrl]: (( .properties.catalog_services_4_image_url.value ))
+          CATALOG_SERVICES[4]_METADATA[longDescription]: (( .properties.catalog_services_4_long_description.value ))
+          CATALOG_SERVICES[4]_METADATA[providerDisplayName]: (( .properties.catalog_services_4_provider_display_name.value ))
+          CATALOG_SERVICES[4]_METADATA[supportUrl]: (( .properties.catalog_services_4_support_url.value ))
+          CATALOG_SERVICES[4]_NAME: (( .properties.catalog_services_4_name.value ))
+          CATALOG_SERVICES[4]_REPOSITORY_SERVICE: (( .properties.catalog_services_4_repository_service.value ))
+          CATALOG_SERVICES[4]_TAGS: (( .properties.catalog_services_4_tags.value ))
+        memory: 1G
+        path: ecs-cf-service-broker-1.2.0-RELEASE.jar
+      auto_services: []
+      enable_global_access_to_plans: (( .properties.ecs_broker_enable_global_access_to_plans.value ))
+      name: ecs_broker
+    opsman_ca: (( $ops_manager.ca_certificate ))
+    org: (( .properties.org.value ))
+    space: (( .properties.space.value ))
+    ssl:
+      skip_cert_verify: (( ..cf.ha_proxy.skip_cert_verify.value ))
+    uaa:
+      admin_client: (( ..cf.uaa.admin_client_credentials.identity ))
+      admin_client_secret: (( ..cf.uaa.admin_client_credentials.password ))
+  max_in_flight: 1
+  name: delete-all
+  property_blueprints:
+  - default:
+      identity: vcap
+    name: vm_credentials
+    type: salted_credentials
+  - name: app_credentials
+    type: salted_credentials
+  resource_definitions:
+  - configurable: true
+    default: 1024
+    name: ram
+    type: integer
+  - configurable: true
+    default: 4096
+    name: ephemeral_disk
+    type: integer
+  - configurable: false
+    constraints:
+      min: 0
+    default: 0
+    name: persistent_disk
+    type: integer
+  - configurable: true
+    default: 1
+    name: cpu
+    type: integer
+  resource_label: delete-all
+  single_az_only: true
+  static_ip: 0
+  templates:
+  - name: delete-all
+    release: ecs-service-broker
+
+
+
+post_deploy_errands: 
+- name: deploy-all
+
+
+pre_delete_errands: 
+- name: delete-all
+
+
+update:
+  canaries: 1
+  canary_watch_time: 10000-100000
+  max_in_flight: 1
+  update_watch_time: 10000-100000
+
+provides_product_versions:
+- name: ecs-service-broker
+  version: '1.2.1'

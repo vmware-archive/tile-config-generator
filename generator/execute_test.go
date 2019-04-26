@@ -76,6 +76,14 @@ var _ = Describe("Executor", func() {
 			Expect(err).ShouldNot(HaveOccurred())
 		})
 
+		It("Should generate files for ecs-service-broker", func() {
+			metadataBytes, err := getFileBytes("fixtures/ecs-service-broker.yml")
+			Expect(err).ShouldNot(HaveOccurred())
+			gen = generator.NewExecutor(metadataBytes, tmpPath, false, true)
+			err = gen.Generate()
+			Expect(err).ShouldNot(HaveOccurred())
+		})
+
 		It("Should generate files for pas", func() {
 			metadataBytes, err := getFileBytes("fixtures/pas.yml")
 			Expect(err).ShouldNot(HaveOccurred())

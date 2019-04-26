@@ -42,6 +42,16 @@ func (s SimpleInteger) IsSelector() bool {
 	return false
 }
 
+type SimpleFloat float64
+
+func (s SimpleFloat) Parameters() []string {
+	return []string{fmt.Sprintf("%v", s)}
+}
+
+func (s SimpleFloat) IsSelector() bool {
+	return false
+}
+
 type SelectorValue struct {
 	Value string `yaml:"value"`
 }
@@ -135,7 +145,7 @@ type CertificateValue struct {
 	CertPrivateKey string `yaml:"private_key_pem"`
 }
 
-func NewCertificateValue(propertyName string) *CertificateValue{
+func NewCertificateValue(propertyName string) *CertificateValue {
 	return &CertificateValue{
 		CertPem:        fmt.Sprintf("((%s/%s))", propertyName, "certificate"),
 		CertPrivateKey: fmt.Sprintf("((%s/%s))", propertyName, "privatekey"),
