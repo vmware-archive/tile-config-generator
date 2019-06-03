@@ -1,6 +1,9 @@
 # tile-config-generator
 Tooling to help externalize the configuration of Pivotal Operations Manager and it's various tiles.
 
+## Deprecation Notice ##
+The functionality of this tool has been migrated to [om](https://github.com/pivotal-cf/om) using `config-template` command.  Discontinue usage of this tooling and start to leverage the capabilities within `om` as well as open any issues to that repository.
+
 ## Getting Started
 
 ## Maintainer
