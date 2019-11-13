@@ -24,6 +24,7 @@ type manager struct {
 	Display  commands.Display         `command:"display" description:"displays information about tile"`
 	Metdata  commands.MetadataCommand `command:"metadata" description:"gets metadata file"`
 	Version  commands.Version         `command:"version" description:"displays version"`
+	Populate commands.Populate        `command:"populate" description:"output platform automation config"`
 }
 
 var Manager manager
